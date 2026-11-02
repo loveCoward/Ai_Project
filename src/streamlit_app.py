@@ -24,8 +24,8 @@ from voice import VoiceManager
 # The app heavily uses AgentClient to interact with the agent's FastAPI endpoints.
 
 
-APP_TITLE = "Agent Service Toolkit"
-APP_ICON = "🧰"
+APP_TITLE = "BidDesk_zq"
+APP_ICON = "📑"
 USER_ID_COOKIE = "user_id"
 
 
@@ -91,6 +91,13 @@ async def main() -> None:
     # Get or create user ID
     user_id = get_or_create_user_id()
 
+    st.title("B2B 售前证据化多智能体方案工作台")
+    st.caption("BidDesk_zq")
+    st.warning(
+        "业务需求已批准，功能尚未实现。当前页面是继承的通用 Agent 对话脚手架，"
+        "仅用于工程联通验证，不是售前业务工作台；请勿输入真实客户敏感材料。"
+    )
+
     if "agent_client" not in st.session_state:
         load_dotenv()
         agent_url = os.getenv("AGENT_URL")
@@ -139,7 +146,7 @@ async def main() -> None:
         st.header(f"{APP_ICON} {APP_TITLE}")
 
         ""
-        "Full toolkit for running an AI agent service built with LangGraph, FastAPI and Streamlit"
+        "业务需求已批准，功能尚未实现。"
         ""
 
         if st.button(":material/chat: New Chat", use_container_width=True):
@@ -219,22 +226,18 @@ async def main() -> None:
             # Display user ID (for debugging or user information)
             st.text_input("User ID (read-only)", value=user_id, disabled=True)
 
-        @st.dialog("Architecture")
+        @st.dialog("当前脚手架架构")
         def architecture_dialog() -> None:
-            st.image(
-                "https://github.com/JoshuaC215/agent-service-toolkit/blob/main/media/agent_architecture.png?raw=true"
-            )
-            "[View full size on Github](https://github.com/JoshuaC215/agent-service-toolkit/blob/main/media/agent_architecture.png)"
-            st.caption(
-                "App hosted on [Streamlit Cloud](https://share.streamlit.io/) with FastAPI service running in [Azure](https://learn.microsoft.com/en-us/azure/app-service/)"
-            )
+            st.image("media/agent_architecture.png")
+            st.caption("此图仅描述仓库现有通用脚手架，不代表 BidDesk_zq 售前业务功能。")
 
         if st.button(":material/schema: Architecture", use_container_width=True):
             architecture_dialog()
 
         with st.popover(":material/policy: Privacy", use_container_width=True):
             st.write(
-                "Prompts, responses and feedback in this app are anonymously recorded and saved to LangSmith for product evaluation and improvement purposes only."
+                "当前通用脚手架可能根据环境配置调用模型或追踪服务；实际数据处理取决于所配置的服务。"
+                "请勿输入真实客户敏感材料。"
             )
 
         @st.dialog("Share/resume chat")
@@ -257,11 +260,6 @@ async def main() -> None:
 
         if st.button(":material/upload: Share/resume chat", use_container_width=True):
             share_chat_dialog()
-
-        "[View the source code](https://github.com/JoshuaC215/agent-service-toolkit)"
-        st.caption(
-            "Made with :material/favorite: by [Joshua](https://www.linkedin.com/in/joshua-k-carroll/) in Oakland"
-        )
 
     # Draw existing messages
     messages: list[ChatMessage] = st.session_state.messages

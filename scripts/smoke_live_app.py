@@ -1,4 +1,4 @@
-"""Smoke test the deployed Streamlit app end-to-end with a real browser.
+"""Smoke test a locally running Streamlit app end-to-end with a real browser.
 
 Loads the app, sends one chat message, and verifies an assistant response
 streams back. Streamlit is websocket-driven, so a plain HTTP check only proves
@@ -8,7 +8,7 @@ Streamlit -> agent service -> LLM -> back).
 Usage:
     uv run --with playwright python scripts/smoke_live_app.py [URL]
 
-The URL defaults to the deployed app, or set LIVE_APP_URL. For local testing:
+The URL defaults to the local app, or set LIVE_APP_URL. To specify a URL:
     uv run --with playwright python scripts/smoke_live_app.py http://localhost:8501
 
 Requires a Chromium Playwright can find: either `playwright install chromium`,
@@ -16,9 +16,7 @@ or a pre-provisioned browser via PLAYWRIGHT_BROWSERS_PATH (as in Claude Code
 cloud environments). Exits 0 on pass, 1 on fail, and writes
 smoke_live_app_failure.png next to the CWD on failure for diagnosis.
 
-Note: against the deployed app this sends one real message, which costs one
-(cheap) LLM call. Streamlit Community Cloud apps that went to sleep are woken
-by clicking through the wake-up screen; allow a couple of minutes for that.
+Note: this sends one real message and requires a configured model provider.
 """
 
 import os
@@ -28,7 +26,7 @@ import time
 from playwright.sync_api import TimeoutError as PlaywrightTimeoutError
 from playwright.sync_api import sync_playwright
 
-DEFAULT_URL = "https://agent-service-toolkit.streamlit.app/"
+DEFAULT_URL = "http://localhost:8501/"
 # Stable symlink to the pre-provisioned browser in Claude Code cloud environments,
 # used as a fallback when the installed playwright's own browser build is absent.
 CLOUD_CHROMIUM = "/opt/pw-browsers/chromium"

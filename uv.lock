@@ -59,141 +59,6 @@ wheels = [
 ]
 
 [[package]]
-name = "agent-service-toolkit"
-version = "0.1.0"
-source = { virtual = "." }
-dependencies = [
-    { name = "ag-ui-langgraph" },
-    { name = "aiosqlite" },
-    { name = "certifi" },
-    { name = "ddgs" },
-    { name = "docx2txt" },
-    { name = "duckduckgo-search" },
-    { name = "fastapi" },
-    { name = "httpx" },
-    { name = "jiter" },
-    { name = "langchain" },
-    { name = "langchain-anthropic" },
-    { name = "langchain-aws" },
-    { name = "langchain-chroma" },
-    { name = "langchain-community" },
-    { name = "langchain-core" },
-    { name = "langchain-google-genai" },
-    { name = "langchain-google-vertexai" },
-    { name = "langchain-groq" },
-    { name = "langchain-mcp-adapters" },
-    { name = "langchain-ollama" },
-    { name = "langchain-openai" },
-    { name = "langfuse" },
-    { name = "langgraph" },
-    { name = "langgraph-checkpoint-mongodb" },
-    { name = "langgraph-checkpoint-postgres" },
-    { name = "langgraph-checkpoint-sqlite" },
-    { name = "langgraph-supervisor" },
-    { name = "langsmith" },
-    { name = "numexpr" },
-    { name = "numpy" },
-    { name = "onnxruntime" },
-    { name = "pandas" },
-    { name = "psycopg", extra = ["binary", "pool"] },
-    { name = "pyarrow" },
-    { name = "pydantic" },
-    { name = "pydantic-settings" },
-    { name = "pyowm" },
-    { name = "pypdf" },
-    { name = "python-dotenv" },
-    { name = "setuptools" },
-    { name = "streamlit" },
-    { name = "tiktoken" },
-    { name = "uvicorn" },
-]
-
-[package.dev-dependencies]
-client = [
-    { name = "httpx" },
-    { name = "pydantic" },
-    { name = "python-dotenv" },
-    { name = "streamlit" },
-]
-dev = [
-    { name = "langgraph-cli", extra = ["inmem"] },
-    { name = "pre-commit" },
-    { name = "pymarkdownlnt" },
-    { name = "pyrefly" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-env" },
-    { name = "ruff" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "ag-ui-langgraph", specifier = "~=0.0.42" },
-    { name = "aiosqlite", specifier = ">=0.22.1" },
-    { name = "certifi", specifier = ">=2026.10.19" },
-    { name = "ddgs", specifier = ">=9.14.4" },
-    { name = "docx2txt", specifier = "~=0.8" },
-    { name = "duckduckgo-search", specifier = ">=8.1.1" },
-    { name = "fastapi", specifier = "~=0.141.0" },
-    { name = "httpx", specifier = "~=0.28.1" },
-    { name = "jiter", specifier = "~=0.16.0" },
-    { name = "langchain", specifier = "~=1.3.11" },
-    { name = "langchain-anthropic", specifier = "~=1.4.8" },
-    { name = "langchain-aws", specifier = "~=1.6.1" },
-    { name = "langchain-chroma", specifier = "~=1.1.0" },
-    { name = "langchain-community", specifier = "~=0.4.2" },
-    { name = "langchain-core", specifier = "~=1.4.8" },
-    { name = "langchain-google-genai", specifier = "~=4.2.6" },
-    { name = "langchain-google-vertexai", specifier = ">=3.2.4" },
-    { name = "langchain-groq", specifier = "~=1.1.3" },
-    { name = "langchain-mcp-adapters", specifier = ">=0.3.0" },
-    { name = "langchain-ollama", specifier = "~=1.1.0" },
-    { name = "langchain-openai", specifier = "~=1.3.3" },
-    { name = "langfuse", specifier = "~=4.12" },
-    { name = "langgraph", specifier = "~=1.2.7" },
-    { name = "langgraph-checkpoint-mongodb", specifier = "~=0.4.0" },
-    { name = "langgraph-checkpoint-postgres", specifier = "~=3.1.1" },
-    { name = "langgraph-checkpoint-sqlite", specifier = "~=3.1.0" },
-    { name = "langgraph-supervisor", specifier = "~=0.0.31" },
-    { name = "langsmith", specifier = "~=0.11.0" },
-    { name = "numexpr", specifier = "~=2.14.1" },
-    { name = "numpy", specifier = "~=2.5.0" },
-    { name = "onnxruntime", specifier = "~=1.27.0" },
-    { name = "pandas", specifier = "~=3.0.3" },
-    { name = "psycopg", extras = ["binary", "pool"], specifier = "~=3.3.4" },
-    { name = "pyarrow", specifier = ">=23.0.1" },
-    { name = "pydantic", specifier = "~=2.13.4" },
-    { name = "pydantic-settings", specifier = "~=2.15.0" },
-    { name = "pyowm", specifier = "~=3.5.0" },
-    { name = "pypdf", specifier = ">=6.14.2,<6.20.0" },
-    { name = "python-dotenv", specifier = "~=1.2.2" },
-    { name = "setuptools", specifier = "~=84.0.0" },
-    { name = "streamlit", specifier = "~=1.59.1" },
-    { name = "tiktoken", specifier = ">=0.13.0" },
-    { name = "uvicorn", specifier = "~=0.52.0" },
-]
-
-[package.metadata.requires-dev]
-client = [
-    { name = "httpx", specifier = "~=0.28.1" },
-    { name = "pydantic", specifier = "~=2.13.4" },
-    { name = "python-dotenv", specifier = "~=1.2.2" },
-    { name = "streamlit", specifier = "~=1.59.1" },
-]
-dev = [
-    { name = "langgraph-cli", extras = ["inmem"] },
-    { name = "pre-commit" },
-    { name = "pymarkdownlnt" },
-    { name = "pyrefly", specifier = "~=1.1.1" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "pytest-cov" },
-    { name = "pytest-env" },
-    { name = "ruff", specifier = "~=0.15.21" },
-]
-
-[[package]]
 name = "aiohappyeyeballs"
 version = "2.7.1"
 source = { registry = "https://pypi.org/simple" }
@@ -501,6 +366,141 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/c0/f6/688d2cd64bfd0b14d805ddb8a565e11ca1fb0fd6817175d58b10052b6d88/bcrypt-5.0.0-cp39-abi3-win32.whl", hash = "sha256:64d7ce196203e468c457c37ec22390f1a61c85c6f0b8160fd752940ccfb3a683", size = 153725, upload-time = "2025-09-25T19:50:34.384Z" },
     { url = "https://files.pythonhosted.org/packages/9f/b9/9d9a641194a730bda138b3dfe53f584d61c58cd5230e37566e83ec2ffa0d/bcrypt-5.0.0-cp39-abi3-win_amd64.whl", hash = "sha256:64ee8434b0da054d830fa8e89e1c8bf30061d539044a39524ff7dec90481e5c2", size = 150912, upload-time = "2025-09-25T19:50:35.69Z" },
     { url = "https://files.pythonhosted.org/packages/27/44/d2ef5e87509158ad2187f4dd0852df80695bb1ee0cfe0a684727b01a69e0/bcrypt-5.0.0-cp39-abi3-win_arm64.whl", hash = "sha256:f2347d3534e76bf50bca5500989d6c1d05ed64b440408057a37673282c654927", size = 144953, upload-time = "2025-09-25T19:50:37.32Z" },
+]
+
+[[package]]
+name = "biddesk-zq"
+version = "0.1.0"
+source = { virtual = "." }
+dependencies = [
+    { name = "ag-ui-langgraph" },
+    { name = "aiosqlite" },
+    { name = "certifi" },
+    { name = "ddgs" },
+    { name = "docx2txt" },
+    { name = "duckduckgo-search" },
+    { name = "fastapi" },
+    { name = "httpx" },
+    { name = "jiter" },
+    { name = "langchain" },
+    { name = "langchain-anthropic" },
+    { name = "langchain-aws" },
+    { name = "langchain-chroma" },
+    { name = "langchain-community" },
+    { name = "langchain-core" },
+    { name = "langchain-google-genai" },
+    { name = "langchain-google-vertexai" },
+    { name = "langchain-groq" },
+    { name = "langchain-mcp-adapters" },
+    { name = "langchain-ollama" },
+    { name = "langchain-openai" },
+    { name = "langfuse" },
+    { name = "langgraph" },
+    { name = "langgraph-checkpoint-mongodb" },
+    { name = "langgraph-checkpoint-postgres" },
+    { name = "langgraph-checkpoint-sqlite" },
+    { name = "langgraph-supervisor" },
+    { name = "langsmith" },
+    { name = "numexpr" },
+    { name = "numpy" },
+    { name = "onnxruntime" },
+    { name = "pandas" },
+    { name = "psycopg", extra = ["binary", "pool"] },
+    { name = "pyarrow" },
+    { name = "pydantic" },
+    { name = "pydantic-settings" },
+    { name = "pyowm" },
+    { name = "pypdf" },
+    { name = "python-dotenv" },
+    { name = "setuptools" },
+    { name = "streamlit" },
+    { name = "tiktoken" },
+    { name = "uvicorn" },
+]
+
+[package.dev-dependencies]
+client = [
+    { name = "httpx" },
+    { name = "pydantic" },
+    { name = "python-dotenv" },
+    { name = "streamlit" },
+]
+dev = [
+    { name = "langgraph-cli", extra = ["inmem"] },
+    { name = "pre-commit" },
+    { name = "pymarkdownlnt" },
+    { name = "pyrefly" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-env" },
+    { name = "ruff" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "ag-ui-langgraph", specifier = "~=0.0.42" },
+    { name = "aiosqlite", specifier = ">=0.22.1" },
+    { name = "certifi", specifier = ">=2026.10.19" },
+    { name = "ddgs", specifier = ">=9.14.4" },
+    { name = "docx2txt", specifier = "~=0.8" },
+    { name = "duckduckgo-search", specifier = ">=8.1.1" },
+    { name = "fastapi", specifier = "~=0.141.0" },
+    { name = "httpx", specifier = "~=0.28.1" },
+    { name = "jiter", specifier = "~=0.16.0" },
+    { name = "langchain", specifier = "~=1.3.11" },
+    { name = "langchain-anthropic", specifier = "~=1.4.8" },
+    { name = "langchain-aws", specifier = "~=1.6.1" },
+    { name = "langchain-chroma", specifier = "~=1.1.0" },
+    { name = "langchain-community", specifier = "~=0.4.2" },
+    { name = "langchain-core", specifier = "~=1.4.8" },
+    { name = "langchain-google-genai", specifier = "~=4.2.6" },
+    { name = "langchain-google-vertexai", specifier = ">=3.2.4" },
+    { name = "langchain-groq", specifier = "~=1.1.3" },
+    { name = "langchain-mcp-adapters", specifier = ">=0.3.0" },
+    { name = "langchain-ollama", specifier = "~=1.1.0" },
+    { name = "langchain-openai", specifier = "~=1.3.3" },
+    { name = "langfuse", specifier = "~=4.12" },
+    { name = "langgraph", specifier = "~=1.2.7" },
+    { name = "langgraph-checkpoint-mongodb", specifier = "~=0.4.0" },
+    { name = "langgraph-checkpoint-postgres", specifier = "~=3.1.1" },
+    { name = "langgraph-checkpoint-sqlite", specifier = "~=3.1.0" },
+    { name = "langgraph-supervisor", specifier = "~=0.0.31" },
+    { name = "langsmith", specifier = "~=0.11.0" },
+    { name = "numexpr", specifier = "~=2.14.1" },
+    { name = "numpy", specifier = "~=2.5.0" },
+    { name = "onnxruntime", specifier = "~=1.27.0" },
+    { name = "pandas", specifier = "~=3.0.3" },
+    { name = "psycopg", extras = ["binary", "pool"], specifier = "~=3.3.4" },
+    { name = "pyarrow", specifier = ">=23.0.1" },
+    { name = "pydantic", specifier = "~=2.13.4" },
+    { name = "pydantic-settings", specifier = "~=2.15.0" },
+    { name = "pyowm", specifier = "~=3.5.0" },
+    { name = "pypdf", specifier = ">=6.14.2,<6.20.0" },
+    { name = "python-dotenv", specifier = "~=1.2.2" },
+    { name = "setuptools", specifier = "~=84.0.0" },
+    { name = "streamlit", specifier = "~=1.59.1" },
+    { name = "tiktoken", specifier = ">=0.13.0" },
+    { name = "uvicorn", specifier = "~=0.52.0" },
+]
+
+[package.metadata.requires-dev]
+client = [
+    { name = "httpx", specifier = "~=0.28.1" },
+    { name = "pydantic", specifier = "~=2.13.4" },
+    { name = "python-dotenv", specifier = "~=1.2.2" },
+    { name = "streamlit", specifier = "~=1.59.1" },
+]
+dev = [
+    { name = "langgraph-cli", extras = ["inmem"] },
+    { name = "pre-commit" },
+    { name = "pymarkdownlnt" },
+    { name = "pyrefly", specifier = "~=1.1.1" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "pytest-cov" },
+    { name = "pytest-env" },
+    { name = "ruff", specifier = "~=0.15.21" },
 ]
 
 [[package]]

@@ -1,11 +1,9 @@
 [project]
-name = "agent-service-toolkit"
+name = "biddesk-zq"
 version = "0.1.0"
-description = "Full toolkit for running an AI agent service built with LangGraph, FastAPI and Streamlit"
+description = "Approved requirements baseline and inherited development scaffold for BidDesk_zq, a B2B presales evidence workspace; business functionality is not yet implemented."
 readme = "README.md"
-authors = [{ name = "Joshua Carroll", email = "carroll.joshk@gmail.com" }]
 classifiers = [
-    "Development Status :: 4 - Beta",
     "License :: OSI Approved :: MIT License",
     "Framework :: FastAPI",
     "Programming Language :: Python :: 3.12",
