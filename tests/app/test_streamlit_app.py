@@ -1,4 +1,5 @@
 from collections.abc import AsyncGenerator
+from pathlib import Path
 from unittest.mock import AsyncMock, Mock
 
 import pytest
@@ -8,10 +9,21 @@ from client import AgentClientError
 from schema import ChatHistory, ChatMessage, ThreadSummary, UserThreads
 from schema.models import OpenAIModelName
 
+# Absolute path derived from this file: AppTest.from_file() would otherwise
+# resolve a relative path against the caller frame's co_filename, which ties the
+# test to the directory the module happened to be compiled in.
+STREAMLIT_APP = Path(__file__).resolve().parents[2] / "src" / "streamlit_app.py"
+
+# The first AppTest run in a pytest process also scans installed Streamlit
+# component packages (1-5 s on Windows), so AppTest's 3 s default is too tight
+# once the whole suite has been collected. Keep a ceiling that still fails on a
+# real hang but tolerates a cold start.
+APP_START_TIMEOUT = 15
+
 
 def test_app_simple_non_streaming(mock_agent_client):
     """Test the full app - happy path"""
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     WELCOME_START = "Hello! I'm an AI agent. Ask me anything!"
     PROMPT = "Know any jokes?"
@@ -36,7 +48,7 @@ def test_app_simple_non_streaming(mock_agent_client):
 
 def test_app_settings(mock_agent_client):
     """Test the full app - happy path"""
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["user_id"] = "1234"
     at.run()
 
@@ -75,10 +87,10 @@ def test_app_settings(mock_agent_client):
 def test_app_thread_id_history(mock_agent_client):
     """Test the thread_id is generated"""
 
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     # Reset and set thread_id
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["thread_id"] = "1234"
     HISTORY = [
         ChatMessage(type="human", content="What is the weather?"),
@@ -100,7 +112,7 @@ def test_app_thread_id_history(mock_agent_client):
 def test_app_resume_with_agent_param(mock_agent_client):
     """An ?agent= URL param scopes the resumed history to that agent's graph."""
 
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["thread_id"] = "1234"
     at.query_params["agent"] = "chatbot"
     HISTORY = [
@@ -127,7 +139,7 @@ def test_app_feedback(mock_agent_client):
 @pytest.mark.asyncio
 async def test_app_streaming(mock_agent_client):
     """Test the app with streaming enabled - including tool messages"""
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     # Setup mock streaming response
     PROMPT = "What is 6 * 7?"
@@ -169,7 +181,7 @@ async def test_app_streaming(mock_agent_client):
 @pytest.mark.asyncio
 async def test_app_init_error(mock_agent_client):
     """Test the app with an error in the agent initialization"""
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     # Setup mock streaming response
     PROMPT = "What is 6 * 7?"
@@ -187,7 +199,7 @@ async def test_app_init_error(mock_agent_client):
 
 
 def test_app_new_chat_btn(mock_agent_client):
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
     thread_id_a = at.session_state.thread_id
 
     at.sidebar.button[0].click().run()
@@ -339,7 +351,7 @@ def multi_agent_messages():
 async def test_app_streaming_single_sub_agent(mock_agent_client, multi_agent_messages):
     """Test a single sub-agent with multiple tool calls to verify popover functionality"""
 
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     PROMPT = "Test single sub-agent with multiple tools"
 
@@ -409,7 +421,7 @@ async def test_app_streaming_single_sub_agent(mock_agent_client, multi_agent_mes
 async def test_app_streaming_sequential_sub_agents(mock_agent_client, multi_agent_messages):
     """Test when the supervisor agent transfers to sub agent A, then back to supervisor, then transfers to sub agent C, and back again"""
 
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     PROMPT = "Test multiple transfer back patterns"
 
@@ -499,7 +511,7 @@ async def test_app_streaming_sequential_sub_agents(mock_agent_client, multi_agen
 async def test_app_streaming_nested_sub_agents(mock_agent_client, multi_agent_messages):
     """Test nested sub-agents where agent B is a sub-agent of agent A"""
 
-    at = AppTest.from_file("../../src/streamlit_app.py").run()
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT).run()
 
     PROMPT = "Test nested sub-agents"
 
@@ -605,7 +617,7 @@ def test_app_thread_caching_sidebar(mock_agent_client, mock_threads_data):
     """Verify thread list is fetched via get_user_threads and rendered in sidebar history."""
     mock_agent_client.get_user_threads = Mock(return_value=mock_threads_data)
 
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["user_id"] = "user-123"
     at.run()
 
@@ -630,7 +642,7 @@ def test_app_thread_click_loads_history(mock_agent_client, mock_threads_data):
         )
     )
 
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["user_id"] = "user-123"
     at.run()
 
@@ -652,7 +664,7 @@ def test_app_thread_click_history_error(mock_agent_client, mock_threads_data):
     mock_agent_client.get_user_threads = Mock(return_value=mock_threads_data)
     mock_agent_client.get_history = Mock(side_effect=AgentClientError("service down"))
 
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["user_id"] = "user-123"
     at.run()
     original_thread_id = at.session_state.thread_id
@@ -668,7 +680,7 @@ def test_app_thread_fetch_error_shows_caption(mock_agent_client):
     """Verify the sidebar degrades gracefully when the threads endpoint fails."""
     mock_agent_client.get_user_threads = Mock(side_effect=AgentClientError("service down"))
 
-    at = AppTest.from_file("../../src/streamlit_app.py")
+    at = AppTest.from_file(STREAMLIT_APP, default_timeout=APP_START_TIMEOUT)
     at.query_params["user_id"] = "user-123"
     at.run()
 

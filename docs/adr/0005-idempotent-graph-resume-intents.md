@@ -1,0 +1,5 @@
+# Idempotent graph resume intents
+
+Status: accepted design direction; the overall technical design remains in draft.
+
+Repeated attempts to continue the same approval, analysis attempt and thread, fixed revision, and interrupt target reuse one stable resume-intent identity. The business service claims execution in a short transaction; each re-claim increments a fencing generation that graph progress and receipt writes must carry, so stale claimants are rejected after ownership moves. The graph records durable consumption of the existing decision, and a lost business receipt is reconciled against the checkpoint. Absence of a consumption marker does not prove that execution never occurred, so an indeterminate checkpoint remains pending verification rather than triggering a blind second resume. This adds receipt coordination and fencing compared with per-click requests and node-only deduplication, but isolates stale workers and makes recovery ambiguity explicit. The persistence and checkpoint boundaries for fencing and receipts, and missing-checkpoint handling, remain to be designed; this ADR does not describe an implemented protocol.

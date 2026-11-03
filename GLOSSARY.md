@@ -12,6 +12,10 @@ _Avoid_: Lead, account, deal
 A bounded piece of proposal work performed for an opportunity, from requirement intake through review and approval.
 _Avoid_: Chat session, run, job
 
+**External Task Record**:
+An official opportunity-workspace record linked to a Presales Task and created only after separate approval of the exact creation action. Its creation does not approve or publish a Proposal Version.
+_Avoid_: Presales Task, Proposal Version
+
 **Proposal Analysis Attempt**:
 One execution of the analysis work for a presales task, with its own outcome and retained history. Repeating the analysis creates a new attempt, not a new opportunity or a replacement of the previous attempt.
 _Avoid_: Presales task, proposal version
@@ -69,6 +73,10 @@ _Avoid_: Feedback, chat message
 **Approval Record**:
 The auditable decision that authorizes or rejects a proposal version or an external business write operation.
 _Avoid_: Confirmation, submit result
+
+**External Task Creation Approval**:
+A separate Approval Record authorizing one specific action to create an External Task Record for a Presales Task. It does not approve a Proposal Version or authorize its publication or later writes.
+_Avoid_: Proposal approval, publication approval
 
 **Approved Action Set**:
 The explicit collection of business write operations, targets, and parameters authorized by one approval decision. It is not permission for unspecified future writes.

@@ -3,6 +3,9 @@
 checkpoints.db
 checkpoints.db-*
 
+# Local presales material storage
+.presales-data/
+
 # Langgraph
 .langgraph_api/
 

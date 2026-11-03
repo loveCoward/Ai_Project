@@ -25,5 +25,14 @@ def pytest_collection_modifyitems(config, items):
 @pytest.fixture
 def mock_env():
     """Fixture to ensure environment is clean for each test."""
-    with patch.dict(os.environ, {}, clear=True):
+    # Home-directory variables are kept: Streamlit resolves its config path with
+    # Path.home() (via streamlit.file_util.get_streamlit_file_path), which raises
+    # RuntimeError when USERPROFILE/HOME is missing on Windows. Secrets and API
+    # keys are still removed because everything else is cleared.
+    home_env = {
+        key: value
+        for key, value in os.environ.items()
+        if key in {"HOME", "USERPROFILE", "HOMEDRIVE", "HOMEPATH"} and value
+    }
+    with patch.dict(os.environ, home_env, clear=True):
         yield

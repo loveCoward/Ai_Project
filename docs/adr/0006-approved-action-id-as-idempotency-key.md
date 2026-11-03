@@ -1,0 +1,5 @@
+# Use approved action identity as the MCP idempotency key
+
+Status: accepted design direction; the overall technical design remains in draft.
+
+Each approved action has a stable identity and fixed parameter digest, and the local MCP target uses that action identity as its idempotency key. Retries reuse the key while each technical call retains a separate identity; the target rejects the same key with a different digest, and an unknown result is checked using the original key before any retry. This avoids maintaining a second stable-key mapping. A write may start only when the MCP path can durably enforce same-key idempotency, reject a different digest, and verify the result by the original key. An adapter may supply this guarantee when it can reliably reconcile the actual target write; otherwise the action is denied and publication stays incomplete. Digest canonicalization, target response semantics, and the adapter's atomicity and lookup guarantees remain to be designed; no existing MCP capability is implied.

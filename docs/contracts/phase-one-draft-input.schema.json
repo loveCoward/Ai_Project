@@ -1,0 +1,38 @@
+{
+  "$comment": "Stage-one editable draft storage input only; not the complete P06 Proposal Package contract.",
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "1.0",
+      "default": "1.0",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "title": {
+      "maxLength": 500,
+      "minLength": 1,
+      "title": "Title",
+      "type": "string"
+    },
+    "notes": {
+      "default": "",
+      "maxLength": 300000,
+      "title": "Notes",
+      "type": "string"
+    },
+    "evidence_version_ids": {
+      "items": {
+        "format": "uuid",
+        "type": "string"
+      },
+      "maxItems": 1000,
+      "title": "Evidence Version Ids",
+      "type": "array"
+    }
+  },
+  "required": [
+    "title"
+  ],
+  "title": "DraftContent",
+  "type": "object"
+}
