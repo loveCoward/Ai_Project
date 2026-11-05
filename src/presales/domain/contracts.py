@@ -1,5 +1,6 @@
 import hashlib
 import json
+from dataclasses import dataclass
 from enum import StrEnum
 from typing import Any, Literal
 from uuid import UUID
@@ -13,7 +14,7 @@ class DomainError(Exception):
     def __init__(self) -> None:
         super().__init__(self.code)
 
-
+# 权限
 class AccessDenied(DomainError):
     code = "not_found_or_not_allowed"
 
@@ -76,6 +77,13 @@ class SourceDeclaration(StrEnum):
 class Actor(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
     subject: UUID
+
+
+@dataclass(frozen=True)
+class PrincipalStatus:
+    subject: UUID
+    role: Role
+    active: bool
 
 
 class DraftContent(BaseModel):

@@ -20,7 +20,10 @@ from presales.domain.contracts import (
 from presales.infrastructure.database import GRAPH_LOCK, Database, execute, lock, rows
 from presales.infrastructure.files import LocalFiles
 
+"""售前业务的服务层，向上层提供了创建任务、注册材料、创建草稿等功能，处理业务逻辑和数据存储。
+"""
 
+# 公共审计函数，用于记录操作日志，包括操作人、操作类型、目标对象、结果等信息，确保系统的可追溯性和安全性。
 async def audit(
     conn: AsyncConnection,
     actor: str,
@@ -46,12 +49,13 @@ async def audit(
         auth=authorization_revision,
     )
 
-
+# 售前业务服务类，提供了创建任务、注册材料、创建草稿等功能，处理业务逻辑和数据存储。
 class PresalesService:
     def __init__(self, database: Database, files: LocalFiles) -> None:
         self.database = database
         self.files = files
 
+    # 处理拒绝访问的情况，记录审计日志并抛出相应的领域错误。
     async def _denied(
         self, actor: Actor, op: str, target: UUID, request: UUID | None, error: DomainError
     ) -> None:
@@ -66,6 +70,7 @@ class PresalesService:
         if result.get("source_version_id"):
             await policy.source_closure(UUID(result["source_version_id"]))
 
+    # 执行命令的通用方法，处理事务、锁定、审计和结果访问控制，确保操作的原子性和一致性。
     async def _command(
         self,
         actor: Actor,
@@ -123,6 +128,7 @@ class PresalesService:
             await self._denied(actor, operation, target, request_id, error)
             raise
 
+    # 从有效商机创建售前任务
     async def create_task(
         self, actor: Actor, opportunity_id: UUID, goal: str, request_id: UUID
     ) -> dict:
@@ -203,6 +209,7 @@ class PresalesService:
             )
             return task[0]
 
+    # 登记客户材料
     async def register_material(
         self,
         actor: Actor,
@@ -326,6 +333,7 @@ class PresalesService:
             await self.reconcile_material(actor, metadata["id"])
         return result
 
+    # 获取材料的元数据，包括存储键、SHA256校验和、大小等信息，并进行访问控制和状态检查。
     async def _material_metadata(
         self, actor: Actor, version_id: UUID, *, allow_pending: bool = False
     ) -> dict:
@@ -346,6 +354,7 @@ class PresalesService:
                 await policy.source_closure(version_id)
             return values[0]
 
+    # 外部入口：调用内部实现方法，并处理异常，记录审计日志。
     async def reconcile_material(self, actor: Actor, version_id: UUID) -> None:
         try:
             await self._reconcile_material(actor, version_id)
@@ -353,6 +362,7 @@ class PresalesService:
             await self._denied(actor, "reconcile_material", version_id, None, error)
             raise
 
+    # 内部实现：执行具体业务逻辑，包括读取材料文件、校验文件是否匹配记录、更新数据库状态等操作。
     async def _reconcile_material(self, actor: Actor, version_id: UUID) -> None:
         metadata = await self._material_metadata(actor, version_id, allow_pending=True)
         if metadata["declaration"] == SourceDeclaration.UNKNOWN:
@@ -392,6 +402,7 @@ class PresalesService:
         if failure:
             raise failure
 
+    # 外部入口：读取材料文件内容，调用内部实现方法，并处理异常，记录审计日志。
     async def read_material(self, actor: Actor, version_id: UUID) -> bytes:
         try:
             return await self._read_material(actor, version_id)
@@ -399,6 +410,7 @@ class PresalesService:
             await self._denied(actor, "read_material", version_id, None, error)
             raise
 
+    # 内部实现：读取材料文件内容，包括访问控制和文件读取操作。
     async def _read_material(self, actor: Actor, version_id: UUID) -> bytes:
         metadata = await self._material_metadata(actor, version_id)
         try:
@@ -440,6 +452,7 @@ class PresalesService:
             )
         return data
 
+    # 获取任务的输入材料的版本ID列表，包括直接输入和间接依赖的材料，进行访问控制和完整性检查。
     async def _inputs(
         self,
         conn: AsyncConnection,
@@ -666,6 +679,7 @@ class PresalesService:
             work,
         )
 
+    # 保存草稿并记录来源依赖，包括对草稿内容进行验证、检查任务和版本的状态、处理输入材料的访问控制，并将草稿保存为新的修订版本。
     async def save_draft(
         self,
         actor: Actor,
@@ -718,6 +732,7 @@ class PresalesService:
             work,
         )
 
+    # 读取草稿内容
     async def read_draft(self, actor: Actor, revision_id: UUID) -> dict:
         try:
             async with self.database.transaction() as conn:

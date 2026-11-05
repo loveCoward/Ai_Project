@@ -43,14 +43,13 @@ def token_setup():
     return settings, claims
 
 
-def test_jwt_uses_only_subject(token_setup):
+def test_jwt_rejects_client_supplied_role(token_setup):
     settings, claims = token_setup
     claims["role"] = "administrator"
-    actor = JwtVerifier(settings).verify(
-        jwt.encode(claims, settings.secret.get_secret_value(), algorithm="HS256")
-    )
-    assert str(actor.subject) == claims["sub"]
-    assert set(actor.model_dump()) == {"subject"}
+    with pytest.raises(AuthenticationFailed):
+        JwtVerifier(settings).verify(
+            jwt.encode(claims, settings.secret.get_secret_value(), algorithm="HS256")
+        )
 
 
 @pytest.mark.parametrize(
@@ -110,7 +109,7 @@ def test_imports_without_models_or_keys(tmp_path):
         if not any(t in k for t in ["KEY", "TOKEN", "SECRET", "PRESALES"])
     }
     environment["PYTHONPATH"] = str(Path("src").resolve())
-    code = "import sys; import presales.application.service; import presales.maintenance.service; assert 'core.settings' not in sys.modules; assert 'langchain' not in sys.modules"
+    code = "import sys; import presales.application.service; import presales.application.auth; import presales.api.auth; import presales.maintenance.service; assert 'core.settings' not in sys.modules; assert 'langchain' not in sys.modules"
     result = subprocess.run(
         [sys.executable, "-c", code], cwd=tmp_path, env=environment, capture_output=True
     )

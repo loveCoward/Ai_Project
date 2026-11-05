@@ -1,4 +1,4 @@
-from collections.abc import AsyncIterator
+from collections.abc import AsyncGenerator
 from contextlib import asynccontextmanager
 from typing import Any
 
@@ -13,7 +13,8 @@ AUTH_LOCK = 1
 GRAPH_LOCK = 2
 LOCK_NAMESPACE = 72401
 
-
+"""售前模块的PostgreSQL数据库访问层。提供了数据库连接、事务管理、行查询和执行SQL语句的功能。
+"""
 async def rows(conn: AsyncConnection, sql: str, **params: Any) -> list[dict[str, Any]]:
     result = await conn.execute(text(sql), params)
     return [dict(row) for row in result.mappings()]
@@ -42,7 +43,7 @@ class Database:
         )
 
     @asynccontextmanager
-    async def transaction(self) -> AsyncIterator[AsyncConnection]:
+    async def transaction(self) -> AsyncGenerator[AsyncConnection, None]:
         try:
             async with self.engine.begin() as conn:
                 await execute(

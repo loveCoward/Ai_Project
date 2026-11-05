@@ -5,7 +5,8 @@ from sqlalchemy.ext.asyncio import AsyncConnection
 from presales.domain.contracts import AccessDenied, Actor, Role
 from presales.infrastructure.database import AUTH_LOCK, lock, rows
 
-
+"""处理访问授权：负责验证已登录用户对资源的访问权限，确保请求的合法性。
+"""
 class Policy:
     def __init__(self, conn: AsyncConnection, actor: Actor) -> None:
         self.conn = conn
@@ -13,6 +14,7 @@ class Policy:
         self.role = ""
         self.authorization_revision = 0
 
+    # 从数据库获取用户的角色和授权修订号，并根据是否需要架构师权限进行验证。
     async def start(self, *, architect: bool = False) -> None:
         await lock(self.conn, AUTH_LOCK, shared=True)
         principals = await rows(
@@ -26,6 +28,7 @@ class Policy:
         revision = await rows(self.conn, "SELECT revision FROM iam.authorization_revision")
         self.authorization_revision = revision[0]["revision"]
 
+    # 检查用户是否有权访问指定的资源，返回资源的详细信息，如果没有权限则抛出AccessDenied异常。
     async def resource(self, resource_id: UUID) -> dict:
         visited: set[UUID] = set()
         current: UUID | None = resource_id
