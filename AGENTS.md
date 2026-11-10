@@ -3,9 +3,11 @@
 ## 项目定位与当前状态
 
 - 本项目正在将继承的通用 Agent 服务脚手架改造成企业 AI 售前方案工作台。
-- 当前仓库仍以 FastAPI/LangGraph 服务和 Streamlit 对话脚手架为主，售前业务功能尚未实现。
+- 当前代码包含FastAPI/LangGraph/Streamlit脚手架、阶段一数据/授权基础、2A-0最小React工程（登录、身份校验、受保护路由、草稿/材料受限读取）、2A-1材料解析/知识治理/索引构建的应用服务与持久化，以及少量售前HTTP读取入口；核心业务前端、检索、Agent分析、审批发布和MCP写入尚未实现，不能笼统称已完成产品能力。
+- 2A-1目前是Python应用服务与数据库能力，未新增业务HTTP路由或浏览器页面；2A-1交付记录只能证明该范围内的工程实现和本机数据库专项验证，不代表二A整体完成、产品验收、部署批准或真实语义质量达标。
+- 已确认UI方向：Streamlit用于聊天演示/内部验证，React + TypeScript + Vite用于核心工作台，REST处理业务操作、SSE传递受限进度。2A-0前端基础已存在；2A-3材料/知识页面、二B的SSE与后续业务页面仍按`docs/superpowers/specs/双入口工作台与前端分阶段接入设计.md`推进，存在工程代码不等于阶段验收。
 - 业务需求已经形成 v0.1 基线，但需求批准不等于功能已实现、测试已通过、允许部署或允许调用真实模型。
-- 所有实现判断都必须以当前代码和测试结果为准，不得把 README、需求文档或目录结构中的规划描述当成现有能力。
+- 所有实现判断都必须以当前代码和测试结果为准，不得把 README、需求文档、交付记录或目录结构中的规划描述当成现有能力；交付记录中的“建议标注完成”不自动更新本文件或`STATUS.md`。
 
 ## 需求与术语基线
 
@@ -33,10 +35,13 @@
 
 ## 代码库地图
 
-- `src/`：当前 Python 应用代码；`service/` 提供服务入口，`agents/` 放置 Agent 图和工具，`schema/` 放置数据模型，`core/` 放置配置与模型装配，`memory/` 放置持久化适配，`client/` 和 `streamlit_app.py` 提供客户端界面。
-- `tests/`：按模块组织的 pytest 测试，包含服务、Agent、Schema、客户端、语音、持久化和 Docker 集成测试。
-- `docs/`：运行说明、维护资料、业务决策和需求基线；业务规则文档优先放在现有目录结构中。
-- `scripts/`：冒烟测试、UI 端到端测试、模型检查和其他辅助脚本；需要真实服务、浏览器、Docker 或模型的脚本不属于默认离线单元测试。
+- `src/`：当前 Python 应用代码；`service/` 提供服务入口，`agents/` 放置 Agent 图和工具，`schema/` 放置数据模型，`core/` 放置配置与模型装配，`memory/` 放置持久化适配，`client/` 和 `streamlit_app.py` 提供继承脚手架的客户端与聊天界面。
+- `src/presales/`：售前业务代码；`api/` 提供登录、JWT主体解析及材料/草稿读取路由，`application/` 提供应用服务，`access/` 提供授权与JWT，`domain/` 提供契约，`infrastructure/` 提供配置、数据库、文件与外发适配，`materials/`、`knowledge/`、`indexing/` 分别提供2A-1解析、知识治理和索引构建，`maintenance/` 提供本机维护命令。这些是Python服务能力，不等于已有对应HTTP接口或页面。
+- `frontend/`：React + TypeScript + Vite 最小工作台（2A-0）；`src/` 为源码，`dist/` 为构建产物，不得把构建产物或目录存在当作业务能力证据；前端没有 Node 业务服务端，也不承担授权判断。
+- `migrations/`：Alembic 迁移，当前包含身份、领域、完整性和知识（`0004_knowledge.py`）版本；迁移必须显式执行。
+- `tests/`：按模块组织的 pytest 测试，包含服务、Agent、Schema、客户端、语音、持久化、Docker集成和`presales/`售前专项测试；前端目前没有单元测试或浏览器E2E。
+- `docs/`：运行说明、维护资料、交付记录、业务决策和需求基线；业务规则文档优先放在现有目录结构中，实现状态以`STATUS.md`和可核验代码/测试为准。
+- `scripts/`：冒烟测试、UI 端到端测试、模型检查和其他辅助脚本；`test_presales_postgres.py` 会创建临时本机PostgreSQL实例，需要真实服务、浏览器、Docker或模型的脚本不属于默认离线单元测试。
 - `docker/`、`compose.yaml`：服务和 Streamlit 镜像及本地依赖编排。
 - `.env`、`privatecredentials/`、`checkpoints.db` 等本地运行产物或凭据文件不得进入版本控制或文档示例。
 
@@ -45,23 +50,36 @@
 ```sh
 uv sync --frozen
 uv run pytest
+uv run pytest tests/presales -q
 uv run ruff check
 uv run ruff format --check
 uv run pyrefly check
-uv run pymarkdown scan README.md docs/
+uv run pymarkdown scan AGENTS.md STATUS.md README.md docs/
 ```
 
-需要验证新增或修改的根目录文档时，可额外运行：
+真实数据库专项验证（需要本机 PostgreSQL 二进制；脚本自行创建临时回环实例）：
 
 ```sh
-uv run pymarkdown scan AGENTS.md README.md docs/
+uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --full-suite --pytest-args -q -rs
+```
+
+前端工程检查（在 `frontend/` 下执行；不启动 Node 业务服务，不需要模型 Key）：
+
+```sh
+cd frontend
+npm ci
+npm run typecheck
+npm run build
 ```
 
 ## 测试与验证要求
 
 - 代码修改至少运行与改动范围匹配的 pytest；影响共享模块或配置时优先运行完整 `uv run pytest`。
 - 涉及权限、来源过滤、派生物、审批、自审批、状态转换、取消、幂等、未知结果或发布恢复时，必须补充或更新对应工程测试。
+- 售前 PostgreSQL 专项用例默认按既有 opt-in 规则跳过；声称 PostgreSQL 门禁通过前必须用 `scripts/test_presales_postgres.py` 在真实临时实例运行，不能用 SQLite、Fake 或只跑离线单测替代。
+- 前端修改至少运行 `npm run typecheck` 和 `npm run build`；前端目前没有单元测试或浏览器E2E，构建通过不能替代业务流程、认证到期和越权验证。
 - 涉及 Docker、持久化、服务启动、Streamlit 或外部集成时，按现有测试和 `.claude/skills/` 中的维护说明选择额外检查。
+- 引用历史交付记录中的测试数字（例如2A-1的`318 passed`）时必须标注为历史结果；未重跑前不能表述为本次通过。
 - 真实能力评测使用冻结数据、明确的真实模型/本地模型和独立报告；工程测试通过不能替代能力评测。
 - 失败、降级、部分成功和未验证状态必须在测试结果中明确记录，不得通过删除失败样例或切换模式制造成功结论。
 

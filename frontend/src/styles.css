@@ -1,0 +1,91 @@
+:root {
+  font-family: Inter, "Segoe UI", "Microsoft YaHei", sans-serif;
+  color: #1d2929;
+  background: #f5f7f8;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  --ink: #1d2929;
+  --muted: #677576;
+  --line: #dce4e4;
+  --green: #176b59;
+  --green-dark: #105444;
+  --green-soft: #e3f1eb;
+  --surface: #ffffff;
+  --red: #a4352b;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; min-height: 100vh; }
+button, input { font: inherit; }
+button, a, input { outline-offset: 3px; }
+button:focus-visible, a:focus-visible, input:focus-visible { outline: 3px solid #68aa98; }
+
+.login-layout { min-height: 100vh; display: grid; grid-template-columns: minmax(320px, 0.9fr) 1.1fr; background: var(--surface); }
+.login-brand { display: flex; flex-direction: column; align-items: flex-start; padding: clamp(32px, 7vw, 88px); color: #f3f8f6; background: #174f46; }
+.brand-mark { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid #82b7a6; border-radius: 8px; color: #f3f8f6; font-size: 20px; font-weight: 700; }
+.brand-mark.small { width: 32px; height: 32px; border-color: #b8d7cb; color: var(--green); font-size: 15px; }
+.eyebrow { margin: 0; color: var(--muted); font-size: 11px; font-weight: 700; letter-spacing: 0; text-transform: uppercase; }
+.login-brand .eyebrow { margin-top: auto; color: #b7d5ca; }
+.login-brand h1 { margin: 14px 0 8px; font-size: 34px; line-height: 1.25; }
+.brand-copy { margin: 0; color: #d1e4dc; line-height: 1.7; }
+.brand-footer { display: flex; align-items: center; gap: 9px; margin-top: 68px; color: #d1e4dc; font-size: 13px; }
+.status-dot { width: 8px; height: 8px; display: inline-block; flex: none; border-radius: 50%; background: #58a786; }
+.login-panel { display: grid; place-items: center; padding: 36px 24px; }
+.login-form-wrap { width: min(100%, 380px); }
+.login-form-wrap h2 { margin: 10px 0 6px; font-size: 27px; }
+.muted { color: var(--muted); line-height: 1.6; }
+.login-form-wrap > .muted { margin: 0 0 32px; }
+form label { display: block; margin: 18px 0 7px; font-size: 13px; font-weight: 600; }
+input { width: 100%; min-height: 44px; padding: 10px 12px; border: 1px solid #cbd7d6; border-radius: 5px; background: #fff; color: var(--ink); }
+input::placeholder { color: #879393; }
+.primary-button { width: 100%; min-height: 46px; margin-top: 24px; border: 0; border-radius: 5px; background: var(--green); color: white; font-weight: 650; cursor: pointer; }
+.primary-button:hover, .read-form button:hover { background: var(--green-dark); }
+button:disabled { cursor: wait; opacity: .65; }
+.security-note { margin-top: 24px; color: #778483; font-size: 12px; }
+.form-error, .error-message { color: var(--red); }
+.form-error { margin: 12px 0 0; font-size: 13px; }
+
+.workspace-shell { min-height: 100vh; }
+.topbar { min-height: 64px; display: flex; align-items: center; justify-content: space-between; padding: 0 clamp(20px, 5vw, 72px); border-bottom: 1px solid var(--line); background: #fff; }
+.wordmark, .topbar-right, .identity { display: flex; align-items: center; }
+.wordmark { gap: 10px; color: var(--ink); font-weight: 700; text-decoration: none; }
+.topbar-right { gap: 22px; }
+.identity { gap: 8px; max-width: 42vw; overflow: hidden; color: var(--muted); font-size: 12px; text-overflow: ellipsis; white-space: nowrap; }
+.quiet-button { min-width: 44px; min-height: 40px; padding: 6px 10px; border: 0; background: transparent; color: var(--green-dark); cursor: pointer; }
+.workspace-main { width: min(100% - 40px, 1040px); margin: 0 auto; padding: 52px 0 28px; }
+.page-heading { display: flex; justify-content: space-between; align-items: flex-end; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+.page-heading h1 { margin: 8px 0 4px; font-size: 29px; }
+.page-heading .muted { margin: 0; }
+.connection { display: flex; align-items: center; gap: 8px; padding-bottom: 5px; color: #42665a; font-size: 12px; }
+.access-section { padding-top: 34px; }
+.section-heading { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 18px; }
+.section-heading h2 { margin: 5px 0 0; font-size: 20px; }
+.section-count { color: #798584; font-size: 11px; }
+.read-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.read-form { display: grid; grid-template-columns: 40px 1fr; column-gap: 13px; align-items: center; padding: 20px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); }
+.read-icon { width: 38px; height: 38px; display: grid; place-items: center; grid-row: span 2; border-radius: 5px; font-size: 14px; font-weight: 700; }
+.draft-icon { background: #e6edf4; color: #456b87; }
+.material-icon { background: var(--green-soft); color: var(--green); }
+.read-form h3 { margin: 0 0 4px; font-size: 15px; }
+.read-form p { margin: 0; color: var(--muted); font-size: 12px; }
+.read-form label, .read-form input, .read-form button { grid-column: 1 / -1; }
+.read-form label { margin-top: 19px; }
+.read-form button { min-height: 42px; margin-top: 12px; border: 0; border-radius: 4px; background: var(--green); color: white; font-weight: 600; cursor: pointer; }
+.result-message { margin: 18px 0 0; padding: 12px 14px; border-left: 3px solid var(--green); background: #eaf4ef; color: #285c49; font-size: 13px; }
+.result-message.error-message { border-color: var(--red); background: #fbefed; }
+.draft-output { max-height: 440px; overflow: auto; margin-top: 16px; padding: 18px; border: 1px solid var(--line); border-radius: 5px; background: #fff; color: #263b38; font: 12px/1.65 ui-monospace, "Cascadia Code", monospace; white-space: pre-wrap; overflow-wrap: anywhere; }
+.workspace-footer { margin-top: 64px; padding-top: 18px; border-top: 1px solid var(--line); color: #83908f; font-size: 11px; }
+
+@media (max-width: 680px) {
+  .login-layout { grid-template-columns: 1fr; }
+  .login-brand { min-height: 230px; padding: 28px 24px; }
+  .login-brand .eyebrow { margin-top: 34px; }
+  .login-brand h1 { margin-top: 8px; font-size: 27px; }
+  .brand-footer { margin-top: 24px; }
+  .login-panel { padding: 38px 24px 54px; }
+  .workspace-main { width: min(100% - 32px, 1040px); padding-top: 34px; }
+  .topbar { padding-inline: 16px; }
+  .topbar-right { gap: 10px; }
+  .identity { max-width: 42vw; }
+  .read-grid { grid-template-columns: 1fr; }
+}

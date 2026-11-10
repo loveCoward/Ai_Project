@@ -1,5 +1,13 @@
 # AG-UI Protocol Support
 
+This document describes the inherited generic agent scaffold, not the presales business API.
+The selected core workbench is React + TypeScript + Vite using business REST APIs and a
+separate authorized SSE progress projection. Streamlit remains a demo and internal-validation
+entry. Generic AG-UI graph state and resume requests must not substitute for business
+authorization, approvals or publication recovery. See the
+[dual-entry design](superpowers/specs/双入口工作台与前端分阶段接入设计.md).
+The business workbench and its SSE integration are not implemented yet.
+
 The service exposes every agent over the [AG-UI protocol](https://docs.ag-ui.com) — an open,
 event-based standard for connecting agents to user-facing applications, used by
 [CopilotKit](https://docs.copilotkit.ai) and a growing set of frameworks. This lets you build a

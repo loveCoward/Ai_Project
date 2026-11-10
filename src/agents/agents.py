@@ -18,6 +18,8 @@ from schema import AgentInfo
 
 DEFAULT_AGENT = "research-assistant"
 
+"""统一
+"""
 # Type alias to handle LangGraph's different agent patterns
 # - @entrypoint functions return Pregel
 # - StateGraph().compile() returns CompiledStateGraph

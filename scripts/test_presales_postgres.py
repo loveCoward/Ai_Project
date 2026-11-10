@@ -19,6 +19,8 @@ from sqlalchemy import create_engine
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pg-bin", type=Path, required=True)
+    parser.add_argument("--check-vector", action="store_true")
+    parser.add_argument("--full-suite", action="store_true")
     parser.add_argument("--pytest-args", nargs=argparse.REMAINDER, default=[])
     args = parser.parse_args()
     project = Path(__file__).resolve().parents[1]
@@ -111,6 +113,19 @@ def main() -> int:
                         )
                     )
                 version = conn.execute("SHOW server_version").fetchone()[0]
+                if args.check_vector:
+                    conn.execute("CREATE EXTENSION IF NOT EXISTS vector VERSION '0.8.6'")
+                    vector_version = conn.execute(
+                        "SELECT extversion FROM pg_extension WHERE extname='vector'"
+                    ).fetchone()[0]
+                    assert vector_version == "0.8.6"
+                    assert (
+                        conn.execute(
+                            "SELECT '[1,0,0]'::vector(3) <-> '[0,1,0]'::vector(3)"
+                        ).fetchone()[0]
+                        > 1
+                    )
+                    print(f"PGVector {vector_version}; native vector distance verified", flush=True)
             urls = {
                 name: f"postgresql+psycopg://{name}:{passwords[name]}@127.0.0.1:{port}/biddesk_phase1_test"
                 for name in passwords
@@ -141,7 +156,13 @@ def main() -> int:
                 f"Disposable PostgreSQL {version}; loopback only; credentials omitted", flush=True
             )
             result = subprocess.run(
-                [sys.executable, "-m", "pytest", "tests/presales", *args.pytest_args],
+                [
+                    sys.executable,
+                    "-m",
+                    "pytest",
+                    "tests" if args.full_suite else "tests/presales",
+                    *args.pytest_args,
+                ],
                 cwd=project,
                 env=environment,
                 creationflags=flags,

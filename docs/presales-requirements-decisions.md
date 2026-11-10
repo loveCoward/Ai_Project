@@ -1,6 +1,6 @@
 # Presales Requirements Decision Register
 
-Updated: 2026-11-01 (Asia/Shanghai).
+Updated: 2026-11-06 (Asia/Shanghai).
 
 Status: requirements baseline v0.1 approved and frozen by the user on 2026-11-01 (Asia/Shanghai); Q1-Q45 and P01-P09 accepted. Development, deployment, real-model calls, and Git commits are not authorized by this approval.
 
@@ -104,3 +104,19 @@ Approval date: 2026-11-01 (Asia/Shanghai). Evidence: the user explicitly approve
 | P07 | Dataset plan, evaluation metrics, scoring and thresholds | Accepted |
 | P08 | Operational limits, deadlines and retry budgets | Accepted |
 | P09 | Delivery, explicit real evaluation and separate development authorization | Accepted |
+
+## Technical UI Decision (2026-11-06)
+
+The user selected Streamlit for scaffold chat/demonstration and internal validation, with
+React + TypeScript + Vite for the core presales workbench. Business commands and queries use
+FastAPI REST APIs; authorized progress uses SSE. Background analysis is independent of browser
+connections, and reconnecting users reauthenticate and read the current business snapshot.
+See the [dual-entry design](superpowers/specs/双入口工作台与前端分阶段接入设计.md) for the
+recommended staged integration and pending engineering checks.
+
+This replaces the technical plan assigning the core workbench to Streamlit; it does not change
+the frozen roles, source restrictions, task/version lifecycles, approval or recovery rules.
+AC01's PostgreSQL/service/Streamlit Compose checks remain; React entry and business-flow
+checks are additional planned engineering validation. Q1-Q45, P01-P09 and AC01-AC27 are not
+rewritten by this note. UI direction confirmation and this documentation update do not claim
+implementation, product acceptance, deployment or real-model evaluation.

@@ -104,6 +104,7 @@ class Maintenance:
                 "opportunity_id": str(demo_id("opportunity-a")),
             }
 
+    # 预览授权变更
     async def preview(self, changes: list[AuthorizationChange]) -> dict:
         operator = require_operator(self.allowlist)
         if not changes or len(changes) > 100:
