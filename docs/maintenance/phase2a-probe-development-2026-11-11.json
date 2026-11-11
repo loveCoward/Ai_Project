@@ -1,0 +1,99 @@
+{
+  "dataset": {
+    "status": "development_draft_not_frozen_acceptance",
+    "corpus": {
+      "product": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。\n\nproduct：合成品牌手册：展会海报使用绿色标题和灰色页脚。\n\nproduct：合成行政说明：办公室打印机每周检查纸张库存。\n\nproduct：合成活动说明：内部培训签到表由会务人员保管。",
+      "security": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。\n\nsecurity：合成品牌手册：展会海报使用绿色标题和灰色页脚。\n\nsecurity：合成行政说明：办公室打印机每周检查纸张库存。\n\nsecurity：合成活动说明：内部培训签到表由会务人员保管。",
+      "retention": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。\n\nretention：合成品牌手册：展会海报使用绿色标题和灰色页脚。\n\nretention：合成行政说明：办公室打印机每周检查纸张库存。\n\nretention：合成活动说明：内部培训签到表由会务人员保管。",
+      "risk": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。\n\nrisk：合成品牌手册：展会海报使用绿色标题和灰色页脚。\n\nrisk：合成行政说明：办公室打印机每周检查纸张库存。\n\nrisk：合成活动说明：内部培训签到表由会务人员保管。",
+      "compatibility": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。\n\ncompatibility：合成品牌手册：展会海报使用绿色标题和灰色页脚。\n\ncompatibility：合成行政说明：办公室打印机每周检查纸张库存。\n\ncompatibility：合成活动说明：内部培训签到表由会务人员保管。"
+    },
+    "cases": [
+      [
+        "DEV-01",
+        "complete",
+        "支持哪些私有部署审批工作流能力？",
+        [
+          "product"
+        ]
+      ],
+      [
+        "DEV-02",
+        "complete",
+        "管理员如何导出操作审计记录？",
+        [
+          "security"
+        ]
+      ],
+      [
+        "DEV-03",
+        "conflict",
+        "审计日志默认保留30天还是90天？",
+        [
+          "security",
+          "retention"
+        ]
+      ],
+      [
+        "DEV-04",
+        "conflict",
+        "交付手册与安全手册的日志保留期是否一致？",
+        [
+          "security",
+          "retention"
+        ]
+      ],
+      [
+        "DEV-05",
+        "unsupported",
+        "能否承诺离线语音识别？",
+        [
+          "product"
+        ]
+      ],
+      [
+        "DEV-06",
+        "unsupported",
+        "是否支持尚未验证的数据库？",
+        [
+          "compatibility"
+        ]
+      ],
+      [
+        "DEV-07",
+        "risk",
+        "单节点可以满足必须高可用的要求吗？",
+        [
+          "risk"
+        ]
+      ],
+      [
+        "DEV-08",
+        "risk",
+        "高可用交付需要补充什么验证？",
+        [
+          "risk"
+        ]
+      ],
+      [
+        "DEV-09",
+        "clarification",
+        "客户没有说明数据库版本，需要澄清什么？",
+        [
+          "compatibility"
+        ]
+      ],
+      [
+        "DEV-10",
+        "clarification",
+        "客户部署条件未确定时有哪些已验证范围？",
+        [
+          "compatibility",
+          "product"
+        ]
+      ]
+    ]
+  },
+  "digest": "277865a4e47678fc9a110f2d48676b288995aea34665f4b43ad7771cfcb5939e",
+  "status": "prepared_not_executed"
+}

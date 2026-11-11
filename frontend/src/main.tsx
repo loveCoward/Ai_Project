@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from "react-router-dom";
 import { ApiError, downloadMaterial, login, readDraft, readIdentity, setAccessToken, setUnauthorizedHandler, type Identity } from "./api";
 import "./styles.css";
+import { KnowledgeWorkbench } from "./KnowledgeWorkbench";
 
 type AuthContextValue = {
   identity: Identity | null;
@@ -21,6 +22,7 @@ function useAuth() {
 function AuthProvider({ children }: { children: React.ReactNode }) {
   const [identity, setIdentity] = useState<Identity | null>(null);
   const [token, setToken] = useState<string | null>(null);
+  const [expiresAt, setExpiresAt] = useState<number | null>(null);
   const value = useMemo<AuthContextValue>(
     () => ({
       identity,
@@ -30,6 +32,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
         try {
           const current = await readIdentity();
           setToken(result.access_token);
+          setExpiresAt(Date.now() + result.expires_in * 1000);
           setIdentity(current);
         } catch (error) {
           setAccessToken(null);
@@ -39,6 +42,7 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
       signOut() {
         setAccessToken(null);
         setToken(null);
+        setExpiresAt(null);
         setIdentity(null);
       },
     }),
@@ -49,10 +53,19 @@ function AuthProvider({ children }: { children: React.ReactNode }) {
     setUnauthorizedHandler(() => {
       setAccessToken(null);
       setToken(null);
+      setExpiresAt(null);
       setIdentity(null);
     });
     return () => setUnauthorizedHandler(null);
   }, []);
+
+  useEffect(() => {
+    if (expiresAt === null) return;
+    const timer = window.setTimeout(() => {
+      setAccessToken(null); setToken(null); setIdentity(null); setExpiresAt(null);
+    }, Math.max(0, expiresAt - Date.now()));
+    return () => window.clearTimeout(timer);
+  }, [expiresAt]);
 
   return <AuthContext.Provider value={value}><div data-authenticated={Boolean(token)}>{children}</div></AuthContext.Provider>;
 }
@@ -192,6 +205,7 @@ function WorkspacePage() {
           {draft && <pre className="draft-output"><code>{draft}</code></pre>}
         </section>
         <footer className="workspace-footer">BidDesk · 售前业务入口</footer>
+        <KnowledgeWorkbench />
       </main>
     </div>
   );

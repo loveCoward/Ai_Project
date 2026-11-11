@@ -1,0 +1,8 @@
+{
+  "purpose": "model_discovery_only_not_retrieval_probe",
+  "endpoint_host": "direct.wcnmb.fun",
+  "requests": 1,
+  "status": "ok",
+  "model_count": 2,
+  "retrieval_model_candidates": []
+}

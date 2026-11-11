@@ -1,0 +1,66 @@
+{
+  "dataset_digest": "277865a4e47678fc9a110f2d48676b288995aea34665f4b43ad7771cfcb5939e",
+  "mode": "real",
+  "results": [
+    {
+      "id": "DEV-01",
+      "category": "complete",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-02",
+      "category": "complete",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-03",
+      "category": "conflict",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-04",
+      "category": "conflict",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-05",
+      "category": "unsupported",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-06",
+      "category": "unsupported",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-07",
+      "category": "risk",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-08",
+      "category": "risk",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-09",
+      "category": "clarification",
+      "outcome": "not_executed_due_to_blocker"
+    },
+    {
+      "id": "DEV-10",
+      "category": "clarification",
+      "outcome": "not_executed_due_to_blocker"
+    }
+  ],
+  "status": "configuration_or_setup_blocked",
+  "cost": "unknown_no_amount_cap",
+  "endpoint": "https://maas.qianwenaiapi.com/compatible-mode/v1/embeddings",
+  "model_identity": "qwen3.7-text-embedding-flash",
+  "dimensions": 1024,
+  "index_batch_limit": 20,
+  "d3_started": false,
+  "requests": 0,
+  "characters": 0,
+  "error_code": "embedding_credential_not_injected"
+}

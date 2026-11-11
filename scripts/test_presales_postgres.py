@@ -7,6 +7,7 @@ import socket
 import subprocess
 import sys
 import tempfile
+import threading
 from pathlib import Path
 
 import psycopg
@@ -15,15 +16,46 @@ from alembic.config import Config
 from psycopg import sql
 from sqlalchemy import create_engine
 
+DEFAULT_PYTEST_TIMEOUT_SECONDS = 180
+SELECTED_PYTEST_TIMEOUT_SECONDS = 300
+FULL_SUITE_PYTEST_TIMEOUT_SECONDS = 900
+
+
+def select_pytest_timeout(*, full_suite: bool, pytest_args: list[str]) -> int:
+    if full_suite:
+        return FULL_SUITE_PYTEST_TIMEOUT_SECONDS
+    if any(argument == "-k" or argument.startswith("-k") for argument in pytest_args):
+        return SELECTED_PYTEST_TIMEOUT_SECONDS
+    return DEFAULT_PYTEST_TIMEOUT_SECONDS
+
 
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--pg-bin", type=Path, required=True)
     parser.add_argument("--check-vector", action="store_true")
     parser.add_argument("--full-suite", action="store_true")
+    parser.add_argument(
+        "--probe", action="store_true", help="Run the explicit real-Embedding development probe"
+    )
+    parser.add_argument("--probe-output", type=Path, help="Write the probe to a new report path")
+    parser.add_argument(
+        "--workbench",
+        action="store_true",
+        help="Serve the synthetic UI for bounded manual browser verification",
+    )
     parser.add_argument("--pytest-args", nargs=argparse.REMAINDER, default=[])
     args = parser.parse_args()
+    if sum([args.full_suite, args.workbench, args.probe]) > 1:
+        parser.error("Select only one execution mode")
     project = Path(__file__).resolve().parents[1]
+    if args.probe_output is not None:
+        if not args.probe:
+            parser.error("--probe-output requires --probe")
+        probe_output = args.probe_output.resolve()
+        if probe_output.exists() or not probe_output.parent.is_dir():
+            parser.error("--probe-output requires a new file in an existing directory")
+    else:
+        probe_output = project / "docs/maintenance/phase2a-real-probe-2026-11-11.json"
     extension = ".exe" if os.name == "nt" else ""
     binaries = {name: args.pg_bin / f"{name}{extension}" for name in ["initdb", "pg_ctl"]}
     if not all(path.is_file() for path in binaries.values()):
@@ -155,6 +187,66 @@ def main() -> int:
             print(
                 f"Disposable PostgreSQL {version}; loopback only; credentials omitted", flush=True
             )
+            if args.probe:
+                environment["PRESALES_UI_FILE_ROOT"] = str(root / "files")
+                environment["PYTHONPATH"] = str(project / "src")
+                for name, value in os.environ.items():
+                    if (
+                        name.startswith("PRESALES_OUTBOUND_EMBEDDING__")
+                        or name == "PRESALES_RETRIEVAL_DIMENSIONS"
+                    ):
+                        environment[name] = value
+                result = subprocess.run(
+                    [
+                        sys.executable,
+                        str(project / "scripts/probe_presales_retrieval.py"),
+                        "--execute",
+                        "--output",
+                        str(probe_output),
+                    ],
+                    cwd=project,
+                    env=environment,
+                    creationflags=flags,
+                    capture_output=True,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                    timeout=660,
+                )
+                output = result.stdout + result.stderr
+                for password in passwords.values():
+                    output = output.replace(password, "[redacted]")
+                print(output, flush=True)
+                return result.returncode
+            if args.workbench:
+                environment["PRESALES_UI_FILE_ROOT"] = str(root / "files")
+                environment["PYTHONPATH"] = os.pathsep.join([str(project / "src"), str(project)])
+                environment["PYTHONIOENCODING"] = "utf-8"
+                with subprocess.Popen(
+                    [sys.executable, "-u", str(project / "scripts/check_presales_workbench.py")],
+                    cwd=project,
+                    env=environment,
+                    creationflags=flags,
+                    stdout=subprocess.PIPE,
+                    stderr=subprocess.STDOUT,
+                    text=True,
+                    encoding="utf-8",
+                    errors="replace",
+                ) as child:
+                    timer = threading.Timer(1200, child.terminate)
+                    timer.start()
+                    try:
+                        assert child.stdout is not None
+                        for line in child.stdout:
+                            for password in passwords.values():
+                                line = line.replace(password, "[redacted]")
+                            print(line, end="", flush=True)
+                        return child.wait()
+                    finally:
+                        timer.cancel()
+                        if child.poll() is None:
+                            child.terminate()
+                            child.wait(timeout=10)
             result = subprocess.run(
                 [
                     sys.executable,
@@ -170,7 +262,9 @@ def main() -> int:
                 text=True,
                 encoding="utf-8",
                 errors="replace",
-                timeout=180,
+                timeout=select_pytest_timeout(
+                    full_suite=args.full_suite, pytest_args=args.pytest_args
+                ),
             )
             output = result.stdout + result.stderr
             for password in passwords.values():

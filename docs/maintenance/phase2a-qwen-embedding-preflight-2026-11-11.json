@@ -1,0 +1,12 @@
+{
+  "mode": "real",
+  "endpoint": "https://maas.qianwenaiapi.com/compatible-mode/v1/embeddings",
+  "model_identity": "qwen3.7-text-embedding-flash",
+  "dimensions": 1024,
+  "status": "preflight_blocked",
+  "requests": 0,
+  "characters": 0,
+  "d3_started": false,
+  "cost": "unknown_no_amount_cap",
+  "error_code": "embedding_credential_not_injected"
+}

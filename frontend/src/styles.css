@@ -89,3 +89,27 @@ button:disabled { cursor: wait; opacity: .65; }
   .identity { max-width: 42vw; }
   .read-grid { grid-template-columns: 1fr; }
 }
+
+.knowledge-workbench { margin-top: 36px; border-top: 1px solid var(--line); padding-top: 28px; }
+.knowledge-workbench button { min-height: 44px; padding: 10px 16px; border: 1px solid var(--line); border-radius: 5px; background: var(--surface); color: var(--green-dark); cursor: pointer; }
+.knowledge-workbench button:disabled { cursor: default; }
+.knowledge-workbench button:hover:not(:disabled) { background: var(--green-soft); }
+.knowledge-workbench :focus-visible { outline: 3px solid var(--green); outline-offset: 3px; }
+.mode-banner { padding: 14px; background: var(--green-soft); color: var(--green-dark); line-height: 1.7; overflow-wrap: anywhere; }
+.workbench-tabs { display: flex; flex-wrap: wrap; gap: 10px; margin: 20px 0; }
+.workbench-tabs [aria-current="page"] { background: var(--green); color: white; }
+.scope-fields { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; border: 1px solid var(--line); padding: 20px; }
+.scope-fields label, .business-form label, .material-row label, .version-detail label { display: grid; gap: 8px; margin: 0; }
+.knowledge-workbench select, .knowledge-workbench textarea { width: 100%; min-height: 44px; border: 1px solid var(--line); border-radius: 4px; padding: 10px; background: var(--surface); font: inherit; }
+.knowledge-workbench textarea { min-height: 90px; resize: vertical; }
+.business-form { display: grid; gap: 14px; max-width: 760px; padding: 24px 0; }
+.version-list { display: grid; gap: 10px; margin: 24px 0; }
+.version-list button { display: flex; justify-content: space-between; gap: 14px; text-align: left; }
+.version-detail, .evidence-detail { margin-block: 20px; padding: 24px; border: 1px solid var(--line); background: var(--surface); overflow-wrap: anywhere; }
+.version-detail button { margin: 8px 8px 8px 0; }
+.evidence-list { padding-left: 28px; }
+.evidence-list li { margin-block: 16px; padding: 16px; border: 1px solid var(--line); background: var(--surface); overflow-wrap: anywhere; }
+.evidence-list small { display: block; margin-block: 12px; }
+.degradation { color: #7c450e; background: #fff5e6; padding: 12px; }
+.material-row { display: grid; gap: 12px; margin-block: 12px; padding: 18px; border: 1px solid var(--line); }
+@media (max-width: 680px) { .scope-fields { grid-template-columns: 1fr; } .version-list button { flex-direction: column; } }

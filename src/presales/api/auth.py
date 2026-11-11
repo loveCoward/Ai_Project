@@ -11,6 +11,7 @@ from presales.access.jwt import JwtVerifier
 from presales.api.routes import register_business_routes
 from presales.application.auth import AuthenticationService, PrincipalStore
 from presales.application.service import PresalesService
+from presales.application.workbench import Workbench
 from presales.domain.contracts import Actor, AuthenticationFailed
 
 
@@ -66,6 +67,7 @@ def create_auth_app(
     shutdown: Callable[[], Awaitable[None]] | None = None,
     compatibility_app: FastAPI | None = None,
     business_service: PresalesService | None = None,
+    workbench: Workbench | None = None,
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
@@ -118,6 +120,11 @@ def create_auth_app(
 
     if business_service is not None:
         register_business_routes(app, business_service, current_actor)
+
+    if workbench is not None:
+        from presales.api.knowledge import register_knowledge_routes
+
+        register_knowledge_routes(app, workbench, current_actor)
 
     if compatibility_app is not None:
         app.mount("/compat", compatibility_app, name="generic-compatibility")

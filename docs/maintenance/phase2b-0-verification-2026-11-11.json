@@ -1,0 +1,161 @@
+{
+  "recorded_at": "2026-11-11T16:54:08.362554+08:00",
+  "scope": "2B-0 tasks 1-6; engineering verification only",
+  "git_head": "6b03a9143685f0c696fae588ff207381e0451016",
+  "working_tree": "uncommitted; inherited changes preserved",
+  "authorization": "Current user approved B-layer PostgreSQL commands and continued 2B-0 execution",
+  "environment": {
+    "postgres": "18.6",
+    "pgvector": "0.8.6",
+    "langgraph": "1.2.11",
+    "checkpoint": "4.2.0",
+    "checkpoint_postgres": "3.1.2",
+    "psycopg": "3.3.4",
+    "roles": [
+      "phaseadmin",
+      "phaseapp",
+      "phasemaint",
+      "presales_runtime",
+      "presales_maintainer"
+    ]
+  },
+  "results": {
+    "offline_contracts": {
+      "passed": 42,
+      "failed": 0,
+      "skipped": 0
+    },
+    "postgres_selected": {
+      "passed": 13,
+      "failed": 0,
+      "skipped": 0,
+      "deselected": 214,
+      "exit_code": 0,
+      "seconds": 10.98,
+      "cluster_stopped": true
+    },
+    "postgres_full": {
+      "passed": 418,
+      "failed": 0,
+      "skipped": 5,
+      "exit_code": 0,
+      "seconds": 128.69,
+      "cluster_stopped": true
+    },
+    "offline_full": {
+      "passed": 341,
+      "failed": 0,
+      "skipped": 82,
+      "exit_code": 0,
+      "seconds": 29.27
+    },
+    "offline_initial_environment_conflict": {
+      "passed": 340,
+      "failed": 1,
+      "skipped": 82,
+      "exit_code": 1,
+      "seconds": 33.56,
+      "reason": "Execution-level USE_FAKE_MODEL=true conflicted with default-value test; removed and rerun"
+    },
+    "ruff_check": "passed",
+    "ruff_format_check": "14 files passed",
+    "pyrefly_errors": 0,
+    "markdown_scan": "passed; implementation plan and delivery report"
+  },
+  "timeout_seconds": {
+    "default": 180,
+    "selected": 300,
+    "full_suite": 900,
+    "business_active_budget_unchanged": 600
+  },
+  "not_verified": [
+    "2B-1 runtime and recovery",
+    "full multi-process lifecycle crash recovery",
+    "2B-2 graph and model semantics",
+    "2B-3 browser and SSE",
+    "Docker deployment",
+    "stage acceptance"
+  ],
+  "files": [
+    {
+      "path": "src/presales/domain/proposal_analysis_attempt.py",
+      "sha256": "947585dc4a1b0583422fece1b95d5e1bfebe001db331040df9de65c2fb01c982"
+    },
+    {
+      "path": "src/presales/domain/proposal_package.py",
+      "sha256": "a15333c06b11a7ea041241a4fee2bd32814149360bd0d09be05e4b0b18184ce4"
+    },
+    {
+      "path": "src/presales/domain/proposal_package_sections.py",
+      "sha256": "b31bef5b4175f949d07c0af1918cdaaf397124797579479c0a97b4e98ddb5435"
+    },
+    {
+      "path": "src/presales/infrastructure/proposal_attempt_store.py",
+      "sha256": "e3ceb7cb3150a1c79012ddcef5524031fef5b445afdaaf138f0de8febc9a7f92"
+    },
+    {
+      "path": "src/presales/infrastructure/proposal_checkpoint.py",
+      "sha256": "7b4e66004618ed2df1187963e034147743ba362e65ec260e9a44eb6c407a5723"
+    },
+    {
+      "path": "src/presales/infrastructure/proposal_execution_records.py",
+      "sha256": "a45d67cdc0c23fcecf82e523e0bb84d51383af828e302cd3297a6029e9bf6ea5"
+    },
+    {
+      "path": "migrations/versions/0006_proposal_attempt.py",
+      "sha256": "7790654a19766eccefb2797b71b62a24625211e0746111c450b8e40f39367658"
+    },
+    {
+      "path": "scripts/test_presales_postgres.py",
+      "sha256": "deacc7cd96dc713a28389ca59786e4162fe746c895a6e9a81e86042f7b93d7c5"
+    },
+    {
+      "path": "tests/presales/test_proposal_attempt_contract.py",
+      "sha256": "d322e638f5a212c56aec2810f6c506a1230dcf289d5b78736ff12f815a70b50e"
+    },
+    {
+      "path": "tests/presales/test_proposal_package_schema.py",
+      "sha256": "e3a72a1b1cf48406730a4283744464ab5507b1048d1b9846e96a5ab0cc69a0ee"
+    },
+    {
+      "path": "tests/presales/test_proposal_package_sections.py",
+      "sha256": "6f193e4613ff269a952ea78a8949dd939776376c6a807bb554dbf3dbf9b4bfdb"
+    },
+    {
+      "path": "tests/presales/test_proposal_attempt_storage_contract.py",
+      "sha256": "e5e51c625880f36c8acc2f3cdf54e0731538e15307f320efa4fbfce9287f4826"
+    },
+    {
+      "path": "tests/presales/test_proposal_checkpoint_contract.py",
+      "sha256": "b2398a90a9a32f0e676469aee6a3093164f9f51fc9768e2095c51142cb3a1f3d"
+    },
+    {
+      "path": "tests/presales/test_proposal_storage_postgres.py",
+      "sha256": "cd85ff9d4b187bac89d4edcfdd4f7c3e257860e14a83bf038b3c6b2064f4f8a8"
+    },
+    {
+      "path": "docs/maintenance/phase2b-0-postgres-2026-11-11.log",
+      "sha256": "785017176279c0b916cbe188fe632e75a509103a4471c1376e5ec7013d9faa9c"
+    },
+    {
+      "path": "docs/maintenance/phase2b-0-full-postgres-2026-11-11.log",
+      "sha256": "b3d248ef25065232f2cdb94791c82e8714b4634dc73a2786fa7dc01f25d682c5"
+    },
+    {
+      "path": "docs/maintenance/phase2b-0-offline-clean-env-2026-11-11.log",
+      "sha256": "a6d88bb7005c6c73b648ab46221e963f086bd430f43d96ad0ca43cc73c708e55"
+    },
+    {
+      "path": "docs/maintenance/phase2b-0-offline-2026-11-11.log",
+      "sha256": "86c16981762ebf9fd3cd94dac420770ac27dde95570cb19e225f3cee834f2786"
+    },
+    {
+      "path": "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md",
+      "sha256": "e6d9e00a4d35388f09dd7f0ff78e3fb7ffef352c7ac04a1a9a2850d3901460d6"
+    },
+    {
+      "path": "docs/maintenance/phase2b-0-delivery-2026-11-11.md",
+      "sha256": "8e6b86d71cd981f22912c276ea2e6b445a6a29814d3c2d55ada42ce2583d814c"
+    }
+  ]
+}

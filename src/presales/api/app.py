@@ -8,6 +8,7 @@ from presales.access.jwt import JwtVerifier
 from presales.api.auth import create_auth_app
 from presales.application.auth import AuthenticationService, demo_accounts
 from presales.application.service import PresalesService
+from presales.application.workbench import configured_workbench
 from presales.infrastructure.config import (
     DatabaseSettings,
     DemoAccountsSettings,
@@ -79,12 +80,14 @@ def create_app() -> FastAPI:
     authentication_service = AuthenticationService(
         DatabasePrincipalStore(database), jwt_settings, demo_accounts(account_settings)
     )
+    business_service = PresalesService(database, LocalFiles(database_settings.file_root))
     app = create_auth_app(
         authentication_service,
         JwtVerifier(jwt_settings),
         shutdown=database.close,
         compatibility_app=compatibility_app,
-        business_service=PresalesService(database, LocalFiles(database_settings.file_root)),
+        business_service=business_service,
+        workbench=configured_workbench(business_service),
     )
     app.state.outbound = OutboundAdapter(outbound_settings)
     return app

@@ -1,0 +1,1833 @@
+{
+  "dataset_digest": "277865a4e47678fc9a110f2d48676b288995aea34665f4b43ad7771cfcb5939e",
+  "mode": "real",
+  "results": [
+    {
+      "id": "DEV-01",
+      "category": "complete",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "7ab77a40-b065-45b6-b0a9-904348d32543",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.03225806451612903
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.03149801587301587
+          },
+          {
+            "evidence_id": "73141652-17ba-5784-bda8-3d5ddd007376",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.030117753623188408
+          },
+          {
+            "evidence_id": "5bf4a7e6-844f-51a0-b2b8-12703ca49506",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029850746268656716
+          },
+          {
+            "evidence_id": "04cc45e5-a628-5bbc-9186-6adc63e79554",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029437229437229435
+          },
+          {
+            "evidence_id": "8c3db082-ac1f-580b-8cc5-ffbf0b652da5",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029437229437229435
+          },
+          {
+            "evidence_id": "7313f0e3-e4b4-5cd7-bdc4-c261b552590d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02919863597612958
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-02",
+      "category": "complete",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "62828b71-22ad-4f57-9050-9f95a410175a",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "0ca49041-736c-53df-b281-f8f6f404cbfe",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03200204813108039
+          },
+          {
+            "evidence_id": "04cc45e5-a628-5bbc-9186-6adc63e79554",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.030330882352941176
+          },
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.03021353930031804
+          },
+          {
+            "evidence_id": "7313f0e3-e4b4-5cd7-bdc4-c261b552590d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.03007688828584351
+          },
+          {
+            "evidence_id": "5bf4a7e6-844f-51a0-b2b8-12703ca49506",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029273504273504274
+          },
+          {
+            "evidence_id": "8c3db082-ac1f-580b-8cc5-ffbf0b652da5",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02919863597612958
+          },
+          {
+            "evidence_id": "73141652-17ba-5784-bda8-3d5ddd007376",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02862400327131466
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-03",
+      "category": "conflict",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "2ee3cb23-fc9e-413d-b130-4795cc8c72e2",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "0ca49041-736c-53df-b281-f8f6f404cbfe",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。",
+            "score": 0.03252247488101534
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03252247488101534
+          },
+          {
+            "evidence_id": "04cc45e5-a628-5bbc-9186-6adc63e79554",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.030536130536130537
+          },
+          {
+            "evidence_id": "8c3db082-ac1f-580b-8cc5-ffbf0b652da5",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.030117753623188408
+          },
+          {
+            "evidence_id": "7313f0e3-e4b4-5cd7-bdc4-c261b552590d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029850746268656716
+          },
+          {
+            "evidence_id": "5bf4a7e6-844f-51a0-b2b8-12703ca49506",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02964426877470356
+          },
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.029571646010002173
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.028612012987012988
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-04",
+      "category": "conflict",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "b5cbb1fc-bbca-45b0-b928-a2e63f8fa868",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "0ca49041-736c-53df-b281-f8f6f404cbfe",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。",
+            "score": 0.03225806451612903
+          },
+          {
+            "evidence_id": "98688e63-2866-52a1-a5a1-4fc2f170f295",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 33,
+            "text": "retention：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.030330882352941176
+          },
+          {
+            "evidence_id": "2ee735a4-31c3-5cdf-ad8d-f5adf5dfc7c1",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "security：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.02967032967032967
+          },
+          {
+            "evidence_id": "04cc45e5-a628-5bbc-9186-6adc63e79554",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02964426877470356
+          },
+          {
+            "evidence_id": "3bd3d63a-9d46-5fd7-b3b9-cc847a63a8a3",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 37,
+            "text": "compatibility：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.029236022193768675
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.028693528693528692
+          },
+          {
+            "evidence_id": "8c3db082-ac1f-580b-8cc5-ffbf0b652da5",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02862400327131466
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-05",
+      "category": "unsupported",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "1082e68b-3c56-489e-852a-ddfc7cc1ffd7",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.016129032258064516
+          },
+          {
+            "evidence_id": "ec449750-4471-57ad-a0b4-e02c943df6a2",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.015873015873015872
+          },
+          {
+            "evidence_id": "a3fbc297-76f8-5201-8cda-76a74c57f720",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.015625
+          },
+          {
+            "evidence_id": "73141652-17ba-5784-bda8-3d5ddd007376",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.015384615384615385
+          },
+          {
+            "evidence_id": "7313f0e3-e4b4-5cd7-bdc4-c261b552590d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.015151515151515152
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.014925373134328358
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.014705882352941176
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-06",
+      "category": "unsupported",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "56143d7c-a0ef-43d0-a8ca-89426654ff80",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.031754032258064516
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.031746031746031744
+          },
+          {
+            "evidence_id": "ec449750-4471-57ad-a0b4-e02c943df6a2",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.03128054740957967
+          },
+          {
+            "evidence_id": "3ccccc0b-f230-5193-811f-a45554b9022a",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.030330882352941176
+          },
+          {
+            "evidence_id": "f0b51104-02b4-5f0c-a9d3-558bbb04cf29",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.03007688828584351
+          },
+          {
+            "evidence_id": "a3fbc297-76f8-5201-8cda-76a74c57f720",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.029877369007803793
+          },
+          {
+            "evidence_id": "f3c8759b-a29b-567a-8201-4daa25136939",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.029631255487269532
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-07",
+      "category": "risk",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "db62ab7a-3c97-4573-aec2-fa6c8918726e",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03149801587301587
+          },
+          {
+            "evidence_id": "0ca49041-736c-53df-b281-f8f6f404cbfe",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。",
+            "score": 0.031054405392392875
+          },
+          {
+            "evidence_id": "3bd3d63a-9d46-5fd7-b3b9-cc847a63a8a3",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 37,
+            "text": "compatibility：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.030536130536130537
+          },
+          {
+            "evidence_id": "220fb4ec-a21c-5360-af7a-634768cea96e",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "product：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.030117753623188408
+          },
+          {
+            "evidence_id": "2ee735a4-31c3-5cdf-ad8d-f5adf5dfc7c1",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "security：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.0288981288981289
+          },
+          {
+            "evidence_id": "4805e93c-f00f-5e2a-9d42-b8a79bd7f13d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 28,
+            "text": "risk：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.02862400327131466
+          },
+          {
+            "evidence_id": "98688e63-2866-52a1-a5a1-4fc2f170f295",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 33,
+            "text": "retention：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.027692895339954164
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-08",
+      "category": "risk",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "d37f8791-e5a9-4340-8dd0-49057d35f693",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03225806451612903
+          },
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.031746031746031744
+          },
+          {
+            "evidence_id": "3bd3d63a-9d46-5fd7-b3b9-cc847a63a8a3",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 37,
+            "text": "compatibility：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.03007688828584351
+          },
+          {
+            "evidence_id": "0ca49041-736c-53df-b281-f8f6f404cbfe",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "合成安全手册：审计日志默认保留30天，管理员可以导出审计记录。",
+            "score": 0.028958333333333336
+          },
+          {
+            "evidence_id": "2ee735a4-31c3-5cdf-ad8d-f5adf5dfc7c1",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "security：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.028309409888357256
+          },
+          {
+            "evidence_id": "220fb4ec-a21c-5360-af7a-634768cea96e",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "product：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.02804284323271665
+          },
+          {
+            "evidence_id": "98688e63-2866-52a1-a5a1-4fc2f170f295",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 2,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 33,
+            "text": "retention：合成品牌手册：展会海报使用绿色标题和灰色页脚。",
+            "score": 0.027313266443701224
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-09",
+      "category": "clarification",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "3a44b474-8877-4093-b87f-e52bc554a2f3",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03225806451612903
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.03125763125763126
+          },
+          {
+            "evidence_id": "3ccccc0b-f230-5193-811f-a45554b9022a",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.03125
+          },
+          {
+            "evidence_id": "ec449750-4471-57ad-a0b4-e02c943df6a2",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.031024531024531024
+          },
+          {
+            "evidence_id": "f0b51104-02b4-5f0c-a9d3-558bbb04cf29",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.03007688828584351
+          },
+          {
+            "evidence_id": "a3fbc297-76f8-5201-8cda-76a74c57f720",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.029877369007803793
+          },
+          {
+            "evidence_id": "f3c8759b-a29b-567a-8201-4daa25136939",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 3,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 32,
+            "text": "retention：合成行政说明：办公室打印机每周检查纸张库存。",
+            "score": 0.028790389395194696
+          }
+        ]
+      }
+    },
+    {
+      "id": "DEV-10",
+      "category": "clarification",
+      "outcome": "retrievable",
+      "missing_sources": [],
+      "retrieval": {
+        "run_id": "c401d0fa-98e6-40d8-b658-84edab9503e1",
+        "mode": "real",
+        "model_identity": "qwen3.7-text-embedding-flash",
+        "authorization_revision": 6,
+        "catalog_revision": 5,
+        "cache_hit": false,
+        "degradation": [
+          "reranker_not_configured_rrf_retained"
+        ],
+        "hits": [
+          {
+            "evidence_id": "1ffcbdf3-0ca4-52a9-9ad4-582fa1f749b0",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 44,
+            "text": "合成兼容性说明：已验证PostgreSQL 18和私有部署；其他数据库和部署条件待澄清。",
+            "score": 0.03278688524590164
+          },
+          {
+            "evidence_id": "777c5759-4b81-5594-95f6-0eb14b635a55",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成部署说明：单节点模式不提供高可用；必须高可用的项目需要额外架构设计和验证。",
+            "score": 0.03200204813108039
+          },
+          {
+            "evidence_id": "b65b4389-ca5a-583f-bdbd-b04ae0360cb4",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 39,
+            "text": "合成制造企业AI平台：支持私有部署、审批工作流和操作审计。未承诺离线语音识别。",
+            "score": 0.03200204813108039
+          },
+          {
+            "evidence_id": "26c27918-7207-529e-b273-0cab6e18a5bb",
+            "source_version_id": "4b51ecc1-9e64-4d81-833e-2dfd215af7ba",
+            "build_id": "712999f2-4367-4574-a2c3-bb60fea47f35",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 1,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 34,
+            "text": "合成交付手册：项目交付约定审计日志默认保留90天，需要核对安全手册。",
+            "score": 0.03125
+          },
+          {
+            "evidence_id": "5bf4a7e6-844f-51a0-b2b8-12703ca49506",
+            "source_version_id": "2638e2db-03e4-48cb-a8c8-f8b13b61f3e0",
+            "build_id": "c880f7c3-7fee-4701-ba00-0764344a2b09",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 30,
+            "text": "product：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.029236022193768675
+          },
+          {
+            "evidence_id": "73141652-17ba-5784-bda8-3d5ddd007376",
+            "source_version_id": "fc49ba5b-1ab0-48e2-bb42-9205b0a4d788",
+            "build_id": "5c6bee4c-fbda-4e44-85f2-3855a5cac668",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 36,
+            "text": "compatibility：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.02919863597612958
+          },
+          {
+            "evidence_id": "7313f0e3-e4b4-5cd7-bdc4-c261b552590d",
+            "source_version_id": "e7f4ef66-982b-4222-a6e0-30b55f6ea708",
+            "build_id": "83ab3259-7f93-4d0e-a8d2-efd3618edf0e",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 27,
+            "text": "risk：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.028438886647841874
+          },
+          {
+            "evidence_id": "04cc45e5-a628-5bbc-9186-6adc63e79554",
+            "source_version_id": "5975fde5-e9bb-4bc3-9951-4fcf1a70953c",
+            "build_id": "98b908db-1502-44c6-9f10-d12fea54a4f7",
+            "location": {
+              "kind": "markdown_paragraph",
+              "page": null,
+              "paragraph": 4,
+              "table": null,
+              "row": null,
+              "column": null,
+              "heading": [],
+              "path": null
+            },
+            "start_offset": 0,
+            "end_offset": 31,
+            "text": "security：合成活动说明：内部培训签到表由会务人员保管。",
+            "score": 0.028205128205128206
+          }
+        ]
+      }
+    }
+  ],
+  "status": "basic_chain_observed_not_acceptance",
+  "cost": "unknown_no_amount_cap",
+  "endpoint": "https://maas.qianwenaiapi.com/compatible-mode/v1/embeddings",
+  "model_identity": "qwen3.7-text-embedding-flash",
+  "dimensions": 1024,
+  "index_batch_limit": 20,
+  "d3_started": true,
+  "requests": 16,
+  "characters": 844,
+  "preflight": {
+    "status": "passed",
+    "response_model_identity": "qwen3.7-text-embedding-flash",
+    "dimensions": 1024,
+    "vectors": 1,
+    "format": "finite_numeric_array",
+    "response_identity_check": "exact_provider_model_match"
+  },
+  "max_batch_items": 4,
+  "call_records": [
+    {
+      "request": 1,
+      "items": 1,
+      "characters": 24,
+      "status": "validated"
+    },
+    {
+      "request": 2,
+      "items": 4,
+      "characters": 130,
+      "status": "validated"
+    },
+    {
+      "request": 3,
+      "items": 4,
+      "characters": 125,
+      "status": "validated"
+    },
+    {
+      "request": 4,
+      "items": 4,
+      "characters": 131,
+      "status": "validated"
+    },
+    {
+      "request": 5,
+      "items": 4,
+      "characters": 121,
+      "status": "validated"
+    },
+    {
+      "request": 6,
+      "items": 4,
+      "characters": 153,
+      "status": "validated"
+    },
+    {
+      "request": 7,
+      "items": 1,
+      "characters": 16,
+      "status": "validated"
+    },
+    {
+      "request": 8,
+      "items": 1,
+      "characters": 14,
+      "status": "validated"
+    },
+    {
+      "request": 9,
+      "items": 1,
+      "characters": 17,
+      "status": "validated"
+    },
+    {
+      "request": 10,
+      "items": 1,
+      "characters": 20,
+      "status": "validated"
+    },
+    {
+      "request": 11,
+      "items": 1,
+      "characters": 11,
+      "status": "validated"
+    },
+    {
+      "request": 12,
+      "items": 1,
+      "characters": 13,
+      "status": "validated"
+    },
+    {
+      "request": 13,
+      "items": 1,
+      "characters": 17,
+      "status": "validated"
+    },
+    {
+      "request": 14,
+      "items": 1,
+      "characters": 14,
+      "status": "validated"
+    },
+    {
+      "request": 15,
+      "items": 1,
+      "characters": 19,
+      "status": "validated"
+    },
+    {
+      "request": 16,
+      "items": 1,
+      "characters": 19,
+      "status": "validated"
+    }
+  ],
+  "elapsed_seconds": 8.105
+}

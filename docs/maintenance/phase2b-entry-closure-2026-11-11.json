@@ -1,0 +1,293 @@
+{
+  "status": "D3_complete_for_early_basic_chain_probe_not_stage_acceptance",
+  "recorded_at": "2026-11-11T12:45:56.888637+08:00",
+  "design_sha256": "7128de782baa77250952cadb7d64a1600c927579c32995bf5265f6039b6135d6",
+  "dataset_digest": "277865a4e47678fc9a110f2d48676b288995aea34665f4b43ad7771cfcb5939e",
+  "acceptance_record_sha256": "8475abcaf45107b6474cfd8922c6f44fcdd056d4cac87218fc9866830e77699d",
+  "execution_receipt_sha256": "62c59c9a57149d32d10000de534f37bc5dcc342e4f517d63466c2195cd59c154",
+  "probe_report_sha256": "c9e967ed3394c5c5bb33080ac805e38de65fe932800f242043975cbe55e1a973",
+  "human_review_basis": "User accepted the 10 examples and source relevance judgments in the sample package after reviewing the historical run and before this new execution; dataset digest unchanged.",
+  "human_review_scope": "Inputs, expected sources, relevance expectations against non-expected hits, and stated evidence limits.",
+  "new_run_judgment": "Deterministic mapping of actual hits to the human-accepted source judgments.",
+  "d3_started": true,
+  "probe_status": "basic_chain_observed_not_acceptance",
+  "preflight": {
+    "status": "passed",
+    "response_model_identity": "qwen3.7-text-embedding-flash",
+    "dimensions": 1024,
+    "vectors": 1,
+    "format": "finite_numeric_array",
+    "response_identity_check": "exact_provider_model_match"
+  },
+  "process_exit_code": 0,
+  "requests": 16,
+  "characters": 844,
+  "elapsed_seconds": 7.461,
+  "max_batch_items": 4,
+  "cost": "unknown_no_amount_cap",
+  "database": [
+    "PGVector 0.8.6; native vector distance verified",
+    "Disposable PostgreSQL 18.6; loopback only; credentials omitted",
+    "Disposable PostgreSQL stopped."
+  ],
+  "temporary_database_stopped": true,
+  "cases": [
+    {
+      "id": "DEV-01",
+      "category": "complete",
+      "query": "支持哪些私有部署审批工作流能力？",
+      "accepted_expected_sources": [
+        "product"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "product",
+          "rank": 1,
+          "evidence_id": "793b105c-3464-5d4a-a577-9218346eae92",
+          "source_version_id": "617f7fb0-482d-45bc-ac11-9e5d6b969b9c",
+          "build_id": "89f14844-eac8-4f7c-b558-30ebabcb7933"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-02",
+      "category": "complete",
+      "query": "管理员如何导出操作审计记录？",
+      "accepted_expected_sources": [
+        "security"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "security",
+          "rank": 1,
+          "evidence_id": "5ce6f251-393f-53f7-8eeb-33e731891ebd",
+          "source_version_id": "3eca7b27-96e6-4659-9370-109001460f7b",
+          "build_id": "e24c9c3e-9790-41a3-ad7a-e3806fc62b9f"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-03",
+      "category": "conflict",
+      "query": "审计日志默认保留30天还是90天？",
+      "accepted_expected_sources": [
+        "security",
+        "retention"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "security",
+          "rank": 1,
+          "evidence_id": "5ce6f251-393f-53f7-8eeb-33e731891ebd",
+          "source_version_id": "3eca7b27-96e6-4659-9370-109001460f7b",
+          "build_id": "e24c9c3e-9790-41a3-ad7a-e3806fc62b9f"
+        },
+        {
+          "source": "retention",
+          "rank": 2,
+          "evidence_id": "876fbc14-d122-5ba9-b29f-a1e458f01990",
+          "source_version_id": "7ce2a579-89c2-43a1-b48f-1d8cdc1db1dd",
+          "build_id": "55070972-dd30-4745-a518-d7a8e14113f2"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-04",
+      "category": "conflict",
+      "query": "交付手册与安全手册的日志保留期是否一致？",
+      "accepted_expected_sources": [
+        "security",
+        "retention"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "retention",
+          "rank": 1,
+          "evidence_id": "876fbc14-d122-5ba9-b29f-a1e458f01990",
+          "source_version_id": "7ce2a579-89c2-43a1-b48f-1d8cdc1db1dd",
+          "build_id": "55070972-dd30-4745-a518-d7a8e14113f2"
+        },
+        {
+          "source": "security",
+          "rank": 2,
+          "evidence_id": "5ce6f251-393f-53f7-8eeb-33e731891ebd",
+          "source_version_id": "3eca7b27-96e6-4659-9370-109001460f7b",
+          "build_id": "e24c9c3e-9790-41a3-ad7a-e3806fc62b9f"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-05",
+      "category": "unsupported",
+      "query": "能否承诺离线语音识别？",
+      "accepted_expected_sources": [
+        "product"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "product",
+          "rank": 1,
+          "evidence_id": "793b105c-3464-5d4a-a577-9218346eae92",
+          "source_version_id": "617f7fb0-482d-45bc-ac11-9e5d6b969b9c",
+          "build_id": "89f14844-eac8-4f7c-b558-30ebabcb7933"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-06",
+      "category": "unsupported",
+      "query": "是否支持尚未验证的数据库？",
+      "accepted_expected_sources": [
+        "compatibility"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "compatibility",
+          "rank": 1,
+          "evidence_id": "c6d4e4f5-1606-5201-96c7-5acdc6461118",
+          "source_version_id": "e48732e5-34cd-41c5-9f5d-b26f7430abab",
+          "build_id": "d885e15d-89d7-40a1-a13c-f6dd03e3540c"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-07",
+      "category": "risk",
+      "query": "单节点可以满足必须高可用的要求吗？",
+      "accepted_expected_sources": [
+        "risk"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "risk",
+          "rank": 1,
+          "evidence_id": "61a0c285-5e37-559a-977c-731015d3740d",
+          "source_version_id": "bdf642e1-a56a-4fcc-8f9d-b546567c1b15",
+          "build_id": "bdb023a0-c11f-4ceb-9e8b-5f335f1cd516"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-08",
+      "category": "risk",
+      "query": "高可用交付需要补充什么验证？",
+      "accepted_expected_sources": [
+        "risk"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "risk",
+          "rank": 1,
+          "evidence_id": "61a0c285-5e37-559a-977c-731015d3740d",
+          "source_version_id": "bdf642e1-a56a-4fcc-8f9d-b546567c1b15",
+          "build_id": "bdb023a0-c11f-4ceb-9e8b-5f335f1cd516"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-09",
+      "category": "clarification",
+      "query": "客户没有说明数据库版本，需要澄清什么？",
+      "accepted_expected_sources": [
+        "compatibility"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "compatibility",
+          "rank": 1,
+          "evidence_id": "c6d4e4f5-1606-5201-96c7-5acdc6461118",
+          "source_version_id": "e48732e5-34cd-41c5-9f5d-b26f7430abab",
+          "build_id": "d885e15d-89d7-40a1-a13c-f6dd03e3540c"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    },
+    {
+      "id": "DEV-10",
+      "category": "clarification",
+      "query": "客户部署条件未确定时有哪些已验证范围？",
+      "accepted_expected_sources": [
+        "compatibility",
+        "product"
+      ],
+      "expected_source_hits": [
+        {
+          "source": "compatibility",
+          "rank": 1,
+          "evidence_id": "c6d4e4f5-1606-5201-96c7-5acdc6461118",
+          "source_version_id": "e48732e5-34cd-41c5-9f5d-b26f7430abab",
+          "build_id": "d885e15d-89d7-40a1-a13c-f6dd03e3540c"
+        },
+        {
+          "source": "product",
+          "rank": 3,
+          "evidence_id": "793b105c-3464-5d4a-a577-9218346eae92",
+          "source_version_id": "617f7fb0-482d-45bc-ac11-9e5d6b969b9c",
+          "build_id": "89f14844-eac8-4f7c-b558-30ebabcb7933"
+        }
+      ],
+      "rank_check": "passed_against_accepted_source_judgments",
+      "result_outcome": "retrievable",
+      "degradation": [
+        "reranker_not_configured_rrf_retained"
+      ]
+    }
+  ],
+  "gates": {
+    "D0": "satisfied_design_accepted_for_2B_0",
+    "D1": "historical_delivery_cross_checked",
+    "D2": "historical_delivery_cross_checked",
+    "D3": "satisfied_for_task_1_early_probe",
+    "D4": "foundation_cross_checked_attempt_integration_still_future_work",
+    "D5": "tasks_5_6_internal",
+    "D6": "historical_evidence_and_current_d3_loopback_startup_verified_full_suite_not_rerun",
+    "D7": "tasks_25_26_internal",
+    "D8": "tasks_31_32_internal"
+  },
+  "entry_review_conclusion": "external_entry_conditions_satisfied_for_authorized_2B_0_follow_on_work",
+  "not_acceptance": "Does not establish P07 frozen evaluation, precision/Hit metrics, reranker capability, 2A stage acceptance, product acceptance, or later 2B stages."
+}

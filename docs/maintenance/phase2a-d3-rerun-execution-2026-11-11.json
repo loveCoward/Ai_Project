@@ -1,0 +1,43 @@
+{
+  "status": "process_finished",
+  "started_at": "2026-11-11T12:31:53.413728+08:00",
+  "authorization_record": "phase2b-entry-acceptance-2026-11-11.json",
+  "authorization_record_sha256": "8475abcaf45107b6474cfd8922c6f44fcdd056d4cac87218fc9866830e77699d",
+  "authorized_round": 1,
+  "command": [
+    "C:\\py_ai_project\\biddesk-zq\\.venv\\Scripts\\python.exe",
+    "scripts/test_presales_postgres.py",
+    "--pg-bin",
+    "C:/Program Files/PostgreSQL/18/bin",
+    "--check-vector",
+    "--probe",
+    "--probe-output",
+    "docs\\maintenance\\phase2a-d3-rerun-2026-11-11.json"
+  ],
+  "dataset_digest": "277865a4e47678fc9a110f2d48676b288995aea34665f4b43ad7771cfcb5939e",
+  "source_sha256": {
+    "scripts/test_presales_postgres.py": "8fe4051c7b1752a3fb7fc3d150b29525d5e876539755e09ddad27eaf0f1e432b",
+    "scripts/probe_presales_retrieval.py": "d868f61068b2bcc73f27c62135cbcdb85e20a4f3747b1d959160f8fb7dfd3fb2"
+  },
+  "environment_secrets_recorded": false,
+  "process_exit_code": 2,
+  "environment_observations": [
+    "PGVector 0.8.6; native vector distance verified",
+    "Disposable PostgreSQL 18.6; loopback only; credentials omitted",
+    "Disposable PostgreSQL stopped."
+  ],
+  "temporary_database_stop_observed": true,
+  "report_sha256": "ac777b03f3b5ec543dcc7ea99e24700e035c491afbab16bce3d5604df3b7dd0d",
+  "report_summary": {
+    "status": "configuration_or_setup_blocked",
+    "mode": "real",
+    "requests": 0,
+    "characters": 0,
+    "elapsed_seconds": null,
+    "model_identity": "qwen3.7-text-embedding-flash",
+    "dimensions": 1024,
+    "error_code": "embedding_credential_not_injected"
+  },
+  "finished_at": "2026-11-11T12:31:58.905674+08:00",
+  "runner_elapsed_seconds": 5.491
+}
