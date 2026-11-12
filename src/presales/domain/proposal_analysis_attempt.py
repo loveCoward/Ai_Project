@@ -48,6 +48,7 @@ class AttemptCommandError(StrEnum):
     UNSUPPORTED_SAVER = "unsupported_saver"
     GLOBAL_BUSY = "global_busy"
     ATTEMPT_BUSY = "attempt_busy"
+    CANCEL_NOT_ALLOWED = "cancel_not_allowed"
 
 
 class AttemptTerminal(DomainError):
@@ -68,6 +69,10 @@ class GlobalBusy(DomainError):
 
 class AttemptBusy(DomainError):
     code = AttemptCommandError.ATTEMPT_BUSY.value
+
+
+class CancelNotAllowed(DomainError):
+    code = AttemptCommandError.CANCEL_NOT_ALLOWED.value
 
 
 class AttemptBudget(BaseModel):
@@ -151,6 +156,15 @@ class StartAttemptCommand(BaseModel):
         return self
 
 
+class CancelAttemptCommand(BaseModel):
+    model_config = ConfigDict(frozen=True, extra="forbid")
+
+    request_id: UUID
+    task_id: UUID
+    expected_task_revision: int = Field(ge=1)
+    attempt_id: UUID | None = None
+
+
 class RecoveryIntent(BaseModel):
     model_config = ConfigDict(frozen=True, extra="forbid")
 
@@ -214,7 +228,7 @@ _TRANSITIONS: dict[AttemptStage, frozenset[AttemptStage]] = {
     AttemptStage.WAITING_HUMAN: frozenset(
         {AttemptStage.RUNNING, AttemptStage.RECONCILING, AttemptStage.FINISHED}
     ),
-    AttemptStage.RECONCILING: frozenset({AttemptStage.FINISHED}),
+    AttemptStage.RECONCILING: frozenset({AttemptStage.RUNNING, AttemptStage.FINISHED}),
     AttemptStage.FINISHED: frozenset(),
 }
 
@@ -223,12 +237,17 @@ def transition_attempt(
     attempt: ProposalAnalysisAttempt,
     target: AttemptStage,
     outcome: AttemptOutcome | None = None,
+    *,
+    resumed_generation: int | None = None,
 ) -> ProposalAnalysisAttempt:
     if attempt.cancelled_at is not None and target in {
         AttemptStage.RUNNING,
         AttemptStage.WAITING_HUMAN,
     }:
         raise AttemptTerminal()
+    if attempt.stage == AttemptStage.RECONCILING and target == AttemptStage.RUNNING:
+        if resumed_generation != attempt.execution_generation + 1:
+            raise Conflict()
     if target not in _TRANSITIONS[attempt.stage]:
         if attempt.stage == AttemptStage.FINISHED:
             raise AttemptTerminal()
@@ -252,7 +271,13 @@ def transition_attempt(
         )
     if outcome is not None:
         raise ValueError("non-terminal attempts cannot have an outcome")
-    return attempt.model_copy(update={"stage": target, "run_revision": attempt.run_revision + 1})
+    update: dict[str, Any] = {
+        "stage": target,
+        "run_revision": attempt.run_revision + 1,
+    }
+    if target == AttemptStage.RUNNING and resumed_generation is not None:
+        update["execution_generation"] = resumed_generation
+    return attempt.model_copy(update=update)
 
 
 def command_fingerprint(operation: str, request_id: UUID, parameters: dict[str, Any]) -> str:
@@ -332,6 +357,8 @@ __all__ = [
     "AttemptStage",
     "AttemptTerminal",
     "BackgroundRequirement",
+    "CancelAttemptCommand",
+    "CancelNotAllowed",
     "FenceConflict",
     "GlobalBusy",
     "ModelMode",

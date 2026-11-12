@@ -7,6 +7,11 @@ from fastapi import FastAPI
 from presales.access.jwt import JwtVerifier
 from presales.api.auth import create_auth_app
 from presales.application.auth import AuthenticationService, demo_accounts
+from presales.application.proposal_attempt_runtime import (
+    AttemptRunner,
+    ProposalAttemptSupervisor,
+    supervisor_lifecycle,
+)
 from presales.application.service import PresalesService
 from presales.application.workbench import configured_workbench
 from presales.infrastructure.config import (
@@ -64,7 +69,7 @@ def _load_compatibility_app(path: Path) -> FastAPI:
     return compatibility_app
 
 
-def create_app() -> FastAPI:
+def create_app(*, supervisor_runner: AttemptRunner | None = None) -> FastAPI:
     api_settings = PresalesApiSettings()
     database_settings = DatabaseSettings()
     jwt_settings = JwtSettings()
@@ -81,6 +86,7 @@ def create_app() -> FastAPI:
         DatabasePrincipalStore(database), jwt_settings, demo_accounts(account_settings)
     )
     business_service = PresalesService(database, LocalFiles(database_settings.file_root))
+    supervisor = ProposalAttemptSupervisor(database, runner=supervisor_runner)
     app = create_auth_app(
         authentication_service,
         JwtVerifier(jwt_settings),
@@ -88,6 +94,8 @@ def create_app() -> FastAPI:
         compatibility_app=compatibility_app,
         business_service=business_service,
         workbench=configured_workbench(business_service),
+        background=lambda: supervisor_lifecycle(supervisor),
     )
     app.state.outbound = OutboundAdapter(outbound_settings)
+    app.state.supervisor = supervisor
     return app

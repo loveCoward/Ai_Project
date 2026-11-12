@@ -72,12 +72,10 @@ class ProposalCheckpointFence:
     async def check(self, conn: AsyncConnection[DictRow]) -> CheckpointFenceReceipt:
         global_slot = await conn.execute(GLOBAL_SLOT_FENCE_SQL)
         global_row = await global_slot.fetchone()
-        if (
-            global_row is None
-            or global_row["attempt_id"] != self.attempt_id
+        global_conflict = global_row is None or (
+            global_row["attempt_id"] != self.attempt_id
             or int(global_row["execution_generation"]) != self.execution_generation
-        ):
-            raise FenceConflict()
+        )
 
         task_state = await conn.execute(
             "SELECT state FROM presales.tasks WHERE id=%s FOR SHARE", (self.task_id,)
@@ -90,25 +88,29 @@ class ProposalCheckpointFence:
 
         task_slot = await conn.execute(TASK_SLOT_FENCE_SQL, (self.task_id, self.attempt_id))
         task_row = await task_slot.fetchone()
-        if task_row is None or int(task_row["execution_generation"]) != self.execution_generation:
-            raise FenceConflict()
+        task_conflict = task_row is None or (
+            int(task_row["execution_generation"]) != self.execution_generation
+        )
 
         cursor = await conn.execute(CHECKPOINT_FENCE_SQL, (self.attempt_id,))
-        row = await cursor.fetchone()
-        if row is None:
+        attempt_row = await cursor.fetchone()
+        if attempt_row is None:
             raise AccessDenied()
-        if row["thread_id"] != self.thread_id or row["task_id"] != self.task_id:
+        if attempt_row["thread_id"] != self.thread_id or attempt_row["task_id"] != self.task_id:
             raise FenceConflict()
-        if int(row["execution_generation"]) != self.execution_generation:
+        if int(attempt_row["execution_generation"]) != self.execution_generation:
             raise FenceConflict()
-        if row["execution_stage"] == AttemptStage.FINISHED.value:
+        if attempt_row["execution_stage"] == AttemptStage.FINISHED.value:
             raise AttemptTerminal()
-        if row["cancelled_at"] is not None:
+        if attempt_row["cancelled_at"] is not None:
             raise AttemptTerminal()
+        if global_conflict or task_conflict:
+            raise FenceConflict()
+
         return CheckpointFenceReceipt(
             attempt_id=self.attempt_id,
             execution_generation=self.execution_generation,
-            run_revision=int(row["run_revision"]),
+            run_revision=int(attempt_row["run_revision"]),
             checked_at=datetime.now(UTC),
         )
 

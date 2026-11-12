@@ -11,7 +11,7 @@ from langgraph.checkpoint.postgres.aio import AsyncPostgresSaver
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import make_url
 
-from presales.domain.contracts import Actor, StorageUnavailable
+from presales.domain.contracts import Actor, StorageUnavailable, digest
 from presales.domain.proposal_analysis_attempt import (
     AttemptStage,
     AttemptTerminal,
@@ -104,7 +104,7 @@ def test_migration_upgrade_head_twice(test_url):
         version = conn.execute(
             text("SELECT version_num FROM presales_migration_version")
         ).scalar_one()
-        assert version == "0006_proposal_attempt"
+        assert version == "0009_proposal_attempt_recovery"
     engine.dispose()
 
 
@@ -560,3 +560,161 @@ async def test_execution_records_are_idempotent_immutable_and_generation_fenced(
             await ProposalExecutionRecords(conn).save(
                 record.model_copy(update={"record_key": "late"})
             )
+
+
+async def _park_reconciling(
+    service, attempt_id: UUID, *, with_intent: bool, request: UUID | None = None
+):
+    async with service.database.transaction() as conn:
+        await execute(
+            conn,
+            """UPDATE presales.proposal_analysis_attempts
+            SET execution_stage='reconciling',run_revision=run_revision+1,
+                error_code='restart_unconfirmed' WHERE id=:id""",
+            id=attempt_id,
+        )
+        if with_intent:
+            body = {
+                "type": "resume_intent",
+                "request_id": str(request),
+                "checkpoint_id": "cp-resume",
+                "input_digest": "0" * 64,
+                "expected_run_revision": 2,
+                "next_execution_generation": 2,
+            }
+            await ProposalExecutionRecords(conn).save(
+                ProposalExecutionRecord(
+                    attempt_id=attempt_id,
+                    kind="recovery",
+                    record_key=f"recovery-intent-{request}",
+                    execution_generation=1,
+                    input_digest=digest(body),
+                    status="completed",
+                    body=body,
+                )
+            )
+
+
+@pytest.mark.asyncio
+async def test_resume_function_requires_a_recorded_intent(services):
+    service, _, _, _ = services
+    task = await service.create_task(ARCH, OPP, "Synthetic resume without intent", uuid4())
+    attempt = await create_attempt(service, UUID(task["resource_id"]))
+    await _park_reconciling(service, attempt.id, with_intent=False)
+    async with service.database.transaction() as conn:
+        with pytest.raises(Exception) as error:
+            await ProposalAttemptStore(conn).resume_attempt(
+                attempt.id,
+                actor=ARCH.subject,
+                expected_generation=1,
+                expected_run_revision=2,
+                expected_task_revision=1,
+                expected_input_revision=1,
+                intent_request=uuid4(),
+            )
+    assert "recovery_blocked" in str(error.value)
+    async with service.database.transaction() as conn:
+        row = (
+            await rows(
+                conn,
+                "SELECT * FROM presales.proposal_analysis_attempts WHERE id=:id",
+                id=attempt.id,
+            )
+        )[0]
+    assert (row["execution_stage"], row["execution_generation"]) == ("reconciling", 1)
+
+
+@pytest.mark.asyncio
+async def test_resume_function_bumps_generation_and_reacquires_slots(services):
+    service, _, _, _ = services
+    task = await service.create_task(ARCH, OPP, "Synthetic resume with intent", uuid4())
+    attempt = await create_attempt(service, UUID(task["resource_id"]))
+    request = uuid4()
+    await _park_reconciling(service, attempt.id, with_intent=True, request=request)
+    async with service.database.transaction() as conn:
+        store = ProposalAttemptStore(conn)
+        resumed = await store.resume_attempt(
+            attempt.id,
+            actor=ARCH.subject,
+            expected_generation=1,
+            expected_run_revision=2,
+            expected_task_revision=1,
+            expected_input_revision=1,
+            intent_request=request,
+        )
+    assert resumed == 2
+    async with service.database.transaction() as conn:
+        row = (
+            await rows(
+                conn,
+                "SELECT * FROM presales.proposal_analysis_attempts WHERE id=:id",
+                id=attempt.id,
+            )
+        )[0]
+        slot = (
+            await rows(
+                conn,
+                "SELECT * FROM presales.proposal_task_slots WHERE task_id=:t",
+                t=attempt.task_id,
+            )
+        )[0]
+        global_slot = (
+            await rows(conn, "SELECT * FROM presales.proposal_global_slot WHERE singleton=true")
+        )[0]
+    assert (row["execution_stage"], row["execution_generation"]) == ("running", 2)
+    assert slot["execution_generation"] == 2
+    assert global_slot["execution_generation"] == 2
+
+
+@pytest.mark.asyncio
+async def test_trigger_rejects_reconciling_to_running_without_intent(services):
+    service, _, _, _ = services
+    task = await service.create_task(ARCH, OPP, "Synthetic trigger guard", uuid4())
+    attempt = await create_attempt(service, UUID(task["resource_id"]))
+    await _park_reconciling(service, attempt.id, with_intent=False)
+    async with service.database.transaction() as conn:
+        with pytest.raises(Exception) as error:
+            await execute(
+                conn,
+                """UPDATE presales.proposal_analysis_attempts
+                SET execution_stage='running',execution_generation=2,
+                    run_revision=run_revision+1 WHERE id=:id""",
+                id=attempt.id,
+            )
+    assert "invalid_proposal_attempt_transition" in str(error.value)
+    async with service.database.transaction() as conn:
+        row = (
+            await rows(
+                conn,
+                "SELECT * FROM presales.proposal_analysis_attempts WHERE id=:id",
+                id=attempt.id,
+            )
+        )[0]
+    assert (row["execution_stage"], row["execution_generation"]) == ("reconciling", 1)
+
+
+@pytest.mark.asyncio
+async def test_trigger_rejects_reconciling_to_running_on_same_generation(services):
+    service, _, _, _ = services
+    task = await service.create_task(ARCH, OPP, "Synthetic same-generation", uuid4())
+    attempt = await create_attempt(service, UUID(task["resource_id"]))
+    request = uuid4()
+    await _park_reconciling(service, attempt.id, with_intent=True, request=request)
+    async with service.database.transaction() as conn:
+        with pytest.raises(Exception) as error:
+            await execute(
+                conn,
+                """UPDATE presales.proposal_analysis_attempts
+                SET execution_stage='running',run_revision=run_revision+1 WHERE id=:id""",
+                id=attempt.id,
+            )
+    assert "invalid_proposal_attempt_transition" in str(error.value)
+    async with service.database.transaction() as conn:
+        row = (
+            await rows(
+                conn,
+                "SELECT * FROM presales.proposal_analysis_attempts WHERE id=:id",
+                id=attempt.id,
+            )
+        )[0]
+    assert (row["execution_stage"], row["execution_generation"]) == ("reconciling", 1)

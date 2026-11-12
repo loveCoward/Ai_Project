@@ -1,5 +1,5 @@
 from collections.abc import AsyncIterator, Awaitable, Callable
-from contextlib import asynccontextmanager
+from contextlib import AbstractAsyncContextManager, AsyncExitStack, asynccontextmanager
 from typing import Annotated
 
 from fastapi import Depends, FastAPI, HTTPException, Request, Response, status
@@ -68,15 +68,19 @@ def create_auth_app(
     compatibility_app: FastAPI | None = None,
     business_service: PresalesService | None = None,
     workbench: Workbench | None = None,
+    background: Callable[[], AbstractAsyncContextManager[None]] | None = None,
 ) -> FastAPI:
     @asynccontextmanager
     async def lifespan(_: FastAPI) -> AsyncIterator[None]:
         try:
-            if compatibility_app is None:
+            async with AsyncExitStack() as stack:
+                if compatibility_app is not None:
+                    await stack.enter_async_context(
+                        compatibility_app.router.lifespan_context(compatibility_app)
+                    )
+                if background is not None:
+                    await stack.enter_async_context(background())
                 yield
-            else:
-                async with compatibility_app.router.lifespan_context(compatibility_app):
-                    yield
         finally:
             if shutdown is not None:
                 await shutdown()

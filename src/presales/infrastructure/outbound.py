@@ -79,3 +79,23 @@ class OutboundAdapter:
         ):
             raise OutboundDataNotAllowed("Observation metadata contains disallowed fields")
         return target, dict(metadata)
+
+    def proposal_observation(
+        self, data_class: str, *, status: str, duration_ms: int
+    ) -> tuple[OutboundTarget, dict[str, str | int]]:
+        if status not in {"completed", "failed", "unknown", "denied"} or (
+            isinstance(duration_ms, bool) or not isinstance(duration_ms, int) or duration_ms < 0
+        ):
+            raise OutboundDataNotAllowed("Invalid proposal observation")
+        target, metadata = self.observation(
+            data_class,
+            {
+                "operation": "proposal_model",
+                "status": status,
+                "duration_ms": duration_ms,
+                "service_mode": self.describe(OutboundService.LANGUAGE_MODEL).mode,
+            },
+        )
+        return OutboundTarget(
+            target.service, target.mode, target.destination_alias, None, target.service_identity
+        ), metadata
