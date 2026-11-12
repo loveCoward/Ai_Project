@@ -61,8 +61,11 @@ def custom_generate_unique_id(route: APIRoute) -> str:
     """为 OpenAPI 客户端生成符合惯例的操作 ID。"""
     return route.name
 
+
 """单一共享密钥
 """
+
+
 def verify_bearer(
     http_auth: Annotated[
         HTTPAuthorizationCredentials | None,

@@ -55,6 +55,8 @@ class Evidence(BaseModel):
     end_offset: int
     text: str
     score: float | None = None
+    declaration: SourceDeclaration | None = None
+    applicability: Applicability | None = None
 
 
 class RetrievalResult(BaseModel):

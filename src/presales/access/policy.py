@@ -7,6 +7,8 @@ from presales.infrastructure.database import AUTH_LOCK, lock, rows
 
 """处理访问授权：负责验证已登录用户对资源的访问权限，确保请求的合法性。
 """
+
+
 class Policy:
     def __init__(self, conn: AsyncConnection, actor: Actor) -> None:
         self.conn = conn

@@ -164,6 +164,11 @@ SELECT presales.resume_proposal_attempt(
   :lease_seconds)
 """
 
+BACKGROUND_CHARACTERS_SQL = """
+SELECT coalesce(sum(char_length(body)),0) AS characters
+FROM presales.opportunity_background_records WHERE opportunity_id=:opportunity
+"""
+
 RELEASE_TASK_SLOT_SQL = """
 DELETE FROM presales.proposal_task_slots
 WHERE attempt_id=:attempt AND execution_generation=:generation
@@ -622,6 +627,12 @@ class ProposalAttemptStore:
         )
         return int(result.mappings().one()["resume_proposal_attempt"])
 
+    async def background_characters(self, opportunity_id: UUID) -> int:
+        result = await self.conn.execute(
+            text(BACKGROUND_CHARACTERS_SQL), {"opportunity": opportunity_id}
+        )
+        return int(result.mappings().one()["characters"])
+
     async def _explain_write_failure(
         self, attempt_id: UUID, generation: int, expected_run_revision: int
     ) -> None:
@@ -638,6 +649,7 @@ class ProposalAttemptStore:
 
 
 __all__ = [
+    "BACKGROUND_CHARACTERS_SQL",
     "CANCEL_ATTEMPT_SQL",
     "CANCEL_TASK_SQL",
     "CLAIM_GLOBAL_SLOT_SQL",

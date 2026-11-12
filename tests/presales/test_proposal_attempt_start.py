@@ -109,6 +109,7 @@ class OfflineDatabase:
                 sql = sql.replace("now()", "CURRENT_TIMESTAMP").replace(
                     "singleton=true", "singleton=1"
                 )
+                sql = sql.replace("char_length(", "length(")
                 if sql.strip().startswith("SELECT presales.begin_proposal_analysis"):
                     _begin_analysis(conn, UUID(str(params["actor"])), UUID(str(params["task"])))
                     return Result(_empty(conn))
@@ -182,19 +183,23 @@ class Fixture:
         return StartAttemptCommand(**options)
 
 
-def build(tmp_path, monkeypatch, *, materials=None, global_owner=None):
+def build(tmp_path, monkeypatch, *, materials=None, global_owner=None, background_body=""):
     async def no_lock(*args, **kwargs):
         pass
 
     monkeypatch.setattr("presales.access.policy.lock", no_lock)
     monkeypatch.setattr("presales.application.proposal_attempt_commands.lock", no_lock)
 
-    actor, task, source = uuid4(), uuid4(), uuid4()
+    actor, task, source, opportunity = uuid4(), uuid4(), uuid4(), uuid4()
     materials = materials if materials is not None else [("m1", "required", "ready", 100)]
     presales = sqlite3.connect(tmp_path / "presales.db")
     presales.executescript(
         """
-        CREATE TABLE tasks(id TEXT,state TEXT,revision INTEGER,input_revision INTEGER);
+        CREATE TABLE tasks(id TEXT,state TEXT,revision INTEGER,input_revision INTEGER,
+            opportunity_id TEXT);
+        CREATE TABLE opportunity_background_records(id TEXT PRIMARY KEY,opportunity_id TEXT,
+            source_version_id TEXT,kind TEXT,title TEXT,body TEXT,declaration TEXT,
+            trust_state TEXT,effective_at TEXT);
         CREATE TABLE resources(id TEXT,parent_id TEXT,kind TEXT);
         CREATE TABLE resource_versions(id TEXT,resource_id TEXT,ready INTEGER,
             dependencies_complete INTEGER,input_manifest TEXT,source_kind TEXT,declaration TEXT);
@@ -224,7 +229,14 @@ def build(tmp_path, monkeypatch, *, materials=None, global_owner=None):
             parameter_digest TEXT,result TEXT,PRIMARY KEY(actor,operation,request_id));
         """
     )
-    presales.execute("INSERT INTO tasks VALUES(?,?,1,1)", (str(task), "new"))
+    presales.execute("INSERT INTO tasks VALUES(?,?,1,1,?)", (str(task), "new", str(opportunity)))
+    if background_body:
+        presales.execute(
+            "INSERT INTO opportunity_background_records VALUES"
+            "(?,?,?,'background','Synthetic',?,'synthetic','confirmed',"
+            "'2026-11-01T00:00:00+00:00')",
+            (str(uuid4()), str(opportunity), str(source), background_body),
+        )
     presales.execute("INSERT INTO resources VALUES(?,NULL,'task')", (str(task),))
     presales.execute("INSERT INTO resources VALUES(?,NULL,'knowledge')", (str(source),))
     presales.execute(
@@ -472,6 +484,59 @@ async def test_key_input_at_capacity_boundary_is_accepted(tmp_path, monkeypatch)
         Actor(subject=fixture.actor), fixture.command()
     )
     assert result["stage"] == "accepted"
+
+
+@pytest.mark.asyncio
+async def test_background_counts_towards_key_input_capacity(tmp_path, monkeypatch):
+    fixture = build(
+        tmp_path,
+        monkeypatch,
+        materials=[("m1", "required", "ready", 100)],
+        background_body="x" * 200,
+    )
+    with pytest.raises(InvalidInput) as error:
+        await starter(fixture, max_key_input_characters=150).start(
+            Actor(subject=fixture.actor), fixture.command()
+        )
+    assert error.value.code == "invalid_input"
+    assert _attempts(fixture) == 0 and _state(fixture) == "new"
+
+
+@pytest.mark.asyncio
+async def test_background_within_capacity_boundary_is_accepted(tmp_path, monkeypatch):
+    fixture = build(
+        tmp_path,
+        monkeypatch,
+        materials=[("m1", "required", "ready", 100)],
+        background_body="x" * 100,
+    )
+    result = await starter(fixture, max_key_input_characters=200).start(
+        Actor(subject=fixture.actor), fixture.command()
+    )
+    assert result["stage"] == "accepted"
+    assert _attempts(fixture) == 1
+
+
+@pytest.mark.asyncio
+async def test_effective_background_limits_are_recorded_at_start(tmp_path, monkeypatch):
+    fixture = build(tmp_path, monkeypatch)
+    result = await starter(fixture, background_limits={"read_seconds": 4, "max_records": 50}).start(
+        Actor(subject=fixture.actor), fixture.command()
+    )
+    assert result["background_limits"] == {
+        "read_seconds": 4,
+        "max_characters": 60_000,
+        "max_records": 50,
+    }
+    import json
+    import sqlite3
+
+    with sqlite3.connect(fixture.root / "presales.db") as conn:
+        stored = conn.execute(
+            "SELECT body FROM proposal_execution_records WHERE record_key='background-limits'"
+        ).fetchall()
+    assert len(stored) == 1
+    assert json.loads(stored[0][0])["limits"] == result["background_limits"]
 
 
 @pytest.mark.asyncio

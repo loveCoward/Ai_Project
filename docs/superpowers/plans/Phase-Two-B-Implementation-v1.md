@@ -2,17 +2,17 @@
 
 ## 状态与版本
 
-- 本文档版本：v1.2（已完成AI技术复评）。
-- 状态：已评审（AI技术复评通过；未执行，不构成实施授权）。
+- 本文档版本：v1.5（v1.2与v1.5已完成AI技术复评登记，分别见第9节与第10节；v1.3、v1.4为增量修订，经第10节复核覆盖但未单独登记）。
+- 状态：已评审（AI技术复评通过；未执行，不构成实施授权）。v1.4复核结论见第10节；复评通过不等于上游方案批准或实施授权。
 - 适用范围：覆盖【2B-0、2B-1、2B-2、2B-2链路可用后的早期真实探针、2B-3及二B退出评审；上游第1—9节中的二B职责】；不覆盖【二A缺失能力的补齐实施、阶段三正式编辑/澄清确认/审阅审批/人工审批恢复、阶段四External Write、阶段五完整导出/Compose交付/冻结验收】。
 - 生成依据：2026-11-10修订的[阶段二B方案](../specs/阶段二B-Agent分析工作流设计方案.md) v0.1-review-draft全文，重点第4—7节、第8.1/8.2节及第9节；[总体架构设计](../specs/总体架构设计.md) v0.2-review-draft第3、6—8节；需求v0.1的AC07—AC10、AC19、AC21、AC27，另承接AC04/05/06/13/16/22/24中二B相关工程边界，均非完整AC验收结论。
 - 生成日期：2026-11-10（Asia/Shanghai）。
-- 本次修订日期：2026-11-11（Asia/Shanghai）。
+- 本次修订日期：2026-11-12（Asia/Shanghai）。
 - 技术复评日期：2026-11-11（Asia/Shanghai）；评审范围和结论见文末第9节。该状态仅适用于本实施清单，不改变上游方案的待评审状态或任何实施期门禁。
-- 批准边界：上游二B仍待评审；本清单是作者拆分建议，不把监督器、路径、DTO或具体协议建议升级为已批准设计。所有任务当前均未执行；编制清单不授权实施、部署或真实调用。
+- 批准边界：上游二B仍待评审；本清单是作者拆分建议，不把监督器、路径、DTO或具体协议建议升级为已批准设计。v1.2编制时所有任务均未执行；此后任务7—12（2B-1）与任务13—17（2B-2）已按用户逐次授权实施并有交付记录，其余任务仍未执行。编制/修订清单本身不构成实施、部署或真实调用授权。
 - 评审整改依据：保留v1.1所记的2026-11-10只读评审R-01—R-20摘要；本次另依据2026-11-11本聊天的v1.1复评（项目约定轴3条、方案一致性轴3条，去重后4类问题）及用户“修复和完善”指令。修复重复确认门槛、准备任务自阻塞、并行声明冲突和启动命令缺失，不修改上游规则或把作者建议升级为批准。原R-01—R-20完整意见未随本文件附入，本次不声称逐条关闭；见第7、8节的规则与修订记录。
 - 输出位置：用户指定`_docs/superpowers/plans`，但该目录不存在，同时要求“不建目录”。本次不创建目录，单文件落入已有`docs/superpowers/plans/Phase-Two-B-Implementation-v1.md`；迁往指定位置保留为路径缺口，不静默声称路径已满足。
-- 依据指纹：二B方案SHA256为`7128DE782BAA77250952CADB7D64A1600C927579C32995BF5265F6039B6135D6`；架构方案SHA256为`2F43D5DC8D8E2A2FCCD994CA01308251B668EF405BB4F4BEBE4C380807D51DE8`。版本号相同时以本次指纹区分修订。
+- 依据指纹：v1.2编制时二B方案SHA256为`7128DE782BAA77250952CADB7D64A1600C927579C32995BF5265F6039B6135D6`（对应提交`3f0d234`）、架构方案为`2F43D5DC8D8E2A2FCCD994CA01308251B668EF405BB4F4BEBE4C380807D51DE8`。两份设计此后已被提交`c970161`更新，当前HEAD的换行归一化SHA256分别为`79763303F8F7A85B…`与`5138D178891D11A6…`（原始字节指纹还受工作区CRLF影响，见第10.2节R-8）。版本号相同时以指纹区分修订。
 
 ## 1. 开工定位、术语与阻塞条件
 
@@ -25,11 +25,11 @@
 | 依赖代号 | 本次静态事实及路径 | 对清单的约束 |
 | --- | --- | --- |
 | D0：评审及实施范围 | 二B方案标为待评审，`STATUS.md`未记录二B实施批准 | 所有实现任务均依赖【上游方案评审接受及对应实施范围获授权】；任务1可先作只读评审准备 |
-| D1：二A-2 | `src/presales/`现有access/api/application/**domain**/infrastructure/materials/knowledge/indexing/maintenance等模块（本次核对；v1 曾漏列`domain`）；无受限在线检索及Product Catalog MCP业务实现 | 依赖【二A-2受限检索与只读Product Catalog MCP完成并提供真实API/权限/稳定Evidence ID证据】；不得私建第二套检索/ACL |
-| D2：二A-3 | `frontend/src/main.tsx`、`api.ts`仅登录/身份/按UUID受限读取；无材料/知识业务页面 | 依赖【二A-3页面及二A认证/到期/越权真实API联调完成】；fixture不解除阻塞 |
-| D3：二A早期探针 | 架构第7.1节已确认路线，但当前未见可作为本次执行结果的报告；开发样例未证明就绪 | 依赖【二A探针经授权执行并形成报告】；基本不可行/硬门禁失败阻断相关能力，语义差距登记后可继续，未执行不算通过 |
+| D1：二A-2 | 编制时（2026-11-10）`src/presales/`无受限在线检索及Product Catalog MCP实现；现已有`retrieval/`、`api/knowledge.py`、`infrastructure/product_catalog.py`及真实PostgreSQL 18.6/PGVector 0.8.6、stdio往返、缓存/撤权/停用/非法输入/降级反例证据（[2A外部前置交付](../maintenance/phase2a-prerequisites-delivery-2026-11-11.md)） | 依赖【二A-2受限检索与只读Product Catalog MCP完成并提供真实API/权限/稳定Evidence ID证据】；不得私建第二套检索/ACL。v1.4复核：该证据为历史交付，二B此后改动`retrieval/`共享模块须按任务24复验 |
+| D2：二A-3 | 编制时`frontend/src/main.tsx`、`api.ts`仅登录/身份/按UUID受限读取；现已有`KnowledgeWorkbench.tsx`材料/知识/检索页面、业务HTTP入口及真实浏览器流程操作记录（同一交付记录） | 依赖【二A-3页面及二A认证/到期/越权真实API联调完成】；fixture不解除阻塞。v1.4复核：浏览器记录为人工操作，无已安装的持久浏览器E2E套件 |
+| D3：二A早期探针 | 已有`phase2a-real-probe-2026-11-11.json`：真实`qwen3.7-text-embedding-flash`、1024维、10例均命中预期来源段落，结局为`basic_chain_observed_not_acceptance`；但开发样例复核/接受与人工相关性证据仍未闭合 | 依赖【二A探针经授权执行并形成报告】；基本不可行/硬门禁失败阻断相关能力，语义差距登记后可继续，未执行不算通过。v1.4复核：既有报告不适用P07冻结指标，样例复核缺口仍按原状保留 |
 | D4：业务存储基础 | `Policy.source_closure()`已有来源闭包（`access/policy.py`）；`PresalesService`已有命令回执/修订；`DraftContent`只是阶段一草稿，`analysis_attempt_id`固定写在手工草稿落库body的`identity`块并取`None`（`application/service.py`），不是`DraftContent`字段；`_task()`限制`state=="new"` | 可复用基础，不能原样用手工草稿入口落分析结果；实际数据库状态未经本次验证 |
-| D5：工作流存储 | `src/memory/postgres.py`是通用适配；售前兼容入口在`api/app.py`中使用SQLite saver与内存store，无售前Attempt/checkpoint绑定 | 由任务5交付适配、任务6取得真实提交边界证据；它是二B内部交付门禁，不是任务1或任务6自身的先验就绪条件；依赖【5、6完成后】才能开启受控续跑 |
+| D5：工作流存储 | 编制时`src/memory/postgres.py`是通用适配，`api/app.py`的上游兼容分支仍用SQLite saver与内存store、无售前Attempt/checkpoint绑定。此后任务5已交付`infrastructure/proposal_checkpoint.py`、任务9已在`api/app.py`装配`ProposalAttemptSupervisor`与lifespan | 由任务5交付适配、任务6取得真实提交边界证据；它是二B内部交付门禁，不是任务1或任务6自身的先验就绪条件；依赖【5、6完成后】才能开启受控续跑。v1.4复核：受控续跑仍受任务11/12已交付结论约束，不因装配存在而视为自动恢复授权 |
 | D6：本机数据库 | `migrations/versions/0004_knowledge.py`要求PGVector 0.8.6；脚本支持真实临时回环实例，环境可用性未核验 | 所有真实数据库任务需专用实例、核定主版本/扩展和运行/维护角色；默认离线测试跳过不能算通过 |
 | D7：真实探针条件 | 10个开发/20个验收样例是批准的组成，不代表已制作；模型、端点、次数/预算和调用授权尚未就绪 | 任务25可准备所选开发样例、送复核及执行入口，不要求这些成果预先存在；任务26才依赖【所选数据复核、专项计划固定及真实调用明确授权完成后】执行，不使用验收标签调优 |
 | D8：浏览器集成 | `frontend/package.json`只有dev/typecheck/build/preview，无浏览器E2E；`scripts/e2e_ui_tests.py`是Streamlit脚本 | 由任务31建立React专用入口/锁定环境要求；入口和真实浏览器尚未就绪不阻塞31的离线准备。任务32依赖【31交付及真实浏览器/售前HTTP/PostgreSQL就绪后】执行，不能复用Streamlit证据 |
@@ -49,7 +49,7 @@
 | 验证分类 | 实际约定及证据要求 |
 | --- | --- |
 | 离线Python | 表中指定`uv run pytest tests/presales/test_*.py -q`；对应新文件须自行不依赖真实数据库fixture，不用跳过代替成功 |
-| 真实PostgreSQL | 使用现有`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --pytest-args ...`；用`-k`筛选拟新增测试的唯一名称；必须有实际收集/执行条目和非跳过结果。脚本按用途分档核定的 pytest 子进程上限（单场景`-k`档与`--full-suite`全量档，由任务6交付），当前源码仍是单一180秒硬编码（`scripts/test_presales_postgres.py:173`）；未分档前`--full-suite`档只作为目标命令，不得宣称已取证，也不得靠延长业务10分钟预算掩盖超时 |
+| 真实PostgreSQL | 使用现有`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --pytest-args ...`；用`-k`筛选拟新增测试的唯一名称；必须有实际收集/执行条目和非跳过结果。脚本按用途分档的 pytest 子进程上限已由任务6交付：默认180秒、带`-k`专项300秒、`--full-suite`全量900秒（`scripts/test_presales_postgres.py:19-29`的`select_pytest_timeout`，见2B-0交付记录）；分档后`--full-suite`档可据实取证，但仍须登记实际耗时，且不得靠延长业务10分钟主动预算掩盖超时 |
 | 前端静态 | 工作目录`frontend/`执行`npm run typecheck`、`npm run build`；依赖安装按项目约定`npm ci`仅在未来任务需要时进行，不在本轮执行 |
 | 新验证入口 | 任务25/31必须交付文中拟议脚本及其CLI测试后，任务26/32的命令才可运行；当前无售前探针/React浏览器命令，不伪称已有npm test/e2e脚本 |
 | 统一工程检查 | 编码任务完成其范围内测试后，执行`uv run ruff check <修改路径>`、`uv run ruff format --check <修改路径>`；影响共享模块时按项目约定执行完整`uv run pytest`及`uv run pyrefly check`，由任务24汇总。真实数据库回归与离线回归分开报告 |
@@ -98,7 +98,7 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 | 1 | Proposal Analysis Attempt进入条件审查 | 2B-0 | 核对外部进入前置并登记二B内部交付门禁，使后续任务无需自我前置即可按授权推进 | 本清单；`STATUS.md`、二A/二B方案只读 | 无 | 进入评审记录、D0—D8证据索引及阻塞项 | AC19/24关联退出证据：D0的方案批准/实施授权可查，D1/D2/D3报告可核实，D4基础与现码相符；缺外部进入证据则相关实现阻塞；D5/D7/D8注明由5/6、25/26、31/32产出而非要求先完成；D6仅核对真实任务需要的环境要求；未取得证据不得记就绪，不新增重复签署要求 | 按项目约定填写：`git status --short`；`uv run pymarkdown scan docs/superpowers/plans/Phase-Two-B-Implementation-v1.md`；人工逐项核对，不启动服务 | 不补齐二A、不改STATUS、不将方案建议批准化 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置D0/D1/D2/D3，依赖【对应能力及评审完成后】解除阻塞 |
 | 2 | Proposal Analysis Attempt身份与执行契约 | 2B-0 | 任务/Attempt/thread/修订/代次及命令错误契约可被确定性校验 | `src/presales/domain/contracts.py`；拟新增`src/presales/domain/proposal_analysis_attempt.py`与`tests/presales/test_proposal_attempt_contract.py` | 1；依赖【D0/D1/D2/D3完成后】 | Attempt、阶段/结局、命令/恢复/投影DTO，人工等待扩展契约 | AC19/13：伪造actor/thread/端点拒绝；业务状态不新增执行枚举；取消/撤权终态不可复活；同键异参报冲突；输出错误码可判定 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_attempt_contract.py -q` | 不连数据库，不实现审批interrupt，不新建术语 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置D0—D3及任务1 |
 | 3 | Proposal Package Schema 1.0与Proposal Draft兼容 | 2B-0 | 完整方案与阶段一手工草稿能明确区分且不静默补齐 | 拟新增`src/presales/domain/proposal_package.py`；`src/presales/domain/contracts.py`；拟新增`tests/presales/test_proposal_package_schema.py` | 2 | P06全部区块类型/机器Schema、旧草稿适配、服务端身份字段规则 | AC07—10/21/27：必需区块/关联缺失拒绝；review/approval/external execution未执行明确；memory_updates仅候选；旧1.0草稿不能通过完整性校验；JSON可唯一生成DTO | 按项目约定填写：`uv run pytest tests/presales/test_proposal_package_schema.py -q` | 不造批准记录、不写记忆、不渲染完整导出、不评语义质量 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务2 |
-| 4 | Proposal Analysis Attempt持久记录与最小权限 | 2B-0 | Attempt、两级占位、调用/恢复/投影及产物关系具备可迁移的约束和存储接口 | `migrations/versions/`拟新增`0005_proposal_attempt.py`（`down_revision=0004_knowledge`；最终文件名开工核对后记入交付记录，不改语义）；拟新增`src/presales/infrastructure/proposal_attempt_store.py`及`tests/presales/test_proposal_attempt_storage_contract.py` | 2、3；可与5并行，先固定共享代次接口 | 显式迁移、索引/唯一约束、受限状态更新权、短事务存储实现；约束离线测试 | AC19/13/16：任务/全局占位及一Attempt一thread唯一；投影修订同事务递增；候选/来源/终态写入有条件；运行/维护角色分离与“无任意授权写”只以迁移GRANT及SQL文本静态断言证明（离线档不证明真实角色权限）；离线SQL契约通过，真实约束与越权写入待6 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_attempt_storage_contract.py -q` | 不自动执行迁移、不启动实例、不以SQL断言代替数据库保证 | 真实模型否；真实数据库否（实跑独立任务6）；浏览器E2E否；未完成前置任务2/3 |
+| 4 | Proposal Analysis Attempt持久记录与最小权限 | 2B-0 | Attempt、两级占位、调用/恢复/投影及产物关系具备可迁移的约束和存储接口 | `migrations/versions/`拟新增`0006_proposal_attempt.py`（`down_revision=0005_retrieval`，因二A已交付`0005_retrieval.py`；口径见§3.1续作说明，不得覆盖二A迁移）；拟新增`src/presales/infrastructure/proposal_attempt_store.py`及`tests/presales/test_proposal_attempt_storage_contract.py` | 2、3；可与5并行，先固定共享代次接口 | 显式迁移、索引/唯一约束、受限状态更新权、短事务存储实现；约束离线测试 | AC19/13/16：任务/全局占位及一Attempt一thread唯一；投影修订同事务递增；候选/来源/终态写入有条件；运行/维护角色分离与“无任意授权写”只以迁移GRANT及SQL文本静态断言证明（离线档不证明真实角色权限）；离线SQL契约通过，真实约束与越权写入待6 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_attempt_storage_contract.py -q` | 不自动执行迁移、不启动实例、不以SQL断言代替数据库保证 | 真实模型否；真实数据库否（实跑独立任务6）；浏览器E2E否；未完成前置任务2/3 |
 | 5 | Proposal Analysis Attempt受控checkpoint适配 | 2B-0 | 已锁定saver的checkpoint/pending writes提交路径能在事务内检查当前代次 | `uv.lock`只读；拟新增`src/presales/infrastructure/proposal_checkpoint.py`、`tests/presales/test_proposal_checkpoint_contract.py` | 2；可与4并行 | saver兼容记录、受控适配、消费回执与拒写契约，300—800行含测试 | AC19/13：确认锁定版本事务入口；checkpoint、pending writes、回执都受同提交边界校验；不支持时明确阻断续跑；不能用外层先读代次再调用原saver冒充fencing，真实竞态待6 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_checkpoint_contract.py -q` | 不放宽TD-033、不升级整个依赖树、不碰通用聊天checkpoint | 真实模型否；真实数据库否（实跑独立任务6）；浏览器E2E否；未完成前置任务2 |
 | 6 | Proposal Analysis Attempt存储与checkpoint真实数据库门禁 | 2B-0 | 在临时PostgreSQL中证实迁移、权限和旧代次提交隔离，或明确阻塞恢复 | `scripts/test_presales_postgres.py`；拟新增`tests/presales/test_proposal_storage_postgres.py` | 4、5；依赖【D6真实临时实例就绪后】 | 专项测试、按用途分档的 pytest 子进程超时（单场景`-k`档与`--full-suite`全量档）、实例主版本/PGVector/角色登记、真实实例报告 | AC19/13/16：迁移可重复upgrade至head两次不破坏（测试内二次执行，不依赖脚本单次路径）；运行/维护角色真实隔离；旧owner暂停后在接管/取消之后提交checkpoint及pending writes均失败；回执同代次受限；不足则任务11恢复保持阻塞 | 按项目约定填写，需真实实例：`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --pytest-args -q -rs -k proposal_storage_postgres` | 不用SQLite替代、不调用模型、不在默认离线套件偷偷启实例 | 真实模型否；真实数据库是；浏览器E2E否；未完成前置D6及任务4/5；D5的真实门禁证据由本任务产出，不作为自身前置 |
 
@@ -127,18 +127,18 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 
 | 编号 | 任务名 | 所属增量 | 目标 | 涉及模块/文件 | 前置任务 | 交付物 | 验收条件 | 验证命令 | 不做什么 | 外部依赖 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 13 | Opportunity只读背景与可信来源适配 | 2B-2 | 背景必需性、受限读取及来源契约在Fake传输下可判定 | 拟新增`src/presales/application/opportunity_context.py`、`src/presales/infrastructure/opportunity_workspace.py`及`tests/presales/test_opportunity_context.py` | 3、7、12；依赖【D1共享MCP/授权接口完成后】 | 只读业务适配、后台可信调用封装、stdio服务可执行入口；交付位置为上列opportunity_workspace.py，启动完整命令见§2.2；默认路径如因实现核对改变须同步修订命令 | AC04/05/09/19/22：必需失败停止、可选失败明确缺失、未确认拒绝；成功空历史不同于失败；无权与不存在不区分、不泄漏（六类结局逐类）；任务授权不向上；来源ID/版本可解析；无actor信任/写工具/地址注入 | 按项目约定填写：`uv run pytest tests/presales/test_opportunity_context.py -q` | 不启动子进程/真实数据库、不接CRM、不注册External Write | 真实模型否；真实数据库否；浏览器E2E否；未完成前置D1及任务12 |
+| 13 | Opportunity只读背景与可信来源适配 | 2B-2 | 背景必需性、受限读取及来源契约在Fake传输下可判定 | 拟新增`src/presales/application/opportunity_context.py`、`src/presales/infrastructure/opportunity_workspace.py`及`tests/presales/test_opportunity_context.py` | 3、7、12；依赖【D1共享MCP/授权接口完成后】 | 只读业务适配、后台可信调用封装、stdio服务可执行入口；交付位置为上列opportunity_workspace.py，启动完整命令见§2.2；默认路径如因实现核对改变须同步修订命令 | AC04/05/09/19/22：必需失败停止、可选失败明确缺失、未确认拒绝；成功空历史不同于失败；无权与不存在不区分、不泄漏（七类结局逐类，含`capacity_exceeded`：超限拒绝且不返回部分内容）；任务授权不向上；来源ID/版本可解析；无actor信任/写工具/地址注入 | 按项目约定填写：`uv run pytest tests/presales/test_opportunity_context.py -q` | 不启动子进程/真实数据库、不接CRM、不注册External Write | 真实模型否；真实数据库否；浏览器E2E否；未完成前置D1及任务12 |
 | 14 | Opportunity只读MCP进程与授权真实集成 | 2B-2 | 本机stdio进程真实往返、退出和共享来源授权经专项验证 | 拟新增`tests/presales/test_opportunity_mcp_process.py`；现有临时PostgreSQL脚本 | 6、12、13；依赖【D1/D6及本机MCP运行时完成后】 | Windows进程启动/回收、短期凭证隔离及真实API/MCP等权范围报告 | AC04/05/19/22：伪造主体/Attempt拒绝；撤权/超时/EOF/子进程异常可判定；秘密不入Prompt/checkpoint；直接写调用拒绝；Mock背景来源落同一登记库而非独立ACL | 按项目约定填写，需真实实例及MCP子进程：`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --pytest-args -q -rs -k opportunity_mcp_process` | 不把Fake transport通过当stdio通过，不连外部CRM/真实模型 | 真实模型否；真实数据库是；浏览器E2E否；本机真实MCP服务是（＝任务13交付的stdio入口，不等同D1的二A Product Catalog MCP运行时）；未完成前置D1/D6/13 |
 | 15 | Evidence Snapshot与Derived Artifact来源闭包 | 2B-2 | 实际读取和中间产物形成完整依赖，未就绪内容无法读取 | 拟新增`src/presales/application/evidence_snapshot.py`；`src/presales/access/policy.py`；拟新增`tests/presales/test_evidence_snapshot.py` | 3、4、7、13；可与14并行，真实验证待24 | 来源登记/稳定节点执行身份、待就绪/对账服务 | AC04/05/09/13/16：引用删除不删实际依赖；材料/MCP/检索/Reflection输入均登记；环/缺来源拒绝；同节点结果复用；停用/撤权和旧代次不能激活产物 | 按项目约定填写：`uv run pytest tests/presales/test_evidence_snapshot.py -q` | 不私建检索目录、不把来源可定位等同论断受支持 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务13 |
-| 16 | Requirement与Proposal Analysis Attempt白名单计划 | 2B-2 | Router产生有界计划并保留需求身份、出处及客户范围 | 拟新增`src/presales/application/requirement_analysis.py`；拟新增`tests/presales/test_requirement_analysis.py` | 3、7、15 | 意图/Router/需求节点、结构化提示模板及Fake案例 | AC07/08/09/19：不能删关键专家/开无限循环；拆合保留原始出处，未经确认不改分母；关键输入装不下明确拒绝；稳定ID服务端产生 | 按项目约定填写：`uv run pytest tests/presales/test_requirement_analysis.py -q` | 不用真实模型评分、不替客户确认范围、不并行读取尚不存在的上游结果 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务15 |
+| 16 | Requirement与Proposal Analysis Attempt白名单计划 | 2B-2 | Router产生有界计划并保留需求身份、出处及客户范围 | 拟新增`src/presales/application/requirement_analysis.py`；`src/presales/application/opportunity_context.py`、`src/presales/application/proposal_attempt_context.py`、`src/presales/infrastructure/opportunity_workspace.py`（背景读取预算与阈值配置化）；拟新增`tests/presales/test_requirement_analysis.py`、`tests/presales/test_opportunity_context_budget.py` | 3、7、13、15 | 意图/Router/需求节点、结构化提示模板及Fake案例；背景读取接入Attempt预算账本（单次上限与初次后最多2次技术重试取自`AttemptBudget.max_mcp_seconds`/`max_mcp_retries`，读取节点不再另设固定10秒）；背景字符/记录数阈值与读取超时改为可配置并随启动记录实际值 | AC07/08/09/19：不能删关键专家/开无限循环；拆合保留原始出处，未经确认不改分母；关键输入装不下明确拒绝；稳定ID服务端产生；背景读取时长与重试计入统一主动预算，超时/契约失败不重试且预算耗尽即停，不得以本地常量绕过账本；背景阈值缺省值与实际生效值可核验 | 按项目约定填写：`uv run pytest tests/presales/test_requirement_analysis.py -q`；`uv run pytest tests/presales/test_opportunity_context_budget.py -q` | 不用真实模型评分、不替客户确认范围、不并行读取尚不存在的上游结果、不在读取节点硬编码时限与重试次数、不以模块常量替代预算账本 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务13/15 |
 | 17 | Evidence与Published Knowledge Version专业分析 | 2B-2 | 需求驱动证据节点只使用允许范围内的已发布知识与独立任务材料 | 拟新增`src/presales/application/evidence_analysis.py`、`tests/presales/test_evidence_analysis.py` | 16；依赖【D1受限检索及Product Catalog MCP完成后】 | 二A检索/目录业务适配、引用/无证据/冲突及降级记录 | AC04/05/06/07/09/16/19：两路和缓存范围由二A接口保证，Fake记录证明不越权调用；失败与空结果区分；精排超时可见退RRF；证据缺失不虚构、版本/适用性保留，真实链待24 | 按项目约定填写：`uv run pytest tests/presales/test_evidence_analysis.py -q` | 不重写BM25/向量库、不把候选知识当已发布、不以Fake证明召回率 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置D1/16 |
 | 18 | Proposal Package方案架构分析 | 2B-2 | 架构节点在需求和证据之后输出可校验的部署/集成建议及条件 | 拟新增`src/presales/application/proposal_solution_analysis.py`、`tests/presales/test_proposal_solution_analysis.py` | 16、17 | 架构节点、方案/假设/限制类型化输出与Fake负例 | AC07/09/19：不支持项不虚构替代承诺；事实/建议/待确认区分；报价/日期非绑定；关键结构缺失失败；预算不足不截断成完整 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_solution_analysis.py -q` | 不生成正式合同/报价，不承诺真实模型诚实性已达标 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务17 |
 | 19 | Risk与Clarification Question专业分析 | 2B-2 | 风险节点依赖架构和证据，形成六类风险及待澄清的完整检查结果 | 拟新增`src/presales/application/proposal_risk_analysis.py`、`tests/presales/test_proposal_risk_analysis.py` | 18 | 风险/问题节点、空列表检查记录、处置待办 | AC09/10/19：严重风险不豁免；无来源回复不解决关键问题；无风险可为空但检查完成；缺关键产出失败；不伪造责任人接受/客户确认 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_risk_analysis.py -q` | 不提供人工改级/录入入口、不写Review Record或Approval Record | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务18 |
 | 20 | Product-fit Coverage与Proposal Package汇总门禁 | 2B-2 | 汇总确定计算覆盖并输出可核对的阻断清单 | 拟新增`src/presales/application/proposal_package_validation.py`、`tests/presales/test_proposal_package_validation.py` | 3、16、17、18、19 | 四专家完整性/引用关联/覆盖与风险校验器、前版汇总 | AC07—10/27：10条6覆盖得60%；部分不折算、范围外入分母；空范围不适用；必须未覆盖/待澄清/范围外阻断，部分/高风险无真实接受不得解锁；冲突/缺引用拒绝完整，内外指标不混算 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_package_validation.py -q` | 不实现正式提交/批准；不因结构校验通过宣称语义正确 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务19 |
 | 21 | Proposal Package一次Reflection与前后关联 | 2B-2 | 一次受约束修订保留两版并拒绝硬门禁退化 | 拟新增`src/presales/application/proposal_reflection.py`；`proposal_package_validation.py`；拟新增`tests/presales/test_proposal_reflection.py` | 7、15、20 | 检查/修订身份、一次配额、前后产物/差异和失败原因 | AC21/27及AC07—10：技术重试/重启不增修订数；有效无修改仍有检查记录；缺配对失败；不得删分母/无依据降风险/伪造接受；退化后版隔离，前版不自动冒充成功 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_reflection.py -q` | 不自改提示词/代码、不无限修订、不以Judge取代正式人工配对评分 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务20 |
 | 22 | Proposal Draft分析落稿与失败保留 | 2B-2 | 专门落稿事务只让当前有效Attempt推进候选并保留失败历史 | 拟新增`src/presales/application/proposal_draft_finalization.py`；`src/presales/infrastructure/proposal_attempt_store.py`；拟新增`tests/presales/test_proposal_draft_finalization.py` | 10、11、15、20、21 | 内容/来源/Evidence Snapshot/候选/Attempt终态/投影/审计原子落稿 | AC04/05/07—10/13/16/19/21：草稿就绪不等于允许提交；合法不支持可成为草稿但保留门禁；缺专家/Reflection失败不覆盖旧草稿；落稿事务内重验 actor 当前角色/对象授权与全部实际来源闭包，撤权或来源失效即拒写；取消旧代次拒写；落稿成功checkpoint滞后仅对账；真实原子性待24 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_draft_finalization.py -q` | 不绕过`_task(new)`直接复用旧保存入口、不开放任意状态写、不写正式版本 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务21 |
-| 23 | Proposal Analysis Attempt显式图装配 | 2B-2 | 监督器可驱动白名单DAG至受限草稿，重入不重复产生权威产物 | 拟新增`src/presales/application/proposal_analysis_graph.py`；`proposal_attempt_runtime.py`；拟新增`tests/presales/test_proposal_analysis_graph.py` | 9、11、13、15—22 | StateGraph、受控模型/工具接线与确定性全图工程案例 | AC07—10/19/21/27：需求→证据→架构→风险→汇总→Reflection→校验→落稿顺序固定；四类缺一失败；已提交节点复用；无审批/写工具；全链无Key可运行且模式显式 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_analysis_graph.py -q` | 不加载通用research/RAG/AG-UI图、不提前接人工审批子流程 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务22 |
-| 24 | Proposal Analysis Attempt与Evidence Snapshot真实集成回归 | 2B-2 | 完整Fake分析图在真实数据库/二A检索/只读工具下通过权限与崩溃点门禁 | 拟新增`tests/presales/test_proposal_analysis_postgres.py`；现有专项脚本与已交付测试 | 12、14、17、22、23；依赖【D1/D3/D6完成后】 | 全图数据库专项、共享模块离线回归及基线失败分类报告 | AC04—10/13/16/19/21/22/27：真实撤权、目录变化、来源闭包、取消落稿竞争、产物已提交而checkpoint滞后无二次候选；Fake不外发；指定工程反例全有非跳过证据；既有失败单列不虚报全套通过 | 按项目约定填写，需真实实例：`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --full-suite --pytest-args -q -rs`（该命令走全量档，须使用任务6核定的`--full-suite`档超时；未分档前只作目标命令，不计已运行）；另`uv run pytest`、`uv run pyrefly check`（离线模式单列） | 不把真实数据库+Fake当真实Agent能力，不执行阶段三/四/五完整验收 | 真实模型否；真实数据库是；浏览器E2E否；真实本地只读MCP是；未完成前置D1/D3/D6及任务23 |
+| 23 | Proposal Analysis Attempt显式图装配 | 2B-2 | 监督器可驱动白名单DAG至受限草稿，重入不重复产生权威产物 | 拟新增`src/presales/application/proposal_analysis_graph.py`；`proposal_attempt_runtime.py`；拟新增`tests/presales/test_proposal_analysis_graph.py` | 9、11、13、15—22 | StateGraph、受控模型/工具接线（含`RetrievalPort`/`EvidenceReader`/`CatalogPort`/`MaterialPort`四端口装配）、“固定输入/背景读取”节点与确定性全图工程案例 | AC07—10/19/21/27：需求→证据→架构→风险→汇总→Reflection→校验→落稿顺序固定；四类缺一失败；已提交节点复用；无审批/写工具；全链无Key可运行且模式显式；DAG首个业务步骤按§6.1实现“固定输入读取”：按Attempt锁定版本经既有`materials`应用服务`parsed_document`取材料正文，形成`origin="material"`输入交出，未解析/未就绪/无权材料在图内显式判待补充并停止，不以可访问性标记替代正文、不静默跳过、不截断超限正文；四端口均由同一生产适配器接线，业务层与节点不得出现按适配器类型分支的Fake路径 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_analysis_graph.py -q` | 不加载通用research/RAG/AG-UI图、不提前接人工审批子流程、不在图内按适配器类型分支降级、不自行解析材料或改动解析器 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务22 |
+| 24 | Proposal Analysis Attempt与Evidence Snapshot真实集成回归 | 2B-2 | 完整Fake分析图在真实数据库/二A检索/只读工具下通过权限与崩溃点门禁 | 拟新增`tests/presales/test_proposal_analysis_postgres.py`；现有专项脚本与已交付测试 | 12、14、17、22、23；依赖【D1/D3/D6完成后】 | 全图数据库专项、共享模块离线回归、共享二A模块真实复验及基线失败分类报告 | AC04—10/13/16/19/21/22/27：真实撤权、目录变化、来源闭包、取消落稿竞争、产物已提交而checkpoint滞后无二次候选；Fake不外发；指定工程反例全有非跳过证据；既有失败单列不虚报全套通过；材料正文在真实`materials`服务与真实解析结果下可读取，未解析/撤权材料被拒且不泄漏正文；二B若改动二A共享模块（如`retrieval/models.py`、`retrieval/service.py`、`materials/service.py`），须在真实实例重跑对应回归并在报告登记，2026-11-11的历史D1/D3证据不得直接外推到已改动代码 | 按项目约定填写，需真实实例：`uv run python scripts/test_presales_postgres.py --pg-bin "<PostgreSQL bin>" --check-vector --full-suite --pytest-args -q -rs`（该命令走全量档，三档子进程超时已由任务6交付：默认180秒/带`-k`专项300秒/全量900秒，须登记实际耗时）；改动共享二A模块时另跑`--pytest-args -q -rs -k "retrieval or evidence or material"`（须用单数`material`：v1.4误写复数`materials`时收集结果为0条，未覆盖`test_material_manifest.py`）；另`uv run pytest`、`uv run pyrefly check`（离线模式单列） | 不把真实数据库+Fake当真实Agent能力，不执行阶段三/四/五完整验收、不以历史文档结果替代本次复验 | 真实模型否；真实数据库是；浏览器E2E否；真实本地只读MCP是；未完成前置D1/D3/D6及任务23 |
 | 25 | Golden Dataset开发样例与Agent Capability Evaluation探针准备 | 2B-2 | 少量开发输入、检查项和有界执行入口已固定且默认不调用真实服务 | 拟新增`scripts/probe_proposal_analysis.py`、`tests/presales/test_proposal_probe_runner.py`；拟新增`data/probes/phase2b-dev/`存放所选合成材料并登记校验和，不放客户数据；已存在开发样例则复用，尚未制作则准备少量映射到批准的10开发样例组成并送复核 | 3、23、24；样例准备/送复核是本任务交付，不是本任务前置 | 专项计划草案、少量开发样例/人工预期及复核记录或明确待复核清单、报告格式和默认dry-run入口；runner与资料两逻辑模块，超800行先修订拆分 | AC19/21/27及AC20准备部分：所选样例/预期/检查项及版本可追溯且不读取20验收标签；默认及CLI离线自测无外发；未具备数据复核、固定专项计划或明确调用授权则execute-real必须拒绝；报告保留超时/缺引用/缺配对、三类结局与未知费用；允许形成准备交付并标待复核，但该结局不解除26执行门禁 | 按项目约定填写：`uv run pytest tests/presales/test_proposal_probe_runner.py -q`；新CLI交付后`uv run python scripts/probe_proposal_analysis.py --help` | 不执行真实探针、不制作或批准全部冻结验收集、不改变P07阈值；开发样例可准备/送复核，不能自称已批准 | 真实模型否；真实数据库否；浏览器E2E否；未完成前置任务24；D7中的数据复核/真实调用授权不阻塞本任务准备，转为26的执行前置 |
 | 26 | Agent Capability Evaluation早期真实探针执行 | 2B-2 | 经授权真实运行留下全部产物并给出可行性/差距/阻断结论 | 任务25交付的探针脚本、专项计划与受限报告；存储产物由既有业务服务生成 | 14、24、25；依赖【D6就绪、所选开发数据复核、专项计划固定及本次真实调用明确授权后】 | 独立探针报告、Attempt/前后产物/配置/时间/可得用量费用、差例和影响清单 | AC07/09/10/19/21/27及AC20准备部分：实际结构输出/容量/四专家/Reflection/预算均检查；失败不换Fake/不删样本；按上游规则归类并记录依据与影响任务；基本不可行先解决，语义差距留痕可继续已授权工程，越权等硬门禁立即阻断且不等额外签署；结论有争议或拟改规则/授权范围时提请裁决，未解决的争议不得当作可继续；不宣称冻结验收通过 | 按项目约定填写，需真实实例及已授权模型，新入口交付后：`uv run python scripts/probe_proposal_analysis.py --plan "<已复核专项计划JSON>" --execute-real` | 不进入默认CI、不跑20验收标签调优、不扩调用次数/数据范围，不等待运行页全部完成才探针 | 真实模型是（含配置的真实本地LLM）；真实数据库是；浏览器E2E否；本地MCP是；未完成前置D6/D7及任务25；未授权则阻塞 |
 
@@ -157,7 +157,7 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 
 | 编号 | 任务名 | 所属增量 | 目标 | 涉及模块/文件 | 前置任务 | 交付物 | 验收条件 | 验证命令 | 不做什么 | 外部依赖 |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 33 | Proposal Analysis Attempt证据汇总与退出评审 | 二B退出评审 | 每项交付有独立结论且所有缺口映射后续处理，提交可审查退出材料 | `docs/maintenance/phase2b-delivery-<YYYY-MM-DD>.md`（拟新增；最终文件名开工核对后记入修订记录）；本清单修订记录 | 1—32；任何阻塞未解除仅能形成未完成报告 | 工程/PG/MCP/真实探针/浏览器分册索引、AC部分覆盖、遗留风险和退出建议 | AC07—10/19/21/27：每个映射项都有任务与证据，失败/跳过/未授权分别记录；环境身份（PG主版本/PGVector/角色、模型与模式、浏览器版本）随分册登记；二A/三/四/五缺口不伪称通过；探针语义差距可以带记录建议继续，但基本不可行/硬门禁失败及缺真实报告不能列已完成；用户决定阶段验收 | 按项目约定填写：`uv run pymarkdown scan docs/superpowers/plans/Phase-Two-B-Implementation-v1.md docs/maintenance/`；人工核对报告；不重新运行工程或真实服务命令 | 不改STATUS/需求/设计批准结论、不commit/push、不自行宣布验收 | 真实模型否；真实数据库否；浏览器E2E否；依赖任务6/12/14/24/26/32的真实报告，报告未取得则阻塞退出完成结论 |
+| 33 | Proposal Analysis Attempt证据汇总与退出评审 | 二B退出评审 | 每项交付有独立结论且所有缺口映射后续处理，提交可审查退出材料 | `docs/maintenance/phase2b-delivery-<YYYY-MM-DD>.md`（拟新增；最终文件名开工核对后记入修订记录）；本清单修订记录 | 1—32；任何阻塞未解除仅能形成未完成报告 | 工程/PG/MCP/真实探针/浏览器分册索引、AC部分覆盖、遗留风险和退出建议 | AC07—10/19/21/27：每个映射项都有任务与证据，失败/跳过/未授权分别记录；环境身份（PG主版本/PGVector/角色、模型与模式、浏览器版本）随分册登记；二A/三/四/五缺口不伪称通过；探针语义差距可以带记录建议继续，但基本不可行/硬门禁失败及缺真实报告不能列已完成；登记任务13将背景读取结局由六类扩展为七类（含`capacity_exceeded`）的契约变更、对应测试证据及未引入分页的规模假设；用户决定阶段验收 | 按项目约定填写：`uv run pymarkdown scan docs/superpowers/plans/Phase-Two-B-Implementation-v1.md docs/maintenance/`；人工核对报告；不重新运行工程或真实服务命令 | 不改STATUS/需求/设计批准结论、不commit/push、不自行宣布验收 | 真实模型否；真实数据库否；浏览器E2E否；依赖任务6/12/14/24/26/32的真实报告，报告未取得则阻塞退出完成结论 |
 
 ## 4. 增量覆盖表
 
@@ -165,7 +165,7 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 | --- | --- | --- |
 | 2B-0 | 1、2、3、4、5、6 | 二A/评审依赖、旧草稿兼容、契约/迁移/最小权限、受控saver真实门禁；不能凭离线任务跳过6 |
 | 2B-1 | 7、8、9、10、11、12 | 授权/预算、启动/占位、监督器、取消排空、核实恢复；12验证真实并发/崩溃 |
-| 2B-2 | 13—26 | 只读Opportunity背景、来源快照、四专家、汇总/Reflection/落稿、全图联调；25准备/26真实探针分别验收 |
+| 2B-2 | 13—26 | 只读Opportunity背景、来源快照、固定输入与任务材料正文读取（任务23）、四专家、汇总/Reflection/落稿、全图联调；25准备/26真实探针分别验收 |
 | 2B-2链路可用后早期探针（复用视图，主归属仍为2B-2） | 25、26（不重复计数） | 固定开发样例及调用边界、全部真实失败/用量报告、三类结果与推进约束；不是新增阶段，不改变25/26的主归属 |
 | 2B-3 | 27、28、29、30、31、32 | REST、快照/SSE、DTO/订阅、运行页；31准备与32真实浏览器取证分离 |
 | 二B退出评审 | 33 | 分册证据、未执行/失败/缺口、评审建议；不改变批准或阶段状态 |
@@ -209,22 +209,24 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 | --- | --- | --- |
 | `_docs/superpowers/plans`指定输出路径 | 不存在且用户禁止建目录；本次采用已有docs路径 | 当前仅交付单个计划；后续获允许建目录或用户自行建立后再迁移，不在本轮创建 |
 | 二B方案批准及实施授权 | 本清单v1.2已通过AI技术复评，但上游二B仍待评审，用户实施范围尚未授权；文档已评审不等于业务方案批准或允许开工 | 实施前完成任务1的D0核对，缺上游批准/相应实施授权仍不执行2起；不因本清单状态更新自动解除D1—D8 |
-| 二A-2/2A-3及二A真实探针 | 无对应检索/MCP/业务页面或可用真实探针证据 | 二A专项先完成；依赖任务阻塞，不在本清单顺手补实现；语义差距按报告分类，不必假装达到阶段五阈值 |
+| 二A-2/2A-3及二A真实探针 | 编制时无对应检索/MCP/业务页面或真实探针证据；现三项均已有工程实现与交付记录（D1/D2/D3行），但D3开发样例复核/接受与人工相关性证据仍未闭合 | 二A专项先完成；依赖任务阻塞，不在本清单顺手补实现；语义差距按报告分类，不必假装达到阶段五阈值。v1.4复核：D3剩余缺口仍不解除，不得以既有探针报告替代P07能力结论 |
 | 真实PostgreSQL主版本/PGVector/权限可用性 | 当前源码有约束，未核实机器可用 | 6前核定专用临时实例，6/12/14/24/32分层取证；不连接未授权业务库 |
 | saver提交边界fencing支持 | 通用saver存在不代表TD-033成立 | 5设计和6实证；无法拒旧代次则11续跑阻塞，不能用禁测/SQLite降级制造通过；若确认锁定版本无法在提交边界fencing，是否改为“一律结束旧Attempt、放弃受控续跑”须用户重定（第7节） |
 | Golden Dataset开发样例与真实模型授权 | 批准样本组成不等于已有数据/服务许可 | 25负责少量选例准备和送复核，不能要求这些成果先存在；26在数据复核、计划固定及调用获授权后执行；未执行探针保持未验证 |
 | 样例数/模型/端点/调用次数/费用上限 | 上游明确留专项计划，不能由本清单冒充用户选择 | 25给出有依据建议并固定输入，26执行前核对明确授权；不更改P07阈值 |
-| 浏览器/本地MCP/HTTP基础设施 | Streamlit脚本不能证明React；新CLI尚不存在 | 13交付只读MCP及§2.2完整启动命令，14真实进程验证；31准备入口/锁定环境要求，不以自身成果或真实浏览器就绪为前置；32才核实真实环境并执行，未满足不以build替代 |
+| 浏览器/本地MCP/HTTP基础设施 | Streamlit脚本不能证明React；售前探针/React浏览器CLI（`scripts/probe_proposal_analysis.py`、`scripts/test_presales_browser.py`）截至v1.4仍不存在 | 13交付只读MCP及§2.2完整启动命令（已交付，stdio真实往返见任务14记录），14真实进程验证；31准备入口/锁定环境要求，不以自身成果或真实浏览器就绪为前置；32才核实真实环境并执行，未满足不以build替代 |
 | 阶段三编辑、客户澄清/冲突确认、Review/Approval与人工interrupt | 二B正常路径结束在草稿，无正式批准入口 | 三实现业务写交互/批准和等待释放重取全链；11只保留基础契约，AC09/10/13不冒称完整覆盖 |
 | 阶段四External Task Record、Approved Action Set、发布/未知写恢复 | 二B只读背景，禁止未经批准External Write | 四实现；14/24只验证写能力不可调用，不实现写幂等协议 |
 | Long-term Memory治理/确认 | 二B仅memory_updates候选，待确认不变事实 | 三治理与AC17；不得以方案生成自动晋升事实 |
 | 阶段五冻结验收、完整人工配对与三轮指标 | 探针数据/目的不同，不能替代P07 | 五覆盖AC20及完整AC07—10/21/27语义验收，保留失败不降低阈值 |
 | Linux VM Compose、完整导出和整体演示 | 当前镜像入口/扩展/静态产物尚有交付差距 | 五执行AC01/18/23/24相关交付；本清单只验证Windows原生，不部署 |
 | 依赖粒度与串行面 | 当前上游第1节规定二A依赖先于二B实施，本清单继续保留D0/D1/D2/D3进入门槛；7—11沿用6的真实存储门禁 | 当前按既有顺序推进，不要求用户重答前置是否成立；仅拟提前实施或变更阶段顺序时按F-3处理。D5/D7/D8只阻塞其使用任务，不反向阻塞准备任务；D6在6前就绪即可 |
-| `--full-suite`取证与脚本单一超时 | 脚本pytest子进程上限180秒为硬编码，全量档与单场景档未区分 | 任务6交付分档超时并登记；未分档前24不得宣称全量档取证；不得改小测试范围充数 |
+| `--full-suite`取证与脚本超时分档 | 已由任务6交付：默认180秒、`-k`专项300秒、`--full-suite`900秒（`select_pytest_timeout`）；本轮v1.4复核时源码与2B-0交付记录一致 | 24可按全量档取证并登记实际耗时；仍需注意脚本以单次`subprocess.run(timeout=...)`计时，超出即整档失败，不得改小测试范围充数 |
 | 任务1/26判定与归类依据 | v1.1把正常证据核对/探针分类增加为逐次确认，超出上游既定推进规则 | 本次移除重复门槛；1核对现有批准和证据，26依上游规则留存分类依据、影响及可复核报告；硬门禁立即阻断，争议或规则/授权变更才提请用户裁决，不以签署人未定作为新阻塞 |
 | 剩余待定路径/工具 | DTO生成工具、MCP服务物理位置、开发数据位置、交付记录文件名为开工核对项；迁移文件名与报告名已给默认值 | 开工时核对后写入交付记录与修订记录，不得静默改语义；无法确定则按缺口记录，不临时自造第二套 |
-| 现有无关基线失败 | 本次未跑测试，不清楚是否仍存在历史脚手架失败 | 24如实分类记录，33不能将局部通过写全套通过；不删除/回滚用户代码 |
+| 现有无关基线失败 | 编制时未跑测试。v1.4复核实测：全量离线`uv run pytest -q`为541通过/0失败/111跳过，历史脚手架失败未见；任务17曾修复的时间漂移缺陷已关闭 | 24如实分类记录，33不能将局部通过写全套通过；不删除/回滚用户代码。该数字仅为v1.4复核时点结果，24须重新取证 |
+| 任务材料正文读取的落位 | 任务17只交付端口契约，材料仅作可访问性降级标记；正文读取属于上游方案§6.1 DAG的“固定输入/背景读取”步骤，v1.3前无任务承接 | v1.4把该步骤写入任务23（经既有`materials`服务`parsed_document`取正文、未就绪显式待补充），真库取证在24；任务17交付范围不变，交付记录中的缺口由此关闭 |
+| 共享二A模块改动后的D1复验 | 任务17修复缺陷时修改了`retrieval/models.py`与`retrieval/service.py`，2026-11-11的D1/D3真实证据对应的是改动前代码 | v1.4把“改动共享二A模块须真实实例复验”写入任务24验收与命令；未复验前该扩展只能引用离线与自建临时库结果，不得表述为D1能力复验通过 |
 
 ## 7. 上游决定边界与适用规则
 
@@ -249,8 +251,10 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 | v1.1 | 2026-11-10 | 可追溯评审意见：对本文件v1的只读评审R-01—R-20及上游方案/架构/AC交叉核对 | 补任务22落稿权限与来源重验（P0）、任务6/24分档超时与全量档取证口径（P0）；把条件前置26写入27/28/30前置列；修§2“每项单归属”与§4探针行矛盾；锁定迁移文件名、MCP stdio入口与启动方式、playwright版本；任务12崩溃注入手段、任务8启动容量/模式预检、任务13六类结局、任务4离线权限断言边界、任务31场景对应关系、任务33环境身份与报告名；新增§2.1环境矩阵、§7待上游决定F-1—F-6；修D1漏列domain、D4字段位置、AC19枚举 | 修改4、5、6、8、12、13、14、22、24、26、27、28、30、31、32、33；新增无；作废无；章节新增2.1、7，原“修订记录”改为第8节 |
 | v1.2 | 2026-11-11 | 评审意见（来源：本聊天2026-11-11对v1.1的只读复评，项目约定轴3条/方案一致性轴3条，去重4类）；用户随后要求“修复和完善” | 删除正常探针归类/推进的重复确认门槛，沿用架构三类规则并只升级争议或规则变更；区分任务1外部进入条件与后续内部成果，消除6/25/31自前置；明确27在25/26后执行并同步28—30继承条件；补PowerShell源码路径与MCP/售前HTTP启动模板，保持13/31离线准备、14/32真实执行分离；同步D5/D7/D8、缺口表和F项，保留真实调用授权、上游待审状态及既有修订历史 | 修改1、6、13、25、26、27、28、29、30、31、32；新增无；作废无；同步第1/6/7节，新增2.2 |
 | v1.2（技术复评登记） | 2026-11-11 | 评审意见（来源：本聊天用户明确要求完整复评v1.2并按结论登记状态；本轮项目约定轴、方案一致性轴及主核对均未发现阻断问题） | 追加第9节完整复评记录和上轮四类问题关闭证据，将状态登记为“已评审（AI技术复评通过；未执行，不构成实施授权）”；同步缺口表区分清单已评审与上游批准/实施授权，任务内容及既有历史不变 | 无；仅评审元数据、缺口状态说明及评审记录变化，1—33任务内容不变 |
-
+| v1.3 | 2026-11-12 | 用户确认保留七类结局并在二B退出评审登记该契约扩展；核对发现背景读取10秒上限与阈值配置化未被任何任务承接 | 任务13验收口径由“六类结局”改为“七类结局（含`capacity_exceeded`）”；任务16补背景读取接入`ProposalAttemptContext`预算账本（单次上限与初次后最多2次重试取自`AttemptBudget`）、背景阈值配置化并记录实际值、及`test_opportunity_context_budget.py`正反例，前置列补13；任务33补登记该契约扩展与规模假设 | 修改13、16、33；新增无；作废无 |
 | v1.2（2B-0续作登记） | 2026-11-11 | 用户批准B层PostgreSQL命令并要求继续中断的2B-0；开工核对任务3超800行及二A迁移占号 | 任务3先登记3a/3b内部审查切片并拆文件；任务4固定0006迁移及0005前驱；锁定saver版本及任务6并发/回滚取证范围；不扩展至2B-1 | 修改3—6的交付路径与审查粒度说明；任务1—33编号、业务规则及后续阶段边界不变 |
+| v1.4 | 2026-11-12 | 任务17交付记录登记两项缺口：任务材料只做可访问性标记未读取正文；共享二A检索契约扩展后未安排真实复验。核对确认二者在v1.3任务表中均无承接任务 | 任务23补“固定输入读取”步骤：按Attempt锁定版本经既有`materials`服务`parsed_document`读取材料正文并形成`origin="material"`输入，未解析/未就绪/无权显式判待补充，不以可访问性标记替代正文；四端口须由同一生产适配器接线、无Fake分支。任务24补共享二A模块改动后的真实复验口径（`-k "retrieval or evidence or materials"`）及材料正文真库反例，并明确2026-11-11历史D1/D3证据不得外推到已改动代码。任务17内容不变（避免追溯推翻已交付范围），其材料正文缺口改由上列后续任务承接 | 修改23、24；新增无；作废无 |
+| v1.5（技术复评登记） | 2026-11-12 | 用户要求对v1.4作一次技术复评；复核发现v1.1—v1.4遗留的事实漂移（超时分档、迁移文件名、D1/D2/D3/D5现状、任务4口径）、两处文档结构缺陷，以及v1.4自引入的B层命令口径不精确 | 按复核结论修正：真实PostgreSQL验证行与缺口表的180秒硬编码表述改为已交付的三档超时；任务4迁移名由`0005_proposal_attempt`更正为`0006_proposal_attempt`（前驱`0005_retrieval`），与§3.1续作说明一致；D1/D2/D3/D5事实列更新为已交付现状并保留原有阻塞语义；缺口表「二A-2/2A-3」与「浏览器/本地MCP/HTTP基础设施」同步；补充依据指纹随提交变更的说明；合并被空行拆断的修订记录与缺口表；第10节登记本轮复评。任务编号、业务规则、验收口径及AC映射不变 | 修改第1、2、5(无)、6、8节及任务4、24文本；任务23/24验收语义不变；新增无；作废无 |
 
 ## 9. v1.2完整技术复评记录
 
@@ -293,3 +297,39 @@ uv run uvicorn presales.asgi:app --host 127.0.0.1 --port 8000
 | 指定`_docs`目录不存在、旧版完整评审证据不可取得 | 已显式披露的路径偏差与历史追溯限制 | 保留现有单文件路径及上述历史边界，不新建目录、不虚构原意见关闭情况 |
 
 最终结论：**v1.2实施任务清单的AI技术复评通过，无阻断问题，登记为“已评审（AI技术复评通过；未执行，不构成实施授权）”。** 本结论只适用于所记录输入版本的计划完整性、一致性及可审查性；不批准上游整体方案，不宣称产品能力、工程测试、真实模型质量或任何阶段验收通过，不解除第1/6/7节中的实施门禁。后续任务内容或上游约束变化时，须追加修订及相应复评记录。
+
+## 10. v1.4技术复评记录
+
+### 10.1 日期、范围与依据
+
+- 日期：2026-11-12（Asia/Shanghai）。评审对象为本文件v1.4全文（含v1.3、v1.4增量），评审在v1.5修订前进行。
+- 评审方式：主审逐节全文核对，并以只读脚本交叉核对源码、测试收集结果与交付记录；不运行清单中的目标命令，不启动数据库、模型或浏览器。
+- 依据：`AGENTS.md`、`CLAUDE.md`、`GLOSSARY.md`、`STATUS.md`、上游二B方案与总体架构（HEAD版本）、`docs/maintenance/`下2A外部前置、2B-0及任务7—17交付记录、当前源码与`uv run pytest --collect-only`。
+- 复核时点事实：离线全量`uv run pytest -q`为541通过/0失败/111跳过；`ruff check`、`ruff format --check src tests`（187文件）、`pyrefly check`均通过。以上为本轮复核实测，不是任务验收结论。
+
+### 10.2 发现与处置
+
+| 编号 | 发现 | 性质 | 处置 |
+| --- | --- | --- | --- |
+| R-1 | §2验证表与§6缺口表称`scripts/test_presales_postgres.py`仍是单一180秒硬编码、"全量档与单场景档未区分"，但该脚本`select_pytest_timeout`已实现180/300/900三档，2B-0交付记录亦明确交付该分档 | 事实与现码不符（P1，会导致任务24误判"未分档前不得取证"） | 已改为"已由任务6交付"并保留"须登记实际耗时、不得改小范围"约束 |
+| R-2 | 任务4"涉及模块/文件"仍写`0005_proposal_attempt.py`/`down_revision=0004_knowledge`，与同节§3.1续作说明的"最终使用`0006_proposal_attempt.py`、`down_revision=0005_retrieval`"自相矛盾 | 文档内部不一致（P1，若按前者开工将覆盖二A迁移） | 已更正为`0006`/`0005_retrieval`并加注不得覆盖二A迁移 |
+| R-3 | D1/D2/D3静态事实列仍写"无受限检索/无知识页面/未见探针报告"，与2A交付记录（检索、`KnowledgeWorkbench.tsx`、`phase2a-real-probe`）及现有源码不符 | 事实漂移（P2，会低估既有基础、误导任务1核对） | 已更新为已交付现状，并保留原有阻塞语义与D3样例复核缺口，另注明历史证据不自动外推到已改动共享模块 |
+| R-4 | 任务24的复验命令写作`-k "retrieval or evidence or materials"`；实测该表达式收集0条`test_material_manifest.py`用例（复数`materials`不匹配） | 本清单v1.4自引入的命令缺陷（P1，会导致复验空跑却显示通过） | 已改为单数`material`，实测收集72条，并在命令列注明误写复数时匹配0条 |
+| R-5 | 第7行"所有任务当前均未执行"与任务7—17已有交付记录矛盾（§3.1续作说明已提示不能沿用该句） | 事实漂移（P2） | 已改为"v1.2编制时均未执行；此后7—17已实施并有交付记录，其余未执行" |
+| R-6 | D5仍称`api/app.py`"无售前Attempt/checkpoint绑定"，但任务9已装配`ProposalAttemptSupervisor`与lifespan，任务5已交付`proposal_checkpoint.py` | 事实漂移（P3） | 已更新为编制时/现状分列，保留"不因装配视为自动恢复授权" |
+| R-7 | §8修订记录表与§6缺口表被空行拆成多个独立表格；缺口表新增两行脱离表体 | 文档结构缺陷（P2，渲染断裂、pymarkdown未报错但表格语义丢失） | 已合并为单一表格 |
+| R-8 | 依据指纹行给出的两份设计SHA256对应提交`3f0d234`；HEAD（`c970161`）已更新两文档，原始字节指纹已变（含CRLF差异） | 追溯性缺口（P2，不校验会误认输入未变） | 已标注指纹对应提交、当前归一化指纹及"仅换行差异"说明 |
+
+### 10.3 复核通过项
+
+- 33项编号1—33连续、每行11个字段非空，主归属为2B-0六项、2B-1六项、2B-2十四项、2B-3六项、退出评审一项。
+- 前置编号无自引用或向后引用；任务13—17的验收口径与已交付记录一致。
+- AC07—AC10/19/21/27及额外反例组均有任务承接；二A算法、阶段三/四/五边界未被扩张认领。
+- 任务23/24的v1.4新增内容（材料正文经`parsed_document`读取、四端口无Fake分支、共享模块真实复验）与上游§6.1 DAG顺序及§8.1证据要求一致，未新增业务规则。
+- `OpportunityContext`七类结局（含`capacity_exceeded`）与任务13验收口径及任务33登记要求一致，源码`ContextOutcome.status`相符。
+
+### 10.4 结论与残留
+
+- 结论：v1.4在修正上述R-1—R-8后，计划完整性、内部一致性及与上游方案/AC的一致性无阻断问题；本结论**不**等同于上游二B方案批准、实施授权、真实能力或阶段验收通过。
+- 残留：D3开发样例复核/接受与人工相关性证据仍未闭合；saver提交边界、数据库权限、MCP进程与浏览器环境仍须6/12/14/24/26/32真实取证；任务23/24尚未开工，本清单未验证其可实现性。
+- 复核声明：本轮仅执行文档检查（`pymarkdown scan`）与只读源码/收集核对；未运行目标业务命令，未调用模型、数据库或浏览器。

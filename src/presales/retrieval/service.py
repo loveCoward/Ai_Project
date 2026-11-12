@@ -246,6 +246,7 @@ class RetrievalService:
             if current_signature != signature:
                 raise Conflict()
             self._authorize(query, current)
+            by_version = {version["id"]: version for version in current}
             selected = ranked[: self.config.limit]
             run_id = uuid4()
             await execute(
@@ -269,7 +270,7 @@ class RetrievalService:
                 ),
                 degradation=canonical(degradation),
             )
-            hits = [self._evidence(by_id[i], score) for i, score in selected]
+            hits = [self._evidence(by_id[i], score, versions=by_version) for i, score in selected]
         if not degradation or degradation == ["reranker_not_configured_rrf_retained"]:
             self._cache[key] = {
                 "ranked": ranked,
@@ -292,7 +293,10 @@ class RetrievalService:
         )
 
     @staticmethod
-    def _evidence(value: dict, score: float | None = None) -> Evidence:
+    def _evidence(
+        value: dict, score: float | None = None, *, versions: dict | None = None
+    ) -> Evidence:
+        version = (versions or {}).get(value["source_version_id"]) or {}
         return Evidence(
             evidence_id=value["id"],
             source_version_id=value["source_version_id"],
@@ -302,6 +306,8 @@ class RetrievalService:
             start_offset=value["start_offset"],
             end_offset=value["end_offset"],
             score=score,
+            declaration=version.get("declaration"),
+            applicability=scope_of(version) if version else None,
         )
 
     async def read_evidence(self, actor: Actor, evidence_id: UUID) -> Evidence:
@@ -316,7 +322,7 @@ class RetrievalService:
             )
             if not identities:
                 raise AccessDenied()
-            await self.registry.version(conn, policy, identities[0]["source_version_id"])
+            version = await self.registry.version(conn, policy, identities[0]["source_version_id"])
             values = await rows(
                 conn,
                 """SELECT c.*,l.locator FROM presales.chunks c
@@ -327,7 +333,7 @@ class RetrievalService:
             )
             if not values:
                 raise AccessDenied()
-            return self._evidence(values[0])
+            return self._evidence(values[0], versions={version["id"]: version})
 
     async def read_run(self, actor: Actor, run_id: UUID) -> dict:
         async with self.database.transaction() as conn:

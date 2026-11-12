@@ -707,12 +707,12 @@ async def test_close_unrecoverable_rejects_success_outcome(tmp_path, monkeypatch
     assert fixture.attempt_row()["execution_stage"] == "reconciling"
 
 
-def supervisor(fixture, *, runner=None):
+def supervisor(fixture, *, runner=None, clock=None):
     return ProposalAttemptSupervisor(
         OfflineDatabase(fixture.root),
         runner=runner,
         settings=SupervisorSettings(heartbeat_seconds=5, lease_seconds=30, shutdown_seconds=2),
-        clock=Clock(),
+        clock=clock or Clock(),
     )
 
 
@@ -733,7 +733,8 @@ async def test_recorded_intent_lets_the_supervisor_resume_with_the_next_generati
     intent = fixture.intent()
     await service(fixture).request_recovery(actor, intent)
     runner = RecordingRunner()
-    instance = supervisor(fixture, runner=runner)
+    clock = Clock()
+    instance = supervisor(fixture, runner=runner, clock=clock)
     await instance.start()
     try:
         claim = await instance.claim(fixture.attempt)
@@ -746,7 +747,8 @@ async def test_recorded_intent_lets_the_supervisor_resume_with_the_next_generati
     assert (row["execution_stage"], row["execution_generation"]) == ("running", 2)
     task_slot, global_slot = fixture.slots()
     assert (task_slot["execution_generation"], global_slot["execution_generation"]) == (2, 2)
-    assert datetime.fromisoformat(global_slot["lease_until"]) > datetime.now(UTC)
+    lease = datetime.fromisoformat(global_slot["lease_until"])
+    assert clock() < lease <= clock() + timedelta(seconds=30)
 
 
 @pytest.mark.asyncio

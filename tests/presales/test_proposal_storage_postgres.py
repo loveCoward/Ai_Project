@@ -104,7 +104,7 @@ def test_migration_upgrade_head_twice(test_url):
         version = conn.execute(
             text("SELECT version_num FROM presales_migration_version")
         ).scalar_one()
-        assert version == "0009_proposal_attempt_recovery"
+        assert version == "0011_evidence_snapshot"
     engine.dispose()
 
 

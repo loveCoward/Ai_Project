@@ -7,6 +7,7 @@ from uuid import UUID, uuid4
 from pydantic import BaseModel, ConfigDict, Field
 
 from presales.access.policy import Policy
+from presales.application.opportunity_context import ContextLimits
 from presales.application.service import audit
 from presales.domain.contracts import (
     AccessDenied,
@@ -52,6 +53,7 @@ CANCELLABLE_TASK_STATES = frozenset(
     }
 )
 BACKGROUND_POLICY_KEY = "background-policy"
+BACKGROUND_LIMITS_KEY = "background-limits"
 
 
 class AttemptStartSettings(BaseModel):
@@ -59,6 +61,7 @@ class AttemptStartSettings(BaseModel):
 
     max_key_input_characters: int = Field(default=60_000, ge=1, le=1_000_000)
     slot_lease_seconds: int = Field(default=30, ge=5, le=600)
+    background_limits: ContextLimits = Field(default_factory=ContextLimits)
 
 
 def start_parameters(command: StartAttemptCommand) -> dict:
@@ -105,7 +108,8 @@ class ProposalAttemptStart:
             self._require_startable(task, command)
             inspected = await self._inspect_inputs(store, command, policy)
             required, missing_optional = self._classify(inspected)
-            self._require_capacity(required)
+            background_characters = await store.background_characters(task["opportunity_id"])
+            self._require_capacity(required, background_characters)
             allowed = await self._declared_scope(command, policy)
             self._require_scope(inspected, allowed)
             declarations = await store.declarations(tuple(item["version_id"] for item in inspected))
@@ -120,6 +124,8 @@ class ProposalAttemptStart:
             await ProposalExecutionRecords(conn).save(
                 _policy_record(attempt, command.background_requirement)
             )
+            background_limits = self.settings.background_limits.effective()
+            await ProposalExecutionRecords(conn).save(_limits_record(attempt, background_limits))
             result = {
                 "attempt_id": str(attempt.id),
                 "task_id": str(attempt.task_id),
@@ -131,6 +137,7 @@ class ProposalAttemptStart:
                 "model_mode": attempt.model_mode.value,
                 "config_identity": attempt.config_identity,
                 "background_requirement": command.background_requirement.value,
+                "background_limits": background_limits,
                 "start_scope": sorted(str(item) for item in attempt.start_scope),
                 "missing_optional_sources": sorted(
                     str(item["version_id"]) for item in missing_optional
@@ -197,8 +204,8 @@ class ProposalAttemptStart:
             raise NotReady()
         return required, [item for item in optional if not item["accessible"] or not item["parsed"]]
 
-    def _require_capacity(self, required: list[dict]) -> None:
-        characters = sum(item["characters"] for item in required)
+    def _require_capacity(self, required: list[dict], background_characters: int = 0) -> None:
+        characters = sum(item["characters"] for item in required) + background_characters
         if characters > self.settings.max_key_input_characters:
             raise InvalidInput()
 
@@ -390,8 +397,14 @@ class ProposalAttemptCancel:
         }
 
 
-def _policy_record(attempt: ProposalAnalysisAttempt, requirement: BackgroundRequirement):
-    body = {"requirement": requirement.value, "locked": True}
+def _policy_record(
+    attempt: ProposalAnalysisAttempt,
+    requirement: BackgroundRequirement,
+    limits: dict | None = None,
+):
+    body: dict = {"requirement": requirement.value, "locked": True}
+    if limits is not None:
+        body["limits"] = limits
     return ProposalExecutionRecord(
         attempt_id=attempt.id,
         kind="recovery",
@@ -403,9 +416,23 @@ def _policy_record(attempt: ProposalAnalysisAttempt, requirement: BackgroundRequ
     )
 
 
+def _limits_record(attempt: ProposalAnalysisAttempt, limits: dict):
+    body = {"type": "background-limits", "limits": limits}
+    return ProposalExecutionRecord(
+        attempt_id=attempt.id,
+        kind="recovery",
+        record_key=BACKGROUND_LIMITS_KEY,
+        execution_generation=attempt.execution_generation,
+        input_digest=digest(body),
+        status="completed",
+        body=body,
+    )
+
+
 __all__ = [
     "AttemptStartSettings",
     "BACKGROUND_POLICY_KEY",
+    "BACKGROUND_LIMITS_KEY",
     "CANCELLABLE_TASK_STATES",
     "CANCEL_OPERATION",
     "ProposalAttemptCancel",

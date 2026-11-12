@@ -11,6 +11,7 @@ from presales.maintenance.service import demo_id
 """负责登录和认证的服务类，提供了登录功能，验证用户名和密码，并生成JWT令牌。
 """
 
+
 # 接口约定：Protocal定义了PrincipalStore的行为规范，要求其必须实现find方法，用于根据用户主体ID查找用户主体状态
 class PrincipalStore(Protocol):
     async def find(self, subject: UUID) -> PrincipalStatus | None: ...
@@ -50,13 +51,14 @@ def demo_accounts(settings: DemoAccountsSettings) -> tuple[DemoAccount, ...]:
         ),
     )
 
+
 # 认证服务类，执行登录业务流程：验证用户名和密码，检查账户状态，生成JWT令牌
 class AuthenticationService:
     def __init__(
         self,
-        principal_store: PrincipalStore, # 用户主体存储
-        jwt_settings: JwtSettings,      # JWT配置
-        accounts: tuple[DemoAccount, ...],      # 演示账户元组
+        principal_store: PrincipalStore,  # 用户主体存储
+        jwt_settings: JwtSettings,  # JWT配置
+        accounts: tuple[DemoAccount, ...],  # 演示账户元组
     ) -> None:
         # 将初始化参数赋值给实例变量，保存到当前对象上
         self.principal_store = principal_store

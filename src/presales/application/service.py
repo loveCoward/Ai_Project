@@ -23,6 +23,7 @@ from presales.infrastructure.files import LocalFiles
 """售前业务的服务层，向上层提供了创建任务、注册材料、创建草稿等功能，处理业务逻辑和数据存储。
 """
 
+
 # 公共审计函数，用于记录操作日志，包括操作人、操作类型、目标对象、结果等信息，确保系统的可追溯性和安全性。
 async def audit(
     conn: AsyncConnection,
@@ -48,6 +49,7 @@ async def audit(
         request=request_id,
         auth=authorization_revision,
     )
+
 
 # 售前业务服务类，提供了创建任务、注册材料、创建草稿等功能，处理业务逻辑和数据存储。
 class PresalesService:

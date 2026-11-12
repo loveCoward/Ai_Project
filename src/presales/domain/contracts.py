@@ -13,7 +13,7 @@ class DomainError(Exception):
 
     def __init__(self) -> None:
         super().__init__(self.code)
-        
+
 
 class AccessDenied(DomainError):
     code = "not_found_or_not_allowed"
@@ -34,7 +34,7 @@ class InvalidInput(DomainError):
 class NotReady(DomainError):
     code = "not_ready"
 
-    
+
 class StorageUnavailable(DomainError):
     code = "storage_unavailable_reconcile_request"
 

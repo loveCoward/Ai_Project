@@ -11,6 +11,8 @@ _CLAIMS = {"sub", "iss", "aud", "iat", "nbf", "exp"}
 """处理身份认证：负责生成和验证JWT令牌，确保请求的合法性。
 提供了JwtIssuer类用于签发令牌，以及JwtVerifier类用于验证令牌的有效性和完整性。
 """
+
+
 class JwtIssuer:
     def __init__(self, settings: JwtSettings) -> None:
         self.settings = settings

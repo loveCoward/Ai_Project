@@ -15,6 +15,8 @@ LOCK_NAMESPACE = 72401
 
 """售前模块的PostgreSQL数据库访问层。提供了数据库连接、事务管理、行查询和执行SQL语句的功能。
 """
+
+
 async def rows(conn: AsyncConnection, sql: str, **params: Any) -> list[dict[str, Any]]:
     result = await conn.execute(text(sql), params)
     return [dict(row) for row in result.mappings()]

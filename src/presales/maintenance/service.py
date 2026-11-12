@@ -43,9 +43,12 @@ class AuthorizationChange(BaseModel):
             raise ValueError("Fields do not match authorization change kind")
         return self
 
+
 """初始化演示数据、预览和应用授权变更的维护服务。
 提供了数据库事务管理、锁定机制、授权变更验证和审计功能。
 """
+
+
 class Maintenance:
     def __init__(self, database: Database, allowlist: set[str]) -> None:
         self.database = database

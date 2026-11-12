@@ -3,9 +3,9 @@
 ## 项目定位与当前状态
 
 - 本项目正在将继承的通用 Agent 服务脚手架改造成企业 AI 售前方案工作台。
-- 当前代码包含FastAPI/LangGraph/Streamlit脚手架、阶段一数据/授权基础、2A-0最小React工程、2A-1材料解析/知识治理/索引构建应用服务、2A-2共享受限检索与只读Product Catalog MCP、2A-3最小材料/知识审核/检索/证据定位页面及业务HTTP入口。2B-0已实现Proposal Analysis Attempt契约、Proposal Package Schema 1.0、持久化记录和受控checkpoint提交适配；2B-1任务7至10已实现Attempt授权边界、主动预算持久累计、显式模型传输适配、单事务启动命令、应用内监督器领取/心跳/关闭及售前ASGI生命周期装配、架构师取消命令与执行停止后条件排空/槽位释放，尚未接入分析运行时REST命令与完整恢复消费，未实现分析图或SSE。完整Proposal分析工作台、审批发布和MCP写入仍未实现，不能笼统称已完成产品能力。
+- 当前代码包含FastAPI/LangGraph/Streamlit脚手架、阶段一数据/授权基础、2A-0最小React工程、2A-1材料解析/知识治理/索引构建应用服务、2A-2共享受限检索与只读Product Catalog MCP、2A-3最小材料/知识审核/检索/证据定位页面及业务HTTP入口。2B-0已实现Proposal Analysis Attempt契约、Proposal Package Schema 1.0、持久化记录和受控checkpoint提交适配；2B-1任务7至10已实现Attempt授权边界、主动预算持久累计、显式模型传输适配、单事务启动命令、应用内监督器领取/心跳/关闭及售前ASGI生命周期装配、架构师取消命令与执行停止后条件排空/槽位释放；任务11实现重启核实与受控继续（恢复意图、`reconciling→running`白名单转换与数据库续跑函数、监督器`reconciling`领取）；任务12完成真实子进程并发与崩溃时序验证并修复落稿后不释放槽位等真实缺陷。2B-2任务13实现商机只读背景读取与只读stdio服务入口（迁移`0010_opportunity_background`），背景必需性、七类读取结局与来源契约可判定。恢复消费当前经监督器领取，尚未开放分析运行时REST命令；未实现分析图或SSE，stdio真实进程往返验证未完成。完整Proposal分析工作台、审批发布和MCP写入仍未实现，不能笼统称已完成产品能力。
 - 2A-1目前是Python应用服务与数据库能力，未新增业务HTTP路由或浏览器页面；2A-1交付记录只能证明该范围内的工程实现和本机数据库专项验证，不代表二A整体完成、产品验收、部署批准或真实语义质量达标。2B-0交付记录中的离线及真实PostgreSQL结果是2026-11-11的历史工程验证，不代表二B整体完成、阶段验收、部署批准、真实Agent能力达标或当前环境复验通过。
-- 已确认UI方向：Streamlit用于聊天演示/内部验证，React + TypeScript + Vite用于核心工作台，REST处理业务操作、SSE传递受限进度。2A-0基础及2A-3最小材料/知识工作台页面已存在；二B分析运行页面、SSE与后续审批/发布页面仍未实现，存在工程代码不等于阶段验收。2B-0工程验证见`docs/maintenance/phase2b-0-delivery-2026-11-11.md`，仅为历史工程证据，不代表二B整体完成、阶段验收、部署批准或真实Agent能力达标。
+- 已确认UI方向：Streamlit用于聊天演示/内部验证，React + TypeScript + Vite用于核心工作台，REST处理业务操作、SSE传递受限进度。2A-0基础及2A-3最小材料/知识工作台页面已存在；二B分析运行页面、SSE与后续审批/发布页面仍未实现，存在工程代码不等于阶段验收。2B-0工程验证见`docs/maintenance/phase2b-0-delivery-2026-11-11.md`，仅为历史工程证据，不代表二B整体完成、阶段验收、部署批准或真实Agent能力达标。2B-1任务11/12与2B-2任务13的工程与真实PostgreSQL结果见`docs/maintenance/`下对应交付记录，同样不代表阶段验收或真实Agent能力达标。
 - 业务需求已经形成 v0.1 基线，但需求批准不等于功能已实现、测试已通过、允许部署或允许调用真实模型。
 - 所有实现判断都必须以当前代码和测试结果为准，不得把 README、需求文档、交付记录或目录结构中的规划描述当成现有能力；交付记录中的“建议标注完成”不自动更新本文件或`STATUS.md`。
 
@@ -36,9 +36,9 @@
 ## 代码库地图
 
 - `src/`：当前 Python 应用代码；`service/` 提供服务入口，`agents/` 放置 Agent 图和工具，`schema/` 放置数据模型，`core/` 放置配置与模型装配，`memory/` 放置持久化适配，`client/` 和 `streamlit_app.py` 提供继承脚手架的客户端与聊天界面。
-- `src/presales/`：售前业务代码；`api/` 提供登录/JWT、材料/草稿、材料与知识治理、检索和证据读取路由，`application/` 提供应用服务（含2B-1任务7至10的Attempt授权边界与预算上下文、启动/取消命令及监督器运行时），`access/` 提供授权与JWT，`domain/` 提供业务契约，`infrastructure/` 提供数据库、文件、Product Catalog MCP、Proposal Attempt持久化/checkpoint适配及显式模型传输适配，`materials/`、`knowledge/`、`indexing/`、`retrieval/` 分别提供材料解析、知识治理、索引构建和受限检索，`maintenance/` 提供本机维护命令。这些实现不等于完整分析运行时、审批发布或阶段验收。
+- `src/presales/`：售前业务代码；`api/` 提供登录/JWT、材料/草稿、材料与知识治理、检索和证据读取路由，`application/` 提供应用服务（含2B-1任务7至12的Attempt授权边界与预算上下文、启动/取消命令、监督器运行时及重启核实与受控继续，以及2B-2任务13的商机背景读取与必需性策略），`access/` 提供授权与JWT，`domain/` 提供业务契约，`infrastructure/` 提供数据库、文件、Product Catalog MCP、Proposal Attempt持久化/checkpoint适配、显式模型传输适配及只读商机背景stdio服务入口，`materials/`、`knowledge/`、`indexing/`、`retrieval/` 分别提供材料解析、知识治理、索引构建和受限检索，`maintenance/` 提供本机维护命令。这些实现不等于完整分析运行时、审批发布或阶段验收。
 - `frontend/`：React + TypeScript + Vite 工作台；已包含2A-0认证基础和2A-3最小材料/知识页面。`src/` 为源码，`dist/` 为构建产物，不得把构建产物或目录存在当作业务能力证据；前端没有Node业务服务端，也不承担授权判断。
-- `migrations/`：Alembic 迁移，当前包含身份、领域、完整性、知识（`0004_knowledge.py`）、检索（`0005_retrieval.py`）、Proposal Analysis Attempt持久化（`0006_proposal_attempt.py`）、任务`analyzing`状态迁移函数（`0007_proposal_attempt_start.py`）及任务取消函数（`0008_proposal_attempt_cancel.py`，当前head）；迁移必须显式执行。
+- `migrations/`：Alembic 迁移，当前包含身份、领域、完整性、知识（`0004_knowledge.py`）、检索（`0005_retrieval.py`）、Proposal Analysis Attempt持久化（`0006_proposal_attempt.py`）、任务`analyzing`状态迁移函数（`0007_proposal_attempt_start.py`）、任务取消函数（`0008_proposal_attempt_cancel.py`）、恢复相关函数（`0009_proposal_attempt_recovery.py`）及商机背景记录表（`0010_opportunity_background.py`，当前head）；迁移必须显式执行。
 - `tests/`：按模块组织的 pytest 测试，包含服务、Agent、Schema、客户端、语音、持久化、Docker集成和`presales/`售前专项测试；前端目前没有单元测试或浏览器E2E。
 - `docs/`：运行说明、维护资料、交付记录、业务决策和需求基线；业务规则文档优先放在现有目录结构中，实现状态以`STATUS.md`和可核验代码/测试为准。
 - `scripts/`：冒烟测试、UI 端到端测试、模型检查和其他辅助脚本；`test_presales_postgres.py` 会创建临时本机PostgreSQL实例，需要真实服务、浏览器、Docker或模型的脚本不属于默认离线单元测试。
