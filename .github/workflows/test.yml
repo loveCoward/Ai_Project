@@ -72,6 +72,21 @@ jobs:
       run: |
         uv run pymarkdown scan README.md docs/
 
+  task-gate:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v7
+      with:
+        fetch-depth: 0
+    - name: Set up Python
+      uses: actions/setup-python@v7
+      with:
+        python-version-file: "pyproject.toml"
+    - name: Validate task package and evidence
+      run: |
+        python scripts/task_gate.py --repo-root . --base "origin/${{ github.base_ref || 'main' }}" --head HEAD --mode advisory
+
   test-docker:
     runs-on: ubuntu-latest
 
