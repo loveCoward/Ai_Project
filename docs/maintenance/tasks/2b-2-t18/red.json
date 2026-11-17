@@ -3,7 +3,7 @@
     "base_sha":  "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
     "test_commit":  "776ac6e3e0366b8319a72d65db213e371ef695aa",
     "test_files":  {
-                       "tests/presales/test_proposal_solution_analysis.py":  "9acd0ced6b4b3602668fe4efb2de5d7687283fadb46c82e59f2fa4f374612043"
+                       "tests/presales/test_proposal_solution_analysis.py":  "6d9fde36fad53d55e4b254f6ca45276377ba5c2db5d78198a2a04e354cc93149"
                    },
     "command":  "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
     "exit_code":  1,

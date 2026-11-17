@@ -7,7 +7,7 @@
   "contract_sha256": "99532cc2e2eb041bfa04dad0e6b699c68655b362b6aa142a894b903d0f37140b",
   "base_sha": "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
   "red_commit": "3e85ca81b8f4ce85d623e5ee2eb7cc8bac43c50f",
-  "test_sha256": "9acd0ced6b4b3602668fe4efb2de5d7687283fadb46c82e59f2fa4f374612043",
+  "test_sha256": "6d9fde36fad53d55e4b254f6ca45276377ba5c2db5d78198a2a04e354cc93149",
   "ac_results": {
     "AC07-a": "PASS",
     "AC07-b": "PASS",
@@ -82,7 +82,7 @@
   "scope_check": {
     "implementation_commit": "1603b80 adds only src/presales/application/proposal_solution_analysis.py",
     "red_commit": "35fb88e and 3e85ca8 add only tests/presales/test_proposal_solution_analysis.py",
-    "test_blob": "9acd0ced6b4b3602668fe4efb2de5d7687283fadb46c82e59f2fa4f374612043 at red 3e85ca8 and at post-review head",
+    "test_blob": "6d9fde36fad53d55e4b254f6ca45276377ba5c2db5d78198a2a04e354cc93149 at red 3e85ca8 and at post-review head",
     "note": "debf440 and 715e12b are task evidence metadata; 7ad16c0 is the fix. No domain, migration, access, API or frontend changes."
   }
 }
