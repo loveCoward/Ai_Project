@@ -351,3 +351,62 @@ async def test_exhausted_budget_fails_instead_of_truncating():
     result = await roomy.analyse((oversized,), evidence, draft)
     assert result.recommended == draft.recommended
     assert result.statements[0].text == "产品支持私有部署"
+
+
+@pytest.mark.asyncio
+async def test_degraded_and_empty_findings_cannot_bypass_citation_validation():
+    solution = solution_node()
+    draft = draft_with(
+        solution,
+        statements=(fact(solution, "产品支持私有部署", uuid4()),),
+    )
+
+    for status in ("degraded", "empty"):
+        with pytest.raises(solution.SolutionContractViolation) as error:
+            await solution.ProposalSolutionAnalysis().analyse(
+                (requirement(),), finding(status=status), draft
+            )
+        assert error.value.code == "solution_contract_failed"
+
+
+@pytest.mark.asyncio
+async def test_empty_evidence_is_recorded_without_becoming_evidence_content():
+    solution = solution_node()
+    empty = finding(status="empty")
+    result = await solution.ProposalSolutionAnalysis().analyse(
+        (requirement(),), empty, draft_with(solution)
+    )
+
+    assert empty.hits == ()
+    assert result.statements == ()
+    assert result.commitments == ()
+    assert "evidence_empty" in result.executed_checks
+    assert "evidence_degraded" not in result.executed_checks
+
+
+@pytest.mark.asyncio
+async def test_unsupported_requirement_cannot_be_contradicted_by_a_statement():
+    solution = solution_node()
+    unsupported = requirement("req-1", "支持将审计日志实时推送到客户自有SIEM")
+    evidence = finding()
+    draft = draft_with(
+        solution,
+        statements=(
+            solution.SolutionStatement(
+                text="产品支持将审计日志实时推送到客户SIEM",
+                kind="fact",
+                evidence_ids=(evidence.hits[0].evidence_id,),
+                requirement_ids=("req-1",),
+            ),
+        ),
+        unsupported=(
+            solution.UnsupportedRef(
+                requirement_id="req-1",
+                limitation="当前产品不支持实时外送",
+            ),
+        ),
+    )
+
+    with pytest.raises(solution.SolutionContractViolation) as error:
+        await solution.ProposalSolutionAnalysis().analyse((unsupported,), evidence, draft)
+    assert error.value.code == "solution_contract_failed"
