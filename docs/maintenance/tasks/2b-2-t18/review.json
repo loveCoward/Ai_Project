@@ -1,0 +1,91 @@
+{
+  "task_id": "2B-2/T18",
+  "verdict": "CHANGES_REQUESTED",
+  "reviewer": "codex-t18-review",
+  "implementer": "t18-imp",
+  "reviewed_head": "1603b808e40730cbcd7410db03110388e750a644",
+  "contract_sha256": "99532cc2e2eb041bfa04dad0e6b699c68655b362b6aa142a894b903d0f37140b",
+  "base_sha": "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
+  "red_commit": "35fb88ecc24623dd212652bfdba382ef093ab657",
+  "test_sha256": "fa9b3481016d7fefbaa7dc6ec06b1393696ac77cb6bfeb5cbba23d1bb3384e1e",
+  "ac_results": {
+    "AC07-a": "FAIL",
+    "AC07-b": "PASS",
+    "AC09-a": "FAIL",
+    "AC09-b": "PASS",
+    "AC19-a": "PASS",
+    "AC19-b": "PASS"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "ac": "AC09-a",
+      "title": "Degraded evidence bypasses citation validation",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "line": 134,
+      "detail": "When evidence.status is 'degraded', the statement evidence_ids check against evidence.hits is skipped. Production degraded findings carry no hits (evidence_analysis.py constructs status='degraded' only when findings is empty), so a draft can cite an arbitrary fabricated UUID and still return a SolutionAnalysis.",
+      "probe": "A SolutionStatement with a random UUID and kind='fact' was accepted with status='degraded'; the same statement was rejected with status='content'.",
+      "expected": "Every returned statement's evidence_ids must be a subset of evidence.hits for every status that is allowed to continue."
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "ac": "AC07-a",
+      "title": "Unsupported requirement can be contradicted by a statement",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "line": 129,
+      "detail": "Only commitments are checked against unsupported_ids. A draft that marks req-1 unsupported but also returns a statement with requirement_ids=('req-1',) claiming the missing capability is accepted unchanged.",
+      "probe": "A draft with UnsupportedRef('req-1') and a fact statement referencing req-1 was accepted; result.statements[0].requirement_ids was ('req-1',).",
+      "expected": "Statements (and any other structured requirement references) must not include requirements listed as unsupported; otherwise raise SolutionContractViolation."
+    },
+    {
+      "id": "F3",
+      "severity": "medium",
+      "ac": "decision.evidence_scope",
+      "title": "Empty evidence loses its degradation marker",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "line": 144,
+      "detail": "executed_checks adds 'evidence_degraded' only when status == 'degraded'. status == 'empty' continues with only the three base checks, so the output cannot distinguish an evidence-backed plan from an empty-evidence plan.",
+      "probe": "An EvidenceFinding with status='empty' and no hits returned executed_checks=('unsupported_preserved', 'commitments_non_binding', 'statement_classification').",
+      "expected": "Preserve a stable marker for empty evidence (for example 'evidence_empty') or carry the evidence degradation state in the output, per task.toml [decision].evidence_scope."
+    }
+  ],
+  "commands": [
+    {
+      "command": "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
+      "exit_code": 0,
+      "result": "6 passed"
+    },
+    {
+      "command": "uv run pytest tests/presales -q -rs",
+      "exit_code": 0,
+      "result": "368 passed, 107 skipped"
+    },
+    {
+      "command": "uv run ruff check src/presales/application/proposal_solution_analysis.py tests/presales/test_proposal_solution_analysis.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff format --check src/presales/application/proposal_solution_analysis.py tests/presales/test_proposal_solution_analysis.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run pyrefly check",
+      "exit_code": 0,
+      "result": "0 errors"
+    }
+  ],
+  "environment_evidence": {
+    "postgres": "not required",
+    "mcp": "not required",
+    "model": "not required",
+    "browser": "not required"
+  },
+  "scope_check": {
+    "implementation_commit": "1603b80 adds only src/presales/application/proposal_solution_analysis.py",
+    "red_commit": "35fb88e adds only tests/presales/test_proposal_solution_analysis.py",
+    "test_blob": "8004b70b492788c59e0ed4d8d8b642db75b02a56 at both red and head",
+    "note": "debf440 is planner-owned task metadata (task.toml, prompts, red.json); no domain, migration, access, API or frontend changes."
+  }
+}
