@@ -3,7 +3,7 @@
     "base_sha":  "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
     "test_commit":  "776ac6e3e0366b8319a72d65db213e371ef695aa",
     "test_files":  {
-                       "tests/presales/test_proposal_solution_analysis.py":  "279e260eb9591c8b70cbf7785f2172ffe819b02dd608e575092510343713a95b"
+                       "tests/presales/test_proposal_solution_analysis.py":  "9acd0ced6b4b3602668fe4efb2de5d7687283fadb46c82e59f2fa4f374612043"
                    },
     "command":  "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
     "exit_code":  1,
@@ -16,17 +16,19 @@
     "note":  "Planner-authorized correction of the frozen degraded fixture. Red commit 776ac6e changes only the test file and fails because 1603b80 still skips citation validation for degraded evidence; the original full-red evidence 35fb88e remains in history.",
     "additional_red_commits":  [
                                    {
-                                       "test_commit":  "REPLACE_WITH_T20_RED_SHA",
+                                       "test_commit":  "3e85ca81b8f4ce85d623e5ee2eb7cc8bac43c50f",
                                        "command":  "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
                                        "exit_code":  1,
                                        "passed":  6,
+                                       "failed":  3,
                                        "failed_tests":  [
                                                             "test_degraded_and_empty_findings_cannot_bypass_citation_validation",
                                                             "test_empty_evidence_is_recorded_without_becoming_evidence_content",
                                                             "test_unsupported_requirement_cannot_be_contradicted_by_a_statement"
                                                         ],
-                                       "expected_failure":  "Regression tests for review findings F1/F2/F3 fail against 1603b80 because degraded citation validation, unsupported-statement rejection and the empty-evidence marker are absent."
+                                       "expected_failure":  "Regression tests for review findings F1/F2/F3 fail against 1603b80 because degraded citation validation, unsupported-statement rejection and the empty-evidence marker are absent. The pre-existing degraded fixture also fails on 1603b80, so the observed run is 6 passed / 3 failed.",
+                                       "note":  "3e85ca8 is test-only and follows independent review 56653f4. The final test-file hash protects both the original six-AC suite and these regressions; the original red entry remains as history."
                                    }
                                ],
-    "budget_note":  "base_sha c7a833b; base..HEAD has 5 commits: 35fb88e original red, debf440 task docs, 1603b80 original implementation, 776ac6e corrected red, and the final fix commit. The planner approved a budget exception in task.toml [budget_exception] (approved_max_commits=5) because the frozen-test correction required a separate test-only red commit. The task_gate L2 cap remains 4 and will report an advisory overrun; the exception record is the approval basis."
+    "budget_note":  "base_sha c7a833b; the review/regression closeout adds 3e85ca8 (test-only), 715e12b (red evidence), the review evidence commit and integration records. The planner approved a budget exception in task.toml [budget_exception] because frozen-test corrections required separate test-only red commits. The task_gate L2 cap remains 4 and will report an advisory overrun; the exception record is the approval basis."
 }
