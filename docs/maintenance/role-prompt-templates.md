@@ -128,6 +128,12 @@
 - 没有 skip、xfail 或“无条件通过”
 - 能给出 red commit SHA 和原始 pytest 输出
 
+边界细则：
+- red.json 只在 task.toml 的 allowed_paths 或 forbidden_paths 之外明确允许时提交；默认写入任务包目录、保持未提交，由规划者或集成者登记，避免 red commit 混入非测试文件。
+- 目标模块尚不存在时，在用例内部做延迟导入，使测试文件仍可被正常收集，失败原因呈现为被测模块缺失，而不是 collection error。
+- task.toml 的 [interface] 只给语义时，由测试冻结类名、方法名、错误码和字段名；先向需求方说明再落稿，并保证不引入 task.toml 未列出的依赖。
+- 预算按测试文件行数与 red commit 计数；若 base 之后已有文档提交使 base..head 超限，先与规划者确认基线口径，不要删改既有文档来凑数。
+
 阻塞时：
 - 测试无法收集、fixture 不可用或失败原因与 AC 无关：返回 BLOCKED，不要把它当作有效 red
 ```
