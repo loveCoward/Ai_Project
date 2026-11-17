@@ -1,23 +1,18 @@
 {
     "task_id":  "2B-2/T18",
     "base_sha":  "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
-    "test_commit":  "35fb88ecc24623dd212652bfdba382ef093ab657",
+    "test_commit":  "776ac6e3e0366b8319a72d65db213e371ef695aa",
     "test_files":  {
-                       "tests/presales/test_proposal_solution_analysis.py":  "fa9b3481016d7fefbaa7dc6ec06b1393696ac77cb6bfeb5cbba23d1bb3384e1e"
+                       "tests/presales/test_proposal_solution_analysis.py":  "279e260eb9591c8b70cbf7785f2172ffe819b02dd608e575092510343713a95b"
                    },
     "command":  "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
     "exit_code":  1,
     "collected":  6,
-    "passed":  0,
+    "passed":  5,
     "failed_tests":  [
-                         "test_unsupported_requirement_is_not_replaced_with_a_commitment",
-                         "test_quote_and_schedule_suggestions_stay_non_binding",
-                         "test_every_statement_carries_a_kind_and_a_source",
-                         "test_unusable_evidence_blocks_the_architecture_node",
-                         "test_missing_key_structure_fails_instead_of_filling_blanks",
-                         "test_exhausted_budget_fails_instead_of_truncating"
+                         "test_unusable_evidence_blocks_the_architecture_node"
                      ],
-    "expected_failure":  "missing behavior: presales.application.proposal_solution_analysis not implemented (ModuleNotFoundError)",
-    "note":  "red.json stays uncommitted; planner/integrator registers it",
-    "budget_note":  "base_sha 经规划者确认改为 c7a833b（测试作者开工前的最后一个规划侧提交）。base..HEAD 为 2 个提交：35fb88e red 测试（1 文件 324 行）+ 9353599 基线重新冻结的文档提交（task.toml 与 prompts，位于任务包目录）；合计 344 行，满足 L2 max_commits=4 / max_lines_per_commit=400 / max_task_lines=800，red commit 本身只含测试文件"
+    "expected_failure":  "degraded evidence citation bypass: a statement can cite an evidence ID absent from EvidenceFinding.hits",
+    "note":  "Planner-authorized correction of the frozen degraded fixture. Red commit 776ac6e changes only the test file and fails because 1603b80 still skips citation validation for degraded evidence; the original full-red evidence 35fb88e remains in history.",
+    "budget_note":  "base_sha c7a833b; base..HEAD has 5 commits: 35fb88e original red, debf440 task docs, 1603b80 original implementation, 776ac6e corrected red, and the final fix commit. The planner approved a budget exception in task.toml [budget_exception] (approved_max_commits=5) because the frozen-test correction required a separate test-only red commit. The task_gate L2 cap remains 4 and will report an advisory overrun; the exception record is the approval basis."
 }

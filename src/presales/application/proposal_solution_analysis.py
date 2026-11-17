@@ -129,12 +129,13 @@ class ProposalSolutionAnalysis:
             unsupported_ids & set(commitment.requirement_ids) for commitment in draft.commitments
         ):
             raise SolutionContractViolation()
+        if any(unsupported_ids & set(statement.requirement_ids) for statement in draft.statements):
+            raise SolutionContractViolation()
 
         cited = {hit.evidence_id for hit in evidence.hits}
-        if evidence.status != "degraded":
-            for statement in draft.statements:
-                if set(statement.evidence_ids) - cited:
-                    raise SolutionContractViolation()
+        for statement in draft.statements:
+            if set(statement.evidence_ids) - cited:
+                raise SolutionContractViolation()
 
         checks = [
             "unsupported_preserved",
@@ -143,6 +144,8 @@ class ProposalSolutionAnalysis:
         ]
         if evidence.status == "degraded":
             checks.append("evidence_degraded")
+        elif evidence.status == "empty":
+            checks.append("evidence_empty")
 
         return SolutionAnalysis(
             recommended=recommended,

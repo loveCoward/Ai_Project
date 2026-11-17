@@ -187,6 +187,17 @@ max_files_per_commit = 5
 max_lines_per_commit = 400
 max_task_lines = 800
 
+[budget_exception]
+approved_by = "user（本会话显式授权：保留 5 个提交并申请预算例外）"
+approved_at = "2026-11-17（Asia/Shanghai）"
+task_id = "2B-2/T18"
+frozen_max_commits = 4
+approved_max_commits = 5
+actual_commits = 5
+reason = "规划者授权的冻结测试修正需要新增一个仅含测试文件的 red 提交 776ac6e，使 base..head 从 4 个提交增至 5 个。"
+scope = "仅限 2B-2/T18；其他 L2 任务仍按 max_commits=4。"
+gate_note = "scripts/task_gate.py 的 L2 上限仍为 4，advisory 检查会报告超限；该记录是规划者批准的例外依据，需集成者按例外放行。"
+
 [interface]
 module = "src/presales/application/proposal_solution_analysis.py"
 inputs = "任务16 的 Requirement 序列（requirement_id / text / origins）与任务17 的 EvidenceFinding（status / hits / error_code）"
