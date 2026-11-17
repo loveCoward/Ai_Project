@@ -2,7 +2,7 @@
 
 工作区：C:\Users\12798\orca\workspaces\biddesk-zq\feat-phase-2b-1（建议从 base 新建独立 worktree）
 任务包：docs/maintenance/tasks/2b-2-t18/task.toml
-基线：0361627c288e37bb0d1d4572219f9df7fa1ae7f2
+基线：c7a833b5d3e3480df2db37ff06791b2f516c73d2
 档位：L2
 
 只读：
@@ -34,7 +34,7 @@
 3. 通过公共接口或契约边界断言；测试须导入目标模块后断言约定行为，使失败原因为“功能尚未实现”，而不是 import 缺失。
 4. 运行最小目标测试，确认失败原因符合预期，不是语法错误或 fixture 错误。
 5. 只提交测试文件，提交信息以 [RED] 结尾。
-6. 产出 docs/maintenance/tasks/2b-2-t18/red.json：task_id、base_sha、test_commit、test_files（路径→sha256）、command、exit_code（须为 1）、failed_tests（非空）。
+6. 产出 docs/maintenance/tasks/2b-2-t18/red.json：task_id、base_sha、test_commit、test_files（路径→sha256）、command、exit_code（须为 1）、failed_tests（非空）。该文件写入任务包目录但保持未提交，由规划者/集成者登记，red commit 只含测试文件。
 
 完成判据：
 

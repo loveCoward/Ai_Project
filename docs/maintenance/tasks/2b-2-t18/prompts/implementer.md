@@ -1,9 +1,11 @@
 你是 2B-2/T18 的实现者（Implementer），不是测试作者，也不是验证者。
 
-工作区：C:\Users\12798\orca\workspaces\biddesk-zq\feat-phase-2b-1（从 red 交接提交继续）
+工作区：C:\Users\12798\orca\workspaces\biddesk-zq\t18-test（从 red 交接提交 cb934d4 继续）
 任务包：docs/maintenance/tasks/2b-2-t18/task.toml
-red 交接：docs/maintenance/tasks/2b-2-t18/red.json 中的 test_commit
-允许修改：src/presales/application/proposal_solution_analysis.py
+基线：c7a833b5d3e3480df2db37ff06791b2f516c73d2
+red 交接：cb934d4（red 测试提交 35fb88e，测试文件 sha256 fa9b3481016d7fefbaa7dc6ec06b1393696ac77cb6bfeb5cbba23d1bb3384e1e）
+档位：L2
+允许修改：仅 src/presales/application/proposal_solution_analysis.py
 
 只读：
 
@@ -19,6 +21,30 @@ red 交接：docs/maintenance/tasks/2b-2-t18/red.json 中的 test_commit
 - 顺手重构、清理无关文件、升级依赖或扩大范围
 - 用 mock、吞异常、放宽断言或改 skip 让测试变绿
 - 实现检索、排序、缓存或权限判定；这些由 2A 端口提供
+
+冻结契约（由 red 测试锁定，不得改名或改语义；详见测试文件 docstring）：
+
+- 入口：`ProposalSolutionAnalysis(max_characters=60_000)`，方法
+  `async analyse(requirements, evidence, draft) -> SolutionAnalysis`；参数依次为
+  `Requirement` 序列、`EvidenceFinding`、`SolutionDraft`。
+- 模型：`SolutionDraft`（`recommended` / `deployment_integration` / `assumptions` /
+  `limitations` / `delivery_notes` / `statements` / `commitments` / `unsupported`）、
+  `SolutionStatement`（`text` / `kind` / `evidence_ids` / `requirement_ids`）、
+  `CommitmentSuggestion`（`kind` / `text` / `requirement_ids` / `binding=False` /
+  `confirmation_required=True`）、`UnsupportedRef`（`requirement_id` / `limitation`，输出需带
+  原 `text`）、`SolutionAnalysis`（回显结构与 `executed_checks`）。
+- 结构模型必须允许「不完整」实例化：`SolutionDraft.recommended` 需接受 `None` 与空白串，
+  三个列表需接受 `()`，让 AC19-a 的失败发生在 `analyse` 而不是构造期。
+- 错误：`SolutionEvidenceUnavailable` / `SolutionRequirementsEmpty` /
+  `SolutionStructureMissing` / `SolutionCapacityExceeded` / `SolutionContractViolation`，
+  code 分别 `solution_evidence_unavailable` / `solution_requirements_empty` /
+  `solution_structure_missing` / `solution_capacity_exceeded` / `solution_contract_failed`，
+  均继承 `presales.domain.contracts.DomainError`。
+- `executed_checks` 至少包含 `unsupported_preserved`、`commitments_non_binding`、
+  `statement_classification`，`EvidenceFinding.status == "degraded"` 时另含 `evidence_degraded`。
+- 断言细节：`SolutionAnalysis` 不得有 `approval*` 或 `approved` 字段；总字符数超过
+  `max_characters` 时在产出前抛容量错误，且不截断、不重试；`fact` 引用的 evidence id 必须
+  出现在传入 `EvidenceFinding.hits` 中。
 
 任务：
 

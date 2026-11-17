@@ -2,7 +2,7 @@
 
 工作区：从实现 head 新建的干净检出
 任务包：docs/maintenance/tasks/2b-2-t18/task.toml
-base：0361627c288e37bb0d1d4572219f9df7fa1ae7f2
+base：c7a833b5d3e3480df2db37ff06791b2f516c73d2
 head：实现者交接 SHA
 red：docs/maintenance/tasks/2b-2-t18/red.json 的 test_commit
 
