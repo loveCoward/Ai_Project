@@ -1,0 +1,252 @@
+# 2B-2 任务19 任务包（规划者冻结稿）
+#
+# 业务范围唯一依据：docs/superpowers/plans/Phase-Two-B-Implementation-v1.md v1.5 §3.3 任务19。
+# 字段规范：docs/development-workflow.md 第 6 节；结构校验：scripts/task_gate.py（CI 当前 advisory）。
+# 本文件由规划者产出并冻结；goal / ac / allowed_paths / non_goals 冻结后变更须回到规划者。
+
+task_id = "2B-2/T19"
+title = "Risk与Clarification Question专业分析"
+tier = "L2"
+status = "READY"
+# 基线为任务18 当前实现 head。任务18 review.json 尚未出现，测试作者开工前必须确认任务18
+# 已独立验证 PASS 并合并；若合并产生新的 head，由规划者更新 base_sha，不改 goal/ac/allowed_paths/non_goals。
+base_sha = "7ad16c078623f477da9bb71a6682414fb6cd4cb7"
+
+tier_rationale = """
+L2：计划任务19「涉及模块/文件」列只给出两个拟新增文件，且「外部依赖」列为
+真实模型否 / 真实数据库否 / 浏览器E2E 否。本任务新增单个应用服务模块和单个测试文件，
+只读导入既有 domain/application 契约，不改变可执行链路之外的共享模块。
+
+逐项核对流程 5.3 的 L3 触发项：均未命中——
+- 不触碰 access/、JWT、授权策略、角色/来源过滤或越权边界；
+- 不触碰数据库 schema、迁移、事务边界、checkpoint、幂等键或唯一约束；
+- 不触碰任务/Attempt 状态机、取消、恢复、租约、心跳、并发、槽位或旧代次拒写；
+- 不执行外部写入、MCP 写工具、发布、审批或外部系统集成；
+- 不以真实模型、真实 PostgreSQL、真实浏览器或真实 MCP 进程作为验收证据；
+- 不新增公共 API、DTO 或机器 schema，只读复用 Proposal Package Schema 1.0 的风险/澄清类型；
+- 不涉及部署、回滚、凭据、日志脱敏或数据保留策略；
+- 不修改其他阶段已交付行为，不跨模块共享代码。
+
+若实现者认为必须修改 src/presales/domain/proposal_package.py 或
+proposal_package_sections.py 中的 RiskItem / ClarificationItem / 枚举，或需要新增
+Review Record / Approval Record / 真实接受入口，则命中 AC10 与公共机器 schema 触发项，
+立即升 L3 并交回规划者重新冻结，不得在 L2 内自行扩权。
+"""
+
+goal = "风险节点在需求、证据与架构结果之后输出六类风险检查及待澄清问题，严重风险不被豁免，无来源回答不能解决关键问题，空结果仍留下完整检查记录，且不伪造责任人接受或客户确认"
+
+spec_refs = [
+  "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md v1.5 §3.3 任务19（目标/交付物/AC09-10-19 定界/不做什么/外部依赖）",
+  "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md v1.5 §5 AC覆盖表（AC09/AC10/AC19 的二B承接边界）",
+  "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md v1.5 §1（D0 实施授权阻塞）、§2（离线证据口径）、§2.1（环境矩阵）",
+  "docs/superpowers/specs/初版业务需求分析文档.md（AC09、AC10、AC19；风险与待澄清问题的业务约束）",
+  "GLOSSARY.md（Risk / Clarification Question / Coverage Status / Mandatory Requirement 的术语边界）",
+  "docs/development-workflow.md 第 4、5、6 节",
+]
+
+non_goals = [
+  "不提供人工改级、人工录入、风险接受、客户确认或 Review Record / Approval Record 写入入口",
+  "不实现正式批准、发布或任何外部写入；二B正常路径结束在草稿，审批与发布属于后续阶段",
+  "不调用真实模型，不使用真实客户数据，不启动真实数据库、浏览器或 MCP 子进程，不出站",
+  "不修改 Proposal Package Schema 1.0（domain/proposal_package.py、proposal_package_sections.py）及其测试",
+  "不修改任务16/17/18 已交付的 requirement_analysis、evidence_analysis、proposal_solution_analysis 及其测试；只读导入，不改写",
+  "不做覆盖计算与汇总门禁（任务20）、Reflection（任务21）、分析落稿（任务22）或图装配（任务23）",
+  "不新增业务 HTTP 路由、SSE 或前端页面（任务27—32）",
+  "不宣称风险识别质量、语义正确性或真实模型诚实性已达标（任务26 探针与阶段五验收）",
+  "不实现检索、排序、缓存、权限判定，不私建第二套来源、证据或风险枚举",
+]
+
+allowed_paths = [
+  "src/presales/application/proposal_risk_analysis.py",
+  "tests/presales/test_proposal_risk_analysis.py",
+]
+
+forbidden_paths = [
+  "AGENTS.md",
+  "CLAUDE.md",
+  "STATUS.md",
+  "GLOSSARY.md",
+  "README.md",
+  "pyproject.toml",
+  "uv.lock",
+  "migrations/**",
+  "src/presales/domain/**",
+  "src/presales/access/**",
+  "src/presales/api/**",
+  "src/presales/infrastructure/**",
+  "src/presales/retrieval/**",
+  "src/presales/materials/**",
+  "src/presales/knowledge/**",
+  "src/presales/indexing/**",
+  "src/presales/maintenance/**",
+  "src/presales/application/requirement_analysis.py",
+  "src/presales/application/evidence_analysis.py",
+  "src/presales/application/proposal_solution_analysis.py",
+  "src/presales/application/proposal_attempt_context.py",
+  "src/presales/application/proposal_attempt_commands.py",
+  "src/presales/application/proposal_attempt_recovery.py",
+  "src/presales/application/proposal_attempt_runtime.py",
+  "src/presales/application/service.py",
+  "src/presales/application/workbench.py",
+  "frontend/**",
+  "docs/superpowers/**",
+  "docs/maintenance/phase2a*.md",
+  "docs/maintenance/phase2b-0-*.md",
+  "docs/maintenance/phase2b-1-task*.md",
+  "docs/maintenance/phase2b-2-task1[3-8]-delivery-*.md",
+  "docs/maintenance/role-prompt-templates.md",
+  "docs/maintenance/tasks/2b-2-t1[3-8]/**",
+  "docs/maintenance/tasks/2b-2-t2*/**",
+  "tests/presales/conftest.py",
+  "tests/presales/test_requirement_analysis.py",
+  "tests/presales/test_evidence_analysis.py",
+  "tests/presales/test_proposal_solution_analysis.py",
+  "tests/presales/test_proposal_package_schema.py",
+  "tests/presales/test_proposal_package_sections.py",
+]
+
+test_files = ["tests/presales/test_proposal_risk_analysis.py"]
+red_evidence = "docs/maintenance/tasks/2b-2-t19/red.json"
+review_evidence = "docs/maintenance/tasks/2b-2-t19/review.json"
+
+# 计划原文 AC09/AC10/AC19 为打包编号；此处拆成一行一个可观察断言，保留原 AC 引用关系。
+ac = ["AC09-a", "AC10-a", "AC10-b", "AC19-a", "AC19-b"]
+
+preconditions = [
+  "任务18 当前实现 head 为 7ad16c078623f477da9bb71a6682414fb6cd4cb7；截至任务包冻结时未发现任务18 review.json。测试作者开工前必须确认任务18 已独立验证 PASS 或已合并，否则返回 BLOCKED。",
+  "任务16 已交付 src/presales/domain/requirement_plan.py（Requirement / RequirementOrigin）与 requirement_analysis.py",
+  "任务17 已交付 src/presales/application/evidence_analysis.py（EvidenceFinding / EvidenceHit）",
+  "任务18 已交付 src/presales/application/proposal_solution_analysis.py（SolutionAnalysis / UnsupportedRef）",
+  "Proposal Package Schema 1.0 已提供 RiskCategory（六类）、RiskSeverity、RiskDisposition、ClarificationStatus、RiskItem、ClarificationItem",
+  "离线基线由测试作者在开工前实测并记录；规划者不引用历史测试数字冒充本次通过",
+  "D0：计划 §1 规定所有实现任务受 D0 阻塞；本任务包冻结不等于实施获准，red 与实现须有用户显式授权",
+]
+
+stop_conditions = [
+  "需要修改 src/presales/domain/proposal_package.py 或 proposal_package_sections.py 的 RiskItem / ClarificationItem / 枚举才能实现：立即停止并交回规划者（公共机器 Schema，升 L3）",
+  "需要新增 Review Record / Approval Record / 风险接受 / 客户确认 / 人工改级入口：立即停止；这些属于本任务 non_goals 与后续阶段",
+  "需要第三个业务文件、公共契约、迁移、权限或外部写入代码：立即停止并交回规划者，不扩大 allowed_paths",
+  "需要真实模型、真实 PostgreSQL、浏览器或 MCP 进程才能取证：标 BLOCKED，不用 Fake、SQLite、skip 替代",
+  "需要改动任务16/17/18 已交付契约或测试，或发现其契约不足以支撑本任务：停止并登记，不在本任务内放宽上游契约",
+  "同一 AC 连续 2 轮实现后仍不能通过，或验证者连续 2 次退回：停止并升级人类决策",
+  "本任务总净变更超过 800 行，或单提交超过 5 文件 / 400 行：回到规划者拆审查切片",
+]
+
+rollback = """
+实现只新增 src/presales/application/proposal_risk_analysis.py 与
+tests/presales/test_proposal_risk_analysis.py，不改既有模块，因此可直接 revert 任务分支提交。
+任务包与提示词为独立 docs 提交，可单独回滚，不影响运行时代码；不回滚用户未提交改动。
+"""
+
+[[ac_matrix]]
+id = "AC10-a"
+original_ac = "AC10（严重风险不可豁免；二B不提供正式批准入口）"
+assertion = "严重风险保持 severity=severe、disposition=pending 且无决定记录，被列入待处置事项；不得降级、接受或豁免"
+test = "test_severe_risk_stays_pending_and_is_not_exempted"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py::test_severe_risk_stays_pending_and_is_not_exempted -q"
+pass_standard = "输入含 severe 风险时，输出 severity 仍为 severe；disposition 为 pending；decision 为 None；actions 含该风险 id；executed_checks 含 severe_risk_not_exempted；不存在 accepted/approved 结果"
+
+[[ac_matrix]]
+id = "AC09-a"
+original_ac = "AC09（无来源回答不改关键结论）"
+assertion = "关键待澄清问题收到无证据来源的回答时被拒绝，不能把问题标为 answered 或 resolved"
+test = "test_unsourced_clarification_answer_does_not_resolve_critical_question"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py::test_unsourced_clarification_answer_does_not_resolve_critical_question -q"
+pass_standard = "critical=True 且 answer 非空，但 answer_evidence_ids 为空或不在 EvidenceFinding.hits 中时，抛出 RiskClarificationUnsourced（code=risk_clarification_unsourced），不返回已解决结果"
+
+[[ac_matrix]]
+id = "AC10-b"
+original_ac = "AC10（不伪造责任人接受/客户确认）"
+assertion = "风险节点输出不产生责任人接受、客户确认、Review Record 或 Approval Record；风险一律待处置，澄清最多 answered 且无确认记录"
+test = "test_no_fabricated_owner_acceptance_or_customer_confirmation"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py::test_no_fabricated_owner_acceptance_or_customer_confirmation -q"
+pass_standard = "所有 RiskItem.owner 为 None、disposition=pending、decision=None；所有 ClarificationItem.status 不是 resolved 且 confirmation=None；输出模型无 accepted/approved/customer_confirmed 字段"
+
+[[ac_matrix]]
+id = "AC19-a"
+original_ac = "AC19（无风险可为空但检查完成，不得把空结果当作未执行）"
+assertion = "空风险与空澄清清单允许成功返回，但结果必须记录六类风险均已检查且澄清检查已完成"
+test = "test_empty_risk_draft_still_records_complete_checks"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py::test_empty_risk_draft_still_records_complete_checks -q"
+pass_standard = "draft 为空时返回 risks=()、clarifications=()、actions=()；checked_categories 恰为 RiskCategory 六项；executed_checks 含 risk_categories_checked 与 clarifications_checked"
+
+[[ac_matrix]]
+id = "AC19-b"
+original_ac = "AC19（缺关键产出失败，不静默补全）"
+assertion = "风险依据、影响、缓解措施或澄清问题缺失时显式失败，不用空串或占位内容补成完整结果"
+test = "test_missing_key_risk_output_fails_instead_of_filling_blanks"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py::test_missing_key_risk_output_fails_instead_of_filling_blanks -q"
+pass_standard = "任一关键字段为 None 或空白（basis / impact / mitigation / question）时抛出 RiskStructureMissing（code=risk_structure_missing），不返回部分结果"
+
+[test_plan]
+file = "tests/presales/test_proposal_risk_analysis.py"
+style = "pytest + pytest.mark.asyncio；注入 Fake Requirement / EvidenceFinding / SolutionAnalysis / RiskAssessmentDraft，不启实例、不出站、无网络"
+baseline_record = "red 前先记录 uv run --no-sync pytest tests/presales -q 的基线数字与 skipped 数"
+red_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py -q"
+green_command = "uv run pytest tests/presales/test_proposal_risk_analysis.py -q"
+targeted_check = "uv run ruff check src/presales/application/proposal_risk_analysis.py tests/presales/test_proposal_risk_analysis.py"
+format_check = "uv run ruff format --check src/presales/application/proposal_risk_analysis.py tests/presales/test_proposal_risk_analysis.py"
+regression_check = "uv run pytest tests/presales -q"
+manual_checks = "无（本任务全部验收项均须自动化判定）"
+
+[real_env]
+postgres = false
+mcp = false
+model = false
+browser = false
+
+[budget]
+max_commits = 4
+max_files_per_commit = 5
+max_lines_per_commit = 400
+max_task_lines = 800
+max_implementation_rounds = 2
+max_verification_rounds = 2
+
+[interface]
+module = "src/presales/application/proposal_risk_analysis.py"
+entrypoint = "ProposalRiskAnalysis()，方法 async analyse(requirements, evidence, solution, draft) -> RiskAnalysis"
+inputs = "requirements: Sequence[Requirement]；evidence: EvidenceFinding；solution: SolutionAnalysis；draft: RiskAssessmentDraft"
+draft_models = "RiskAssessmentDraft(risks, clarifications)；RiskDraft(category, severity, basis, impact, mitigation, evidence_ids)；ClarificationDraft(question, critical, requirement_ids, answer, answer_evidence_ids)"
+output_models = "RiskAnalysis(risks, clarifications, checked_categories, actions, executed_checks)；RiskAction(kind=risk_disposition|clarification, reference_id)；risks 使用既有 domain RiskItem，clarifications 使用既有 domain ClarificationItem"
+id_policy = "服务端按结果内顺序生成稳定 id：risk-1、risk-2……；clarification-1、clarification-2……；输入不得自带 id"
+errors = "稳定错误码至少覆盖 RiskEvidenceUnavailable(risk_evidence_unavailable)、RiskStructureMissing(risk_structure_missing)、RiskClarificationUnsourced(risk_clarification_unsourced)、RiskContractViolation(risk_contract_failed)，均继承 presales.domain.contracts.DomainError"
+imports = "允许只读导入 presales.domain.requirement_plan、presales.application.evidence_analysis、presales.application.proposal_solution_analysis、presales.domain.proposal_package、presales.domain.proposal_package_sections、presales.domain.contracts；不得修改它们"
+evidence_rules = "EvidenceFinding 为 unavailable/conflict/not_found_or_not_allowed 时拒绝产出；RiskDraft.evidence_ids 与 ClarificationDraft.answer_evidence_ids 必须是传入 hits 的子集，否则合同失败"
+clarification_rules = "无 answer 时输出 status=open；有 answer 且来源有效时输出 status=answered 并保留 answer_evidence_ids，但绝不 resolved，confirmation 必须为 None；无来源 answer 直接失败"
+checks = "executed_checks 始终含 risk_categories_checked、risk_dispositions_pending、clarifications_checked、no_fabricated_acceptance；存在 severe 风险时另含 severe_risk_not_exempted；存在有来源回答时另含 clarification_answer_sourced"
+
+[decision]
+output_carrier = "风险与澄清结果直接复用 Proposal Package Schema 1.0 的 RiskItem / ClarificationItem / RiskCategory / RiskSeverity / RiskDisposition / ClarificationStatus；本任务只新增应用层输入与汇总模型，不扩展或复制 domain 枚举"
+expert_boundary = "本任务只产出风险与澄清专业结论；不做覆盖计算与分母（任务20）、Summary / Reflection（任务20—21）、落稿（任务22）或图装配（任务23）"
+acceptance_policy = "节点永远不设置 RiskDisposition.ACCEPTED、DecisionReference、ClarificationStatus.RESOLVED 或 ConfirmationReference；风险一律 pending，澄清最多 answered，所有未解决项进入 actions"
+empty_result = "空 risks 与空 clarifications 是合法完整结果，但 checked_categories 必须包含全部六类，executed_checks 必须证明检查已执行"
+six_categories = "checked_categories 恰为 RiskCategory 定义的六项：security_compliance、deployment、integration、data、delivery、product_capability"
+
+[authorization]
+planning_authorized = true
+implementation_authorized = false
+authorized_at = "2026-11-18（Asia/Shanghai）"
+authorized_by = "user（本会话仅要求完成规划者职责）"
+authorized_scope = "只包含任务包 task.toml 与三份角色提示词；不包含 red 测试、生产实现、独立验证、真实环境或任何外部写入"
+required = "测试作者开工前必须取得用户对任务19 的实施授权；若 [authorization].implementation_authorized 仍为 false，返回 BLOCKED"
+d0_reference = "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md §1 与 docs/maintenance/phase2b-entry-closure-2026-11-11.md"
+
+[roles]
+planner = "planner-session（本任务包与 prompts/ 产出方）"
+test_author = "to-be-dispatched（见 prompts/test-author.md）"
+implementer = "to-be-dispatched（见 prompts/implementer.md）"
+verifier = "to-be-dispatched，不得与 implementer 同一会话（见 prompts/verifier.md）"
+integrator = "to-be-dispatched，只在 review.json 为 PASS 后合并"
+
+[dependency]
+task_id = "2B-2/T18"
+required_state = "PASS 或 MERGED；任务18 review.json 尚未出现的当前事实不构成通过"
+evidence_path = "docs/maintenance/tasks/2b-2-t18/review.json"
+action_if_missing = "测试作者返回 BLOCKED，等待任务18 独立验证通过或集成者给出合并 SHA"
+
+[handoff]
+task_package_commit = "PENDING"
+branch_start = "7ad16c078623f477da9bb71a6682414fb6cd4cb7"
+test_author_base = "7ad16c078623f477da9bb71a6682414fb6cd4cb7"
+note = "本文件与 prompts/ 三份提示词一并提交后，把该提交 SHA 填入 task_package_commit，作为测试作者交接点；任务18 合并后如 base 变化，由规划者更新 base_sha"
