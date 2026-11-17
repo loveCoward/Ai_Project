@@ -201,9 +201,12 @@ evidence_scope = "证据按 EvidenceFinding 结局消费：empty/degraded 可继
 
 [authorization]
 contract_frozen = true
-implementation_authorized = false
-reason = "计划 §1 规定所有实现任务受 D0 阻塞，前序交付不自动构成授权；任务7—17 均为用户逐次授权后执行"
-required = "用户开工前显式授权任务18；未授权时测试作者与实现者应返回 BLOCKED，不得开始 red"
+implementation_authorized = true
+authorized_at = "2026-11-17（Asia/Shanghai）"
+authorized_by = "user（本会话显式授权：我授权给你）"
+authorized_scope = "本任务全部离线流程：red 测试、实现、独立验证，限定 allowed_paths；不含真实模型、真实数据库、浏览器、MCP、发布、审批或 Schema 扩展"
+reason = "计划 §1 规定所有实现任务受 D0 阻塞，前序交付不自动构成授权；本行为用户对任务18 的显式授权，不扩展至任务19 及以后"
+required = "已满足；后续若需扩大范围（改 domain 契约、真实环境取证），必须重新取得授权"
 d0_reference = "docs/superpowers/plans/Phase-Two-B-Implementation-v1.md §1 与 docs/maintenance/phase2b-entry-closure-2026-11-11.md"
 
 [roles]
