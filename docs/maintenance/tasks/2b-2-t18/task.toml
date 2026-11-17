@@ -8,7 +8,9 @@ task_id = "2B-2/T18"
 title = "Proposal Package方案架构分析"
 tier = "L2"
 status = "READY"
-base_sha = "0361627c288e37bb0d1d4572219f9df7fa1ae7f2"
+# 基线 = 任务包与 prompts/ 的冻结提交，因此 base..head 只含 red、实现与证据提交，
+# 不把任务包文档行数计入 max_task_lines。原工作区基线为 0361627c（见 handoff.branch_start）。
+base_sha = "e697e66ae75e1aaff9192e8aae0d2c4bc19f3d5e"
 
 tier_rationale = """
 L2：新增单个应用服务模块 + 单个测试文件，纯离线（计划任务18「外部依赖」列为 真实模型否 / 真实数据库否 / 浏览器E2E 否）。
@@ -212,5 +214,6 @@ verifier = "to-be-dispatched，不得与 implementer 同一会话（见 prompts/
 integrator = "to-be-dispatched，只在 review.json 为 PASS 后合并"
 
 [handoff]
-task_package_commit = "PENDING"
-note = "本文件与 prompts/ 三份提示词一并提交后，把该提交 SHA 填入 task_package_commit，作为测试作者交接点"
+task_package_commit = "e697e66ae75e1aaff9192e8aae0d2c4bc19f3d5e"
+branch_start = "0361627c288e37bb0d1d4572219f9df7fa1ae7f2"
+note = "该 SHA 为任务包与 prompts/ 三份提示词的冻结提交，作为测试作者交接点；此后的 task.toml 只允许追加变更记录，不改 goal/ac/allowed_paths/non_goals"
