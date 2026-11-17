@@ -1,0 +1,88 @@
+{
+  "task_id": "2B-2/T18",
+  "verdict": "PASS",
+  "reviewer": "codex-t18-closeout-review",
+  "implementer": "t18-imp",
+  "reviewed_head": "3e85ca81b8f4ce85d623e5ee2eb7cc8bac43c50f",
+  "contract_sha256": "99532cc2e2eb041bfa04dad0e6b699c68655b362b6aa142a894b903d0f37140b",
+  "base_sha": "c7a833b5d3e3480df2db37ff06791b2f516c73d2",
+  "red_commit": "3e85ca81b8f4ce85d623e5ee2eb7cc8bac43c50f",
+  "test_sha256": "39e85634a6dff9b20246803a762dd031752d374303c683ee9cebfcee6fe839c9",
+  "ac_results": {
+    "AC07-a": "PASS",
+    "AC07-b": "PASS",
+    "AC09-a": "PASS",
+    "AC09-b": "PASS",
+    "AC19-a": "PASS",
+    "AC19-b": "PASS"
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "high",
+      "ac": "AC09-a",
+      "title": "Degraded and empty evidence citation validation",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "status": "RESOLVED",
+      "detail": "7ad16c0 removes the degraded bypass. Every continuing status now validates statement evidence ids against evidence.hits; empty findings reject fabricated citations as well.",
+      "evidence": "test_degraded_and_empty_findings_cannot_bypass_citation_validation; 1603b80 shown red before the fix."
+    },
+    {
+      "id": "F2",
+      "severity": "high",
+      "ac": "AC07-a",
+      "title": "Unsupported requirement contradiction",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "status": "RESOLVED",
+      "detail": "7ad16c0 rejects statements whose requirement_ids intersect the unsupported set, closing the contradiction path that bypassed unsupported_preserved.",
+      "evidence": "test_unsupported_requirement_cannot_be_contradicted_by_a_statement"
+    },
+    {
+      "id": "F3",
+      "severity": "medium",
+      "ac": "decision.evidence_scope",
+      "title": "Empty evidence loses its degradation marker",
+      "file": "src/presales/application/proposal_solution_analysis.py",
+      "status": "RESOLVED",
+      "detail": "7ad16c0 adds the stable evidence_empty marker when status == 'empty'; degraded keeps evidence_degraded and the two are mutually exclusive.",
+      "evidence": "test_empty_evidence_is_recorded_without_becoming_evidence_content"
+    }
+  ],
+  "commands": [
+    {
+      "command": "uv run pytest tests/presales/test_proposal_solution_analysis.py -q",
+      "exit_code": 0,
+      "result": "9 passed"
+    },
+    {
+      "command": "uv run pytest tests/presales -q -rs",
+      "exit_code": 0,
+      "result": "371 passed, 107 skipped"
+    },
+    {
+      "command": "uv run ruff check src/presales/application/proposal_solution_analysis.py tests/presales/test_proposal_solution_analysis.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run ruff format --check src/presales/application/proposal_solution_analysis.py tests/presales/test_proposal_solution_analysis.py",
+      "exit_code": 0
+    },
+    {
+      "command": "uv run pyrefly check",
+      "exit_code": 0,
+      "result": "0 errors"
+    }
+  ],
+  "environment_evidence": {
+    "postgres": "not required",
+    "mcp": "not required",
+    "model": "not required",
+    "browser": "not required"
+  },
+  "scope_check": {
+    "implementation_commit": "1603b80 adds only src/presales/application/proposal_solution_analysis.py",
+    "red_commit": "35fb88e and 3e85ca8 add only tests/presales/test_proposal_solution_analysis.py",
+    "test_blob": "39e85634a6dff9b20246803a762dd031752d374303c683ee9cebfcee6fe839c9 (worktree bytes; Git blob 4529600 with LF normalization)",
+    "note": "debf440 and 715e12b are task evidence metadata; 7ad16c0 is the fix. No domain, migration, access, API or frontend changes."
+  }
+}

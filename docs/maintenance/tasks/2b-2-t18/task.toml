@@ -7,7 +7,7 @@
 task_id = "2B-2/T18"
 title = "Proposal Package方案架构分析"
 tier = "L2"
-status = "READY"
+status = "PASS"
 # 基线 = 测试作者开工前的最后一个规划侧提交（模板细则修订 c7a833b），因此 base..head
 # 只含 red、实现与证据提交，不把任务包与模板文档行数计入 max_task_lines/max_commits。
 # 原工作区基线为 0361627c（见 handoff.branch_start），任务包冻结提交为 e697e66。
@@ -233,3 +233,9 @@ task_package_commit = "e697e66ae75e1aaff9192e8aae0d2c4bc19f3d5e"
 branch_start = "0361627c288e37bb0d1d4572219f9df7fa1ae7f2"
 test_author_base = "c7a833b5d3e3480df2db37ff06791b2f516c73d2"
 note = "e697e66 为任务包与 prompts/ 三份提示词的冻结提交；c7a833b 为模板细则修订提交，作为测试作者实际基线（base_sha）。此后的 task.toml 只允许追加变更记录，不改 goal/ac/allowed_paths/non_goals"
+
+[closeout]
+date = "2026-11-18"
+reviewed_head = "3e85ca81b8f4ce85d623e5ee2eb7cc8bac43c50f"
+review = "docs/maintenance/tasks/2b-2-t18/review.json"
+note = "独立复核关闭 56653f4 的 F1/F2/F3；新增 3e85ca8 回归测试及 715e12b red 证据。局限：未接入分析图与真实模型，归任务23/24/26。"
