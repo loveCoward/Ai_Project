@@ -2,6 +2,7 @@
 
 工作区：从 red 交接提交新建的独立 worktree
 任务包：docs/maintenance/tasks/2b-2-t19/task.toml
+任务包交接提交：26acadc41e578fbc16dd92aa863e2542246f154f
 基线：7ad16c078623f477da9bb71a6682414fb6cd4cb7
 red 交接：由测试作者在 red.json 中记录的 test_commit 与测试文件 sha256 确定
 档位：L2

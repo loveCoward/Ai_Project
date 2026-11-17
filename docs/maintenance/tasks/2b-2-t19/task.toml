@@ -246,7 +246,7 @@ evidence_path = "docs/maintenance/tasks/2b-2-t18/review.json"
 action_if_missing = "测试作者返回 BLOCKED，等待任务18 独立验证通过或集成者给出合并 SHA"
 
 [handoff]
-task_package_commit = "PENDING"
+task_package_commit = "26acadc41e578fbc16dd92aa863e2542246f154f"
 branch_start = "7ad16c078623f477da9bb71a6682414fb6cd4cb7"
 test_author_base = "7ad16c078623f477da9bb71a6682414fb6cd4cb7"
-note = "本文件与 prompts/ 三份提示词一并提交后，把该提交 SHA 填入 task_package_commit，作为测试作者交接点；任务18 合并后如 base 变化，由规划者更新 base_sha"
+note = "26acadc41e578fbc16dd92aa863e2542246f154f 为任务包与 prompts/ 三份提示词的冻结提交；测试作者从该交接点读取任务包。任务18 合并后如 base 变化，由规划者更新 base_sha"

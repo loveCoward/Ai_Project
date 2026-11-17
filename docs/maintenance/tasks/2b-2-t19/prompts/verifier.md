@@ -2,6 +2,7 @@
 
 工作区：从实现 head 新建的干净检出
 任务包：docs/maintenance/tasks/2b-2-t19/task.toml
+任务包交接提交：26acadc41e578fbc16dd92aa863e2542246f154f
 base：7ad16c078623f477da9bb71a6682414fb6cd4cb7（若规划者已因任务18 合并更新，以 task.toml 为准）
 head：实现者交接 SHA
 red：docs/maintenance/tasks/2b-2-t19/red.json 的 test_commit 与 test_files sha256
