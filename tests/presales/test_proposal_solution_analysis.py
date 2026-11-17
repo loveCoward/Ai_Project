@@ -264,10 +264,39 @@ async def test_unusable_evidence_blocks_the_architecture_node():
         await solution.ProposalSolutionAnalysis().analyse((), finding(), draft)
     assert empty.value.code == "solution_requirements_empty"
 
+    degraded_evidence = finding("私有部署支持审计日志", status="degraded")
+    degraded_draft = draft_with(
+        solution,
+        statements=(
+            fact(
+                solution,
+                "产品支持私有部署",
+                degraded_evidence.hits[0].evidence_id,
+            ),
+        ),
+    )
     degraded = await solution.ProposalSolutionAnalysis().analyse(
-        (requirement(),), finding("私有部署支持审计日志", status="degraded"), draft
+        (requirement(),), degraded_evidence, degraded_draft
     )
     assert "evidence_degraded" in degraded.executed_checks
+
+    degraded_without_hits = EvidenceFinding(
+        query_digest=QUERY_DIGEST,
+        status="degraded",
+        hits=(),
+        degradation=("reranker_timeout",),
+        checked=("published_knowledge_scope",),
+    )
+    with pytest.raises(solution.SolutionContractViolation) as error:
+        await solution.ProposalSolutionAnalysis().analyse(
+            (requirement(),),
+            degraded_without_hits,
+            draft_with(
+                solution,
+                statements=(fact(solution, "产品支持私有部署", uuid4()),),
+            ),
+        )
+    assert error.value.code == "solution_contract_failed"
 
 
 @pytest.mark.asyncio
